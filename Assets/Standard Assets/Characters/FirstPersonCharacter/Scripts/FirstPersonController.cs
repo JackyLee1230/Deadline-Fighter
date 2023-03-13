@@ -10,6 +10,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
     [RequireComponent(typeof (AudioSource))]
     public class FirstPersonController : MonoBehaviour
     {
+        [Header("Player Health")]
+        [SerializeField] public float maxHealth = 120.0f;
+        [SerializeField] public float currentHealth;
+        [SerializeField] public float iFrames;
+
+        [Header("Movement")]
         [SerializeField] private bool m_IsWalking;
         [SerializeField] private float m_WalkSpeed;
         [SerializeField] private float m_RunSpeed;
@@ -55,6 +61,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_Jumping = false;
             m_AudioSource = GetComponent<AudioSource>();
 			m_MouseLook.Init(transform , m_Camera.transform);
+            currentHealth = maxHealth;
+            iFrames =0f;
         }
 
 
@@ -81,8 +89,35 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
 
             m_PreviouslyGrounded = m_CharacterController.isGrounded;
+
+            // on each frame, if player has iFrames, reduce them by 1*Time.deltaTime
+            if (iFrames > 0){
+                iFrames -= 1.0f*Time.deltaTime;
+            }
         }
 
+
+        public float takeDamage(float damage){
+            Debug.Log("Player took " + damage + " damage");
+            if (iFrames <= 0f){
+                currentHealth -= damage;
+                iFrames = 1.0f;
+            }
+
+            // check if player health is below 0
+            if (currentHealth <= 0f){
+                // kill player
+                currentHealth = 0;
+                playerDie();
+            }
+            return currentHealth;
+        }
+
+        public void playerDie(){
+            // kill player
+            Debug.Log("Player is dead");
+            Destroy(gameObject, 1.0f);
+        }
 
         private void PlayLandingSound()
         {

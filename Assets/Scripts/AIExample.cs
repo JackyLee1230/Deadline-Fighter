@@ -18,12 +18,15 @@ public class AIExample : MonoBehaviour {
     public float wanderRadius = 7f;
     public Transform[] waypoints; //Array of waypoints is only used when waypoint wandering is selected
 
-    private bool isAware = false;
+    [SerializeField] private bool isAware = false;
     private Vector3 wanderPoint;
     private NavMeshAgent agent;
     private Renderer renderer;
     private int waypointIndex = 0;
     private Animator animator;
+
+    [SerializeField] public float AttackCooldown;
+    [SerializeField] public LayerMask playerLayer;
     
 
     public void Start()
@@ -32,6 +35,7 @@ public class AIExample : MonoBehaviour {
         renderer = GetComponent<Renderer>();
         animator = GetComponentInChildren<Animator>();
         wanderPoint = RandomWanderPoint();
+        AttackCooldown = 0f;
     }
     public void Update()
     {
@@ -40,6 +44,7 @@ public class AIExample : MonoBehaviour {
             agent.SetDestination(fpsc.transform.position);
             animator.SetBool("Aware", true);
             agent.speed = chaseSpeed;
+            AttackPlayer();
             //renderer.material.color = Color.red;
         } else
         {
@@ -48,6 +53,11 @@ public class AIExample : MonoBehaviour {
             animator.SetBool("Aware", false);
             agent.speed = wanderSpeed;
             //renderer.material.color = Color.blue;
+        }
+
+        // if attack cooldown is greater than 0, reduce it by 1 every second
+        if (AttackCooldown > 0f){
+            AttackCooldown -= Time.deltaTime;
         }
     }
 
@@ -63,6 +73,8 @@ public class AIExample : MonoBehaviour {
                     if (hit.transform.CompareTag("Player"))
                     {
                         OnAware();
+                        Debug.Log("Tracked Player");
+                        AttackPlayer();
                     }
                 }
             }
@@ -111,6 +123,23 @@ public class AIExample : MonoBehaviour {
             {
                 Debug.LogWarning("Please assign more than 1 waypoint to the AI: " + gameObject.name);
             }
+        }
+    }
+
+    public void AttackPlayer(){
+        // if (AttackCooldown <= 0){
+        if(AttackCooldown <= 0f){
+            RaycastHit hitInfo;
+            if (Physics.Linecast(transform.position, fpsc.transform.position, out hitInfo, -1)){
+                if (hitInfo.transform.CompareTag("Player")){
+                    hitInfo.transform.GetComponent<FirstPersonController>().takeDamage(10);
+                    Debug.Log("Zombie Hitting Player"); 
+                    AttackCooldown = 0.8f;
+                }
+            }
+
+            // scale the model to 2x
+            transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
         }
     }
 
