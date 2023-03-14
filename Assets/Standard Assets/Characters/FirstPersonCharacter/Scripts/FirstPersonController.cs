@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
 using UnityStandardAssets.CrossPlatformInput;
 using UnityStandardAssets.Utility;
 using Random = UnityEngine.Random;
@@ -10,6 +12,18 @@ namespace UnityStandardAssets.Characters.FirstPerson
     [RequireComponent(typeof (AudioSource))]
     public class FirstPersonController : MonoBehaviour
     {
+        [Header("Player Health")]
+        [SerializeField] public float maxHealth = 120.0f;
+        [SerializeField] public float currentHealth;
+        [SerializeField] public float iFrames;
+        public GameObject playerDamage;
+        public GameObject healthBar;
+        public GameObject healthBarFill;
+        public Slider healthBarSlider;
+        public GameObject iFrameIcon;
+
+        [Header("Movement")]
+        public GameObject sprintIcon;
         [SerializeField] private bool m_IsWalking;
         [SerializeField] private float m_WalkSpeed;
         [SerializeField] private float m_RunSpeed;
@@ -55,6 +69,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_Jumping = false;
             m_AudioSource = GetComponent<AudioSource>();
 			m_MouseLook.Init(transform , m_Camera.transform);
+            currentHealth = maxHealth;
+            iFrames = 0f;
+            playerDamage.SetActive(false); // disable the damage taking effect
+            resetHealthBar();
         }
 
 
@@ -81,7 +99,80 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
 
             m_PreviouslyGrounded = m_CharacterController.isGrounded;
+
+            // on each frame, if player has iFrames, reduce them by 1*Time.deltaTime
+            if (iFrames > 0){
+                iFrames -= 1.0f*Time.deltaTime;
+            }
+
+            if(m_IsWalking == false){
+                // set opacity of sprint icon to 1
+                // else set opacity to 0.1
+                sprintIcon.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            } else {
+                sprintIcon.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.1f);
+            }
+
+            if(iFrames > 0f){
+                // set opacity of iFrame icon to 1
+                // else set opacity to 0.1
+                iFrameIcon.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            } else {
+                iFrameIcon.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.1f);
+            }
+
+            setHealthBar(currentHealth);
+            // less than 30% red, less than 50% orange, 70% yellow and 100% green
+            if (currentHealth/maxHealth <= 0.3f){
+                healthBarFill.GetComponent<Image>().color = Color.red;
+            } else if (currentHealth/maxHealth <= 0.5f){
+                healthBarFill.GetComponent<Image>().color = new Color(1.0f, 0.64f, 0.0f);
+            } else if (currentHealth/maxHealth <= 0.7f){
+                healthBarFill.GetComponent<Image>().color = Color.yellow;
+            } else {
+                healthBarFill.GetComponent<Image>().color = Color.green;
+            }
         }
+
+        public float takeDamage(float damage){
+            Debug.Log("Player took " + damage + " damage");
+            if (iFrames <= 0f){
+                currentHealth -= damage;
+                setHealthBar(currentHealth);
+                StartCoroutine(playerDamageFlash());
+                iFrames = 1.0f;  
+            }
+
+            // check if player health is below 0
+            if (currentHealth <= 0f){
+                // kill player
+                currentHealth = 0;
+                playerDie();
+            }
+            return currentHealth;
+        }
+
+        public void playerDie(){
+            // kill player
+            Debug.Log("Player is dead");
+            Destroy(gameObject, 1.0f);
+        }
+
+        public IEnumerator playerDamageFlash(){
+            playerDamage.SetActive(true);
+            yield return new WaitForSeconds(0.8f);
+            playerDamage.SetActive(false);
+        }
+
+        public void resetHealthBar(){
+            currentHealth = maxHealth;
+            healthBarSlider.value = 1;
+        }
+
+        public void setHealthBar(float health){
+            healthBarSlider.value = health/maxHealth;
+        }
+
 
 
         private void PlayLandingSound()
