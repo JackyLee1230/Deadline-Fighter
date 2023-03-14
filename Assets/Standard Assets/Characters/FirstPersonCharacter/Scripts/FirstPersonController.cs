@@ -134,11 +134,26 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
         }
 
+        public IEnumerator Shake(float duration, float magnitude)
+        {
+            float elapsed = 0f;
+
+            while (elapsed < duration)
+            {
+                m_Camera.transform.localPosition = m_OriginalCameraPosition + (Random.insideUnitSphere * magnitude);
+                elapsed += Time.deltaTime*2;
+                yield return 0;
+            }
+            m_Camera.transform.localPosition = m_OriginalCameraPosition;
+        }
+
         public float takeDamage(float damage){
             Debug.Log("Player took " + damage + " damage");
+
             if (iFrames <= 0f){
                 currentHealth -= damage;
                 setHealthBar(currentHealth);
+                StartCoroutine(Shake(0.4f, 0.2f));
                 StartCoroutine(playerDamageFlash());
                 iFrames = 1.0f;  
             }
@@ -340,7 +355,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 return 1;
             }
         }
-
 
         private void OnControllerColliderHit(ControllerColliderHit hit)
         {
