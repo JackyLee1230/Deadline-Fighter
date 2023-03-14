@@ -8,6 +8,8 @@ public class AIExample : MonoBehaviour {
 
     public enum WanderType { Random, Waypoint};
 
+    [Header("zombie camera and hit scan")]
+    public Camera AttackRaycastArea;
 
     public FirstPersonController fpsc;
     public WanderType wanderType = WanderType.Random;
@@ -59,6 +61,7 @@ public class AIExample : MonoBehaviour {
         if (AttackCooldown > 0f){
             AttackCooldown -= Time.deltaTime;
         }
+        
     }
 
     public void SearchForPlayer()
@@ -130,11 +133,13 @@ public class AIExample : MonoBehaviour {
         // if (AttackCooldown <= 0){
         if(AttackCooldown <= 0f){
             RaycastHit hitInfo;
-            if (Physics.Linecast(transform.position, fpsc.transform.position, out hitInfo, -1)){
+            if (Physics.Raycast(AttackRaycastArea.transform.position, AttackRaycastArea.transform.forward, out hitInfo, 2)){
                 if (hitInfo.transform.CompareTag("Player")){
                     hitInfo.transform.GetComponent<FirstPersonController>().takeDamage(10);
                     Debug.Log("Zombie Hitting Player"); 
                     AttackCooldown = 0.8f;
+                    // push the zombie back 20 units
+                    transform.position += transform.forward * -1.5f;
                 }
             }
 
