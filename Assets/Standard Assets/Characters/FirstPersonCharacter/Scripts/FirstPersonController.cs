@@ -26,7 +26,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] public float gunBaseDamage = 20;
         [SerializeField] public float gunBaseFireRate = 0.5f;
         [SerializeField] public float gunBaseRange = 200f;
-        [SerializeField] public AIExample zombieAI;
+        [SerializeField] public GameObject pauseMenu;
 
         [Header("Movement")]
         public GameObject sprintIcon;
@@ -127,7 +127,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 iFrameIcon.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.1f);
             }
 
-            if(Input.GetKeyDown("Fire1")){
+            if(Input.GetKeyDown(KeyCode.Mouse0)){
                 // shoot the weapon
                 RaycastHit hit;
                 if(Physics.Raycast(m_Camera.transform.position, m_Camera.transform.forward, out hit, gunBaseRange)){
@@ -256,8 +256,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             ProgressStepCycle(speed);
             UpdateCameraPosition(speed);
-
-            m_MouseLook.UpdateCursorLock();
+            // check if pauseMenu is active
+            if (pauseMenu.activeSelf == false){
+                m_MouseLook.UpdateCursorLock();
+            }
+            // m_MouseLook.UpdateCursorLock();
         }
 
 

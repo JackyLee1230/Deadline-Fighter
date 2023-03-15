@@ -10,6 +10,8 @@ public class PlayerExample : MonoBehaviour {
     public float sprintEnemyPerceptionRadius = 1.5f;
     public LayerMask zombieLayer;
 
+    public GameObject pauseMenu;
+
     private AudioSource audioSource;
     private FirstPersonController fpsc;
     private SphereCollider sphereCollider;
@@ -23,6 +25,10 @@ public class PlayerExample : MonoBehaviour {
 
     public void Update()
     {
+        if(pauseMenu.activeSelf == true)
+        {
+            return;
+        }
         if (Input.GetMouseButtonDown(0))
         {
             Fire();
