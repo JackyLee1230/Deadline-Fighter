@@ -22,6 +22,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
         public Slider healthBarSlider;
         public GameObject iFrameIcon;
 
+        [Header("Weapon(Guns)")]
+        [SerializeField] public float gunBaseDamage = 20;
+        [SerializeField] public float gunBaseFireRate = 0.5f;
+        [SerializeField] public float gunBaseRange = 200f;
+        [SerializeField] public AIExample zombieAI;
+
         [Header("Movement")]
         public GameObject sprintIcon;
         [SerializeField] private bool m_IsWalking;
@@ -119,6 +125,21 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 iFrameIcon.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             } else {
                 iFrameIcon.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.1f);
+            }
+
+            if(Input.GetKeyDown("Fire1")){
+                // shoot the weapon
+                RaycastHit hit;
+                if(Physics.Raycast(m_Camera.transform.position, m_Camera.transform.forward, out hit, gunBaseRange)){
+                    // if the raycast hits something
+                    // Gun Hit something
+                    Debug.Log(hit.transform.name);
+                    if(hit.transform.tag == "Zombie"){
+                        // if the raycast hits an enemy
+                        // do damage to the enemy
+                        // hit.transform.GetComponent<AIExample>().takeDamage(gunBaseDamage);
+                    }
+                }
             }
 
             setHealthBar(currentHealth);
