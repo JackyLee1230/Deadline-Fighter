@@ -28,6 +28,15 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] public float gunBaseRange = 200f;
         [SerializeField] public GameObject pauseMenu;
 
+        [Header("Scores")]
+        [SerializeField] public int score = 0;
+        [SerializeField] public int kills = 0;
+        [SerializeField] public int deaths = 0;
+        [SerializeField] public int headshots = 0;
+        [SerializeField] public int shotsFired = 0;
+        [SerializeField] public int shotsHit = 0;
+        [SerializeField] public float timeSurvived = 0;
+
         [Header("Movement")]
         public GameObject sprintIcon;
         [SerializeField] private bool m_IsWalking;
@@ -85,6 +94,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
         // Update is called once per frame
         private void Update()
         {
+            if(currentHealth > 0){
+                timeSurvived += Time.deltaTime;
+            }
             RotateView();
             // the jump state needs to read here to make sure it is not missed
             if (!m_Jump)
