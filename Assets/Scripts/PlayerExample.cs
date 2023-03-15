@@ -12,7 +12,7 @@ public class PlayerExample : MonoBehaviour {
 
     public GameObject pauseMenu;
 
-    private AudioSource audioSource;
+    [SerializeField] private AudioSource audioSource;
     private FirstPersonController fpsc;
     private SphereCollider sphereCollider;
 
