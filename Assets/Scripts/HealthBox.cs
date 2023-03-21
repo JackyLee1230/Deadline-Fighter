@@ -23,13 +23,13 @@ public class HealthBox : MonoBehaviour
 
     void Start(){
         audioSource = fpsc.GetComponent<AudioSource>();
-        cross = gameObject.transform.Find("Cross").gameObject;
+//        cross = gameObject.transform.Find("Cross").gameObject;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(Vector3.Distance(transform.position, fpsc.transform.position));
+    //    Debug.Log(Vector3.Distance(transform.position, fpsc.transform.position));
      if(Vector3.Distance(transform.position, fpsc.transform.position) < radius)
         {
             cross.SetActive(true);
