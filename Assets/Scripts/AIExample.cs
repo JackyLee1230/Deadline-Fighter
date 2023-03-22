@@ -13,6 +13,7 @@ public class AIExample : MonoBehaviour {
 
     public FirstPersonController fpsc;
     public WanderType wanderType = WanderType.Random;
+    public float health = 100;
     public float wanderSpeed = 4f;
     public float chaseSpeed = 7f;
     public float fov = 120f;
@@ -154,5 +155,17 @@ public class AIExample : MonoBehaviour {
         NavMeshHit navHit;
         NavMesh.SamplePosition(randomPoint, out navHit, wanderRadius, -1);
         return new Vector3(navHit.position.x, transform.position.y, navHit.position.z);
+    }
+
+    public void onHit(float damage) {
+        health -= damage;
+        if(health <= 0) {
+            Destroy(gameObject);
+            Destroy(GetComponent<NavMeshAgent>());
+            Destroy(GetComponent<EnemyManager>());
+            Destroy(GetComponent<CapsuleCollider>());
+            fpsc.addScore(50);
+            Debug.Log(fpsc.score);
+        }
     }
 }

@@ -19,11 +19,13 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] public float maxHealth = 120.0f;
         [SerializeField] public float currentHealth;
         [SerializeField] public float iFrames;
+        public GameObject playerCam;
         public GameObject playerDamage;
         public GameObject healthBar;
         public GameObject healthBarFill;
         public Slider healthBarSlider;
         public GameObject iFrameIcon;
+        public AIExample enemyManager;
 
         [Header("Weapon(Guns)")]
         [SerializeField] public float gunBaseDamage = 20;
@@ -168,20 +170,18 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 iFrameIcon.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.1f);
             }
 
-            if(Input.GetKeyDown(KeyCode.Mouse0)){
-                // shoot the weapon
-                RaycastHit hit;
-                if(Physics.Raycast(m_Camera.transform.position, m_Camera.transform.forward, out hit, gunBaseRange)){
-                    // if the raycast hits something
-                    // Gun Hit something
-                    Debug.Log(hit.transform.name);
-                    if(hit.transform.tag == "Zombie"){
-                        // if the raycast hits an enemy
-                        // do damage to the enemy
-                        // hit.transform.GetComponent<AIExample>().takeDamage(gunBaseDamage);
+            if (Input.GetMouseButtonDown(0)) {
+                 RaycastHit  hit;
+                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                  
+                  if (Physics.Raycast(ray, out hit)) {
+                      if (hit.transform.name == "Zombie" ){
+                        hit.transform.GetComponent<AIExample>().onHit(25);
+                        
                     }
-                }
-            }
+                  }
+              }
+        
 
             setHealthBar(currentHealth);
             // less than 30% red, less than 50% orange, 70% yellow and 100% green
@@ -228,6 +228,20 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
             return currentHealth;
         }
+
+        void onShoot() {
+
+        RaycastHit hit;
+
+        if(Physics.Raycast(playerCam.transform.position, transform.forward, out hit, 100f)){
+            Debug.Log("hit");
+            enemyManager = hit.transform.GetComponent<AIExample>();
+            if(enemyManager != null) {
+                enemyManager.onHit(20);
+            }
+        }
+
+    }
 
         public void playerDie(){
             // kill player
