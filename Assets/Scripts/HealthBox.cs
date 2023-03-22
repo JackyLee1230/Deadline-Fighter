@@ -11,6 +11,9 @@ public class HealthBox : MonoBehaviour
     private float healthBoost = 50.0f; // amount of health to give
     private float radius = 20.0f; // radius player can reach the box, leave some room since camera isnt in floor level
     public bool used = false;
+    public bool seen = false;
+
+    public Camera cam;
 
     [Header("Sound")]
     public AudioClip HealthBoxSound;
@@ -27,11 +30,33 @@ public class HealthBox : MonoBehaviour
  //       cross = gameObject.transform.Find("Cross").Find("box_med").gameObject;
     }
 
+    private bool IsVisible(Camera c, GameObject target)
+    {
+        var planes = GeometryUtility.CalculateFrustumPlanes(c);
+        var point = target.transform.position;
+
+        foreach (var plane in planes)
+        {
+            if (plane.GetDistanceToPoint(point)< 0)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
     // Update is called once per frame
     void Update()
     {
-
-     if(Vector3.Distance(transform.position, fpsc.transform.position) < radius)
+        var targetRender = gameObject.GetComponent<Renderer>();
+        if (IsVisible(cam,gameObject))
+        {
+           seen=true;
+        }
+        else
+        {
+           seen = false;
+        }
+     if(Vector3.Distance(transform.position, fpsc.transform.position) < radius && seen)
         {
             cross.SetActive(true);
             if (Input.GetKeyDown(KeyCode.E) && !used)
