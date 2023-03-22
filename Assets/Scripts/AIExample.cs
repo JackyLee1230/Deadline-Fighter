@@ -19,9 +19,11 @@ public class AIExample : MonoBehaviour {
     public float fov = 120f;
     public float viewDistance = 10f;
     public float wanderRadius = 7f;
+    public float attackRadius = 0.5f;
     public Transform[] waypoints; //Array of waypoints is only used when waypoint wandering is selected
 
     [SerializeField] private bool isAware = false;
+    [SerializeField] private bool isAttacking = false;
     private Vector3 wanderPoint;
     private NavMeshAgent agent;
     private Renderer renderer;
@@ -42,13 +44,24 @@ public class AIExample : MonoBehaviour {
     }
     public void Update()
     {
+        if (isAttacking)
+        {
+            Debug.Log("zombie attacked");
+            animator.SetTrigger("Attack");
+            agent.speed = 0f;
+            agent.enabled = false;
+
+            StartCoroutine(EnableAgent());
+        }
         if (isAware)
         {
-            agent.SetDestination(fpsc.transform.position);
-            animator.SetBool("Aware", true);
-            agent.speed = chaseSpeed;
-            AttackPlayer();
-            //renderer.material.color = Color.red;
+            if (!isAttacking) { 
+                agent.SetDestination(fpsc.transform.position);
+                animator.SetBool("Aware", true);
+                agent.speed = chaseSpeed;
+                AttackPlayer();
+                //renderer.material.color = Color.red;
+            }
         } else
         {
             SearchForPlayer();
@@ -57,6 +70,7 @@ public class AIExample : MonoBehaviour {
             agent.speed = wanderSpeed;
             //renderer.material.color = Color.blue;
         }
+
 
         // if attack cooldown is greater than 0, reduce it by 1 every second
         if (AttackCooldown > 0f){
@@ -89,6 +103,7 @@ public class AIExample : MonoBehaviour {
     {
         isAware = true;
     }
+
 
     public void Wander()
     {
@@ -136,9 +151,11 @@ public class AIExample : MonoBehaviour {
             RaycastHit hitInfo;
             if (Physics.Raycast(AttackRaycastArea.transform.position, AttackRaycastArea.transform.forward, out hitInfo, 2)){
                 if (hitInfo.transform.CompareTag("Player")){
+                    isAttacking = true;
+
                     hitInfo.transform.GetComponent<FirstPersonController>().takeDamage(10);
                     Debug.Log("Zombie Hitting Player"); 
-                    AttackCooldown = 0.8f;
+                    AttackCooldown = 1.2f;
                     // push the zombie back 20 units
                     transform.position += transform.forward * -1.5f;
                 }
@@ -148,6 +165,15 @@ public class AIExample : MonoBehaviour {
             transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
         }
     }
+
+    IEnumerator EnableAgent() 
+    { 
+        yield return new WaitForSeconds(1);
+        agent.enabled = true;
+        isAttacking = false;
+    }
+
+
 
     public Vector3 RandomWanderPoint()
     {
