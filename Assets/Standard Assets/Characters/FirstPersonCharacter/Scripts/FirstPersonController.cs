@@ -5,6 +5,9 @@ using System.Collections;
 using UnityStandardAssets.CrossPlatformInput;
 using UnityStandardAssets.Utility;
 using Random = UnityEngine.Random;
+// import TextMeshProUGUI
+using TMPro;
+
 
 namespace UnityStandardAssets.Characters.FirstPerson
 {
@@ -30,12 +33,19 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         [Header("Scores")]
         [SerializeField] public int score = 0;
+        [SerializeField] public GameObject ScoreUI;
         [SerializeField] public int kills = 0;
         [SerializeField] public int deaths = 0;
         [SerializeField] public int headshots = 0;
         [SerializeField] public int shotsFired = 0;
         [SerializeField] public int shotsHit = 0;
         [SerializeField] public float timeSurvived = 0;
+        [SerializeField] public GameObject TimeSurvivedUI;
+
+        [Header("Currnecy")]
+        [SerializeField] public int currency = 0;
+        [SerializeField] public int currencyMultiplier = 1;
+        [SerializeField] public GameObject CurrencyUI;
 
         [Header("Movement")]
         public GameObject sprintIcon;
@@ -117,6 +127,25 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
 
             m_PreviouslyGrounded = m_CharacterController.isGrounded;
+
+
+            // update player currnecy every frame
+            CurrencyUI.GetComponent<TextMeshProUGUI>().text = "$: " + currency + " HKD";
+
+            //update player score every frame
+            if(score > 0){
+                ScoreUI.GetComponent<TextMeshProUGUI>().text = "Score: " + score;
+            } else {
+                ScoreUI.GetComponent<TextMeshProUGUI>().text = "Scores: " + score;
+            }
+
+            // update player time survived every frame
+            if(timeSurvived < 60){
+                TimeSurvivedUI.GetComponent<TextMeshProUGUI>().text = "Survived: " + timeSurvived.ToString("F0") + "s";
+            } else {
+                TimeSurvivedUI.GetComponent<TextMeshProUGUI>().text = "Survived: " + (timeSurvived/60).ToString("F0") + "m" + (timeSurvived%60).ToString("F0") + "s";
+            }
+
 
             // on each frame, if player has iFrames, reduce them by 1*Time.deltaTime
             if (iFrames > 0){
@@ -221,7 +250,21 @@ namespace UnityStandardAssets.Characters.FirstPerson
             healthBarSlider.value = health/maxHealth;
         }
 
+        public void addCurrency(int amount){
+            currency += amount;
+        }
 
+        public void addScore(int amount){
+            score += amount;
+        }
+
+        public void removeCurrency(int amount){
+            currency -= amount;
+        }
+
+        public void removeScore(int amount){
+            score -= amount;
+        }
 
         private void PlayLandingSound()
         {

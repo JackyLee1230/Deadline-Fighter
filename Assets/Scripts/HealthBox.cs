@@ -10,6 +10,7 @@ public class HealthBox : MonoBehaviour
     public FirstPersonController fpsc;
     private float healthBoost = 50.0f; // amount of health to give
     private float radius = 20.0f; // radius player can reach the box, leave some room since camera isnt in floor level
+    public bool used = false;
 
     [Header("Sound")]
     public AudioClip HealthBoxSound;
@@ -23,24 +24,26 @@ public class HealthBox : MonoBehaviour
 
     void Start(){
         audioSource = fpsc.GetComponent<AudioSource>();
-        cross = gameObject.transform.Find("Cross").gameObject;
+        cross = gameObject.transform.Find("Cross").Find("box_med").gameObject;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(Vector3.Distance(transform.position, fpsc.transform.position));
+
      if(Vector3.Distance(transform.position, fpsc.transform.position) < radius)
         {
             cross.SetActive(true);
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.E) && !used)
             {
-                Debug.Log("Pressed E");
+                used = true;
+                Debug.Log("Player got the Health Box from " + Vector3.Distance(transform.position, fpsc.transform.position) +  " units away");
                 animator.SetBool("Open", true);
                 fpsc.currentHealth += healthBoost;
+                fpsc.addScore(50);
                 InfoPopupUtil.ShowInformation ( "+" + healthBoost + " Health" );
                 audioSource.PlayOneShot(HealthBoxSound);
-                Destroy(gameObject);
+                Destroy(gameObject, 1.5f);
             }
         }
         else{
