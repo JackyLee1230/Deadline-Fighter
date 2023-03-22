@@ -24,7 +24,7 @@ public class HealthBox : MonoBehaviour
 
     void Start(){
         audioSource = fpsc.GetComponent<AudioSource>();
-        cross = gameObject.transform.Find("Cross").Find("box_med").gameObject;
+ //       cross = gameObject.transform.Find("Cross").Find("box_med").gameObject;
     }
 
     // Update is called once per frame

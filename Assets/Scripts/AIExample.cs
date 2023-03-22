@@ -24,6 +24,8 @@ public class AIExample : MonoBehaviour {
 
     [SerializeField] private bool isAware = false;
     [SerializeField] private bool isAttacking = false;
+    [SerializeField] private bool isDamage = false;
+    [SerializeField] private bool isDead = false;
     private Vector3 wanderPoint;
     private NavMeshAgent agent;
     private Renderer renderer;
@@ -44,21 +46,35 @@ public class AIExample : MonoBehaviour {
     }
     public void Update()
     {
-        if (isAttacking)
+
+        if (isDead)
         {
-            Debug.Log("zombie attacked");
+            animator.SetBool("Dead", true);
+        }
+        else if (isDamage)
+        {
+            AttackCooldown = 2f;
+            agent.speed = 0f;
+            animator.SetTrigger("Damage");
+
+            transform.position += transform.forward * -1f;
+
+            isDamage = false;
+        }
+        else if (isAttacking)
+        {
             animator.SetTrigger("Attack");
             agent.speed = 0f;
-            agent.enabled = false;
 
-            StartCoroutine(EnableAgent());
+            isAttacking = false;
         }
-        if (isAware)
+        else if (isAware)
         {
             if (!isAttacking) { 
                 agent.SetDestination(fpsc.transform.position);
                 animator.SetBool("Aware", true);
-                agent.speed = chaseSpeed;
+                if(!(AttackCooldown > 0f))
+                    agent.speed = chaseSpeed;
                 AttackPlayer();
                 //renderer.material.color = Color.red;
             }
@@ -74,6 +90,7 @@ public class AIExample : MonoBehaviour {
 
         // if attack cooldown is greater than 0, reduce it by 1 every second
         if (AttackCooldown > 0f){
+            agent.speed = 0f;
             AttackCooldown -= Time.deltaTime;
         }
         
@@ -166,15 +183,6 @@ public class AIExample : MonoBehaviour {
         }
     }
 
-    IEnumerator EnableAgent() 
-    { 
-        yield return new WaitForSeconds(1);
-        agent.enabled = true;
-        isAttacking = false;
-    }
-
-
-
     public Vector3 RandomWanderPoint()
     {
         Vector3 randomPoint = (Random.insideUnitSphere * wanderRadius) + transform.position;
@@ -183,15 +191,28 @@ public class AIExample : MonoBehaviour {
         return new Vector3(navHit.position.x, transform.position.y, navHit.position.z);
     }
 
+    IEnumerator RemoveGameObject()
+    {
+        yield return new WaitForSeconds(5);
+        Destroy(gameObject);
+        Destroy(GetComponent<NavMeshAgent>());
+    }
+
     public void onHit(float damage) {
         health -= damage;
         if(health <= 0) {
-            Destroy(gameObject);
-            Destroy(GetComponent<NavMeshAgent>());
+            agent.speed = 0f;
+            isDead = true;
+
             Destroy(GetComponent<EnemyManager>());
             Destroy(GetComponent<CapsuleCollider>());
             fpsc.addScore(50);
             Debug.Log(fpsc.score);
+            StartCoroutine(RemoveGameObject());
+        }
+        else
+        {
+            isDamage = true;
         }
     }
 }
