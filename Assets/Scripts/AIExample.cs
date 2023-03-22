@@ -53,7 +53,7 @@ public class AIExample : MonoBehaviour {
         }
         else if (isDamage)
         {
-            AttackCooldown = 2f;
+            AttackCooldown = 1.667f;
             agent.speed = 0f;
             animator.SetTrigger("Damage");
 
@@ -172,7 +172,7 @@ public class AIExample : MonoBehaviour {
 
                     hitInfo.transform.GetComponent<FirstPersonController>().takeDamage(10);
                     Debug.Log("Zombie Hitting Player"); 
-                    AttackCooldown = 1.2f;
+                    AttackCooldown = 2.1f;
                     // push the zombie back 20 units
                     transform.position += transform.forward * -1.5f;
                 }
