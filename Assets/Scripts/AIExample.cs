@@ -78,6 +78,18 @@ public class AIExample : MonoBehaviour {
                 AttackPlayer();
                 //renderer.material.color = Color.red;
             }
+            Debug.Log(Vector3.Distance(fpsc.transform.position, AttackRaycastArea.transform.position));
+
+            if(Vector3.Distance(fpsc.transform.position, AttackRaycastArea.transform.position) > 20){
+                if (Vector3.Angle(Vector3.forward, transform.InverseTransformPoint(fpsc.transform.position)) > fov / 2f){
+                    RaycastHit hit;
+                    if (!Physics.Linecast(transform.position, fpsc.transform.position, out hit, -1)){
+                        if (!hit.transform.CompareTag("Player")){
+                            isAware = false;
+                        }
+                    }
+                }
+            }
         } else
         {
             SearchForPlayer();
