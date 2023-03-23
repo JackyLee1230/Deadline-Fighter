@@ -54,7 +54,7 @@ public class AIExample : MonoBehaviour {
         else if (isDamage)
         {
             AttackCooldown = 1.667f;
-            agent.speed = 0f;
+            agent.speed = 0.8f;
             animator.SetTrigger("Damage");
 
             transform.position += transform.forward * -1f;
@@ -64,7 +64,7 @@ public class AIExample : MonoBehaviour {
         else if (isAttacking)
         {
             animator.SetTrigger("Attack");
-            agent.speed = 0f;
+            agent.speed = 0.8f;
 
             isAttacking = false;
         }
@@ -90,7 +90,7 @@ public class AIExample : MonoBehaviour {
 
         // if attack cooldown is greater than 0, reduce it by 1 every second
         if (AttackCooldown > 0f){
-            agent.speed = 0f;
+            agent.speed = 0.8f;
             AttackCooldown -= Time.deltaTime;
         }
         
@@ -167,14 +167,11 @@ public class AIExample : MonoBehaviour {
         if(AttackCooldown <= 0f){
             RaycastHit hitInfo;
             if (Physics.Raycast(AttackRaycastArea.transform.position, AttackRaycastArea.transform.forward, out hitInfo, 2)){
+                isAttacking = true;
                 if (hitInfo.transform.CompareTag("Player")){
-                    isAttacking = true;
-
-                    hitInfo.transform.GetComponent<FirstPersonController>().takeDamage(10);
+                    StartCoroutine(AttackPlyaer(hitInfo));
                     Debug.Log("Zombie Hitting Player"); 
                     AttackCooldown = 2.1f;
-                    // push the zombie back 20 units
-                    transform.position += transform.forward * -1.5f;
                 }
             }
 
@@ -197,6 +194,16 @@ public class AIExample : MonoBehaviour {
         Destroy(gameObject);
         Destroy(GetComponent<NavMeshAgent>());
     }
+
+    IEnumerator AttackPlyaer(RaycastHit hitInfo)
+    {
+        yield return new WaitForSeconds(0.7f);
+            hitInfo.transform.GetComponent<FirstPersonController>().takeDamage(10, AttackRaycastArea.transform.position);     
+            // push the zombie back 20 units
+            transform.Translate(transform.forward * -1.5f, Space.World);
+    }
+    
+
 
     public void onHit(float damage) {
         health -= damage;

@@ -69,7 +69,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] private AudioClip m_JumpSound;           // the sound played when character leaves the ground.
         [SerializeField] private AudioClip m_LandSound;           // the sound played when character touches back on ground.
 
-        private Camera m_Camera;
+        public Camera m_Camera;
         private bool m_Jump;
         private float m_YRotation;
         private Vector2 m_Input;
@@ -209,10 +209,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_Camera.transform.localPosition = m_OriginalCameraPosition;
         }
 
-        public float takeDamage(float damage){
-            Debug.Log("Player took " + damage + " damage");
+        public float takeDamage(float damage, Vector3 source){
 
-            if (iFrames <= 0f){
+            Debug.Log("distance to player: " + Vector3.Distance(source, m_Camera.transform.position ));
+            if (iFrames <= 0f && Vector3.Distance(source, m_Camera.transform.position ) < 2.4f){
+                Debug.Log("Player took " + damage + " damage");
                 currentHealth -= damage;
                 setHealthBar(currentHealth);
                 StartCoroutine(Shake(0.4f, 0.2f));
@@ -246,7 +247,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         public void playerDie(){
             // kill player
             Debug.Log("Player is dead");
-            Destroy(gameObject, 1.0f);
+            // Destroy(gameObject, 1.0f);
         }
 
         public IEnumerator playerDamageFlash(){

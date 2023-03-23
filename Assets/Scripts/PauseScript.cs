@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class PauseScript : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class PauseScript : MonoBehaviour
 
     [SerializeField] public GameObject hitEffect;
 
-    [SerializeField] public GameObject fpsc;
+    [SerializeField] public FirstPersonController fpsc;
 
 
     // Start is called before the first frame update
@@ -24,7 +25,8 @@ public class PauseScript : MonoBehaviour
     // Update is called once per frame
     public void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape)){
+        // prevent pausing when dead
+        if(Input.GetKeyDown(KeyCode.Escape) && fpsc.currentHealth > 0){
             if(isPaused){
                 Resume();
             } else {
