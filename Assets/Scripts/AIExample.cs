@@ -33,6 +33,7 @@ public class AIExample : MonoBehaviour {
     private Animator animator;
 
     [SerializeField] public float AttackCooldown;
+    [SerializeField] public float DamagedCooldown;
     [SerializeField] public LayerMask playerLayer;
     
 
@@ -53,11 +54,10 @@ public class AIExample : MonoBehaviour {
         }
         else if (isDamage)
         {
-            AttackCooldown = 1.667f;;
-            agent.speed = wanderSpeed;
+            AttackCooldown = 1.667f;
+            DamagedCooldown = 1.667f;
+            agent.speed = 0f;
             animator.SetTrigger("Damage");
-
-            transform.position += transform.forward * -1f;
 
             isDamage = false;
         }
@@ -104,9 +104,16 @@ public class AIExample : MonoBehaviour {
 
 
         // if attack cooldown is greater than 0, reduce it by 1 every second
-        if (AttackCooldown > 0f && !isDead){
+        if (AttackCooldown > 0f && !(DamagedCooldown > 0f) && !isDead){
             agent.speed = wanderSpeed;
             AttackCooldown -= Time.deltaTime;
+        }
+
+        // if attack cooldown is greater than 0, reduce it by 1 every second
+        else if (DamagedCooldown > 0f && !isDead)
+        {
+            agent.speed = 0f;
+            DamagedCooldown -= Time.deltaTime;
         }
     }
 
@@ -211,14 +218,15 @@ public class AIExample : MonoBehaviour {
 
     IEnumerator AttackPlyaer(RaycastHit hitInfo)
     {
-        yield return new WaitForSeconds(0.7f);
+        yield return new WaitForSeconds(0.8f);
 
-        hitInfo.transform.GetComponent<FirstPersonController>().takeDamage(10, AttackRaycastArea.transform.position);
-        // push the zombie back 20 units
-        if (Vector3.Distance(fpsc.transform.position, AttackRaycastArea.transform.position) < 3.4f)
-        {
-            transform.Translate(transform.forward * -1.5f, Space.World);
-        }
+        if(!(DamagedCooldown > 0f) && !isDead)
+            hitInfo.transform.GetComponent<FirstPersonController>().takeDamage(10, AttackRaycastArea.transform.position);
+            // push the zombie back 20 units
+            if (Vector3.Distance(fpsc.transform.position, AttackRaycastArea.transform.position) < 3.4f)
+            {
+                transform.Translate(transform.forward * -1.5f, Space.World);
+            }
     }
     
 
