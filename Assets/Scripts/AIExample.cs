@@ -53,8 +53,8 @@ public class AIExample : MonoBehaviour {
         }
         else if (isDamage)
         {
-            AttackCooldown = 1.667f;
-            agent.speed = 0.8f;
+            AttackCooldown = 1.667f;;
+            agent.speed = wanderSpeed;
             animator.SetTrigger("Damage");
 
             transform.position += transform.forward * -1f;
@@ -64,7 +64,7 @@ public class AIExample : MonoBehaviour {
         else if (isAttacking)
         {
             animator.SetTrigger("Attack");
-            agent.speed = 0.8f;
+            agent.speed = wanderSpeed;
 
             isAttacking = false;
         }
@@ -78,18 +78,21 @@ public class AIExample : MonoBehaviour {
                 AttackPlayer();
                 //renderer.material.color = Color.red;
             }
-            Debug.Log(Vector3.Distance(fpsc.transform.position, AttackRaycastArea.transform.position));
 
-            // if(Vector3.Distance(fpsc.transform.position, AttackRaycastArea.transform.position) > 20){
-            //     if (Vector3.Angle(Vector3.forward, transform.InverseTransformPoint(fpsc.transform.position)) > fov / 2f){
-            //         RaycastHit hit;
-            //         if (!Physics.Linecast(transform.position, fpsc.transform.position, out hit, -1)){
-            //             if (!hit.transform.CompareTag("Player")){
-            //                 isAware = false;
-            //             }
-            //         }
-            //     }
-            // }
+            if(Vector3.Distance(fpsc.transform.position, AttackRaycastArea.transform.position) > 17){
+                if (Vector3.Angle(Vector3.forward, transform.InverseTransformPoint(fpsc.transform.position)) < fov / 2f){
+                    RaycastHit hit;
+                    if (Physics.Linecast(transform.position, fpsc.transform.position, out hit, -1)){
+                        if (!hit.transform.CompareTag("Player")){
+                            isAware = false;
+                        }
+                    }
+                    else
+                    {
+                        isAware = false;
+                    }
+                }
+            }
         } else
         {
             SearchForPlayer();
@@ -101,11 +104,10 @@ public class AIExample : MonoBehaviour {
 
 
         // if attack cooldown is greater than 0, reduce it by 1 every second
-        if (AttackCooldown > 0f){
-            agent.speed = 0.8f;
+        if (AttackCooldown > 0f && !isDead){
+            agent.speed = wanderSpeed;
             AttackCooldown -= Time.deltaTime;
         }
-        
     }
 
     public void SearchForPlayer()
@@ -178,12 +180,12 @@ public class AIExample : MonoBehaviour {
         // if (AttackCooldown <= 0){
         if(AttackCooldown <= 0f){
             RaycastHit hitInfo;
-            if (Physics.Raycast(AttackRaycastArea.transform.position, AttackRaycastArea.transform.forward, out hitInfo, 2)){
+            if (Physics.Raycast(AttackRaycastArea.transform.position, AttackRaycastArea.transform.forward, out hitInfo, 2.4f)){
                 isAttacking = true;
                 if (hitInfo.transform.CompareTag("Player")){
                     StartCoroutine(AttackPlyaer(hitInfo));
                     Debug.Log("Zombie Hitting Player"); 
-                    AttackCooldown = 2.1f;
+                    AttackCooldown = 1.4f;
                 }
             }
 
@@ -210,9 +212,13 @@ public class AIExample : MonoBehaviour {
     IEnumerator AttackPlyaer(RaycastHit hitInfo)
     {
         yield return new WaitForSeconds(0.7f);
-            hitInfo.transform.GetComponent<FirstPersonController>().takeDamage(10, AttackRaycastArea.transform.position);     
-            // push the zombie back 20 units
+
+        hitInfo.transform.GetComponent<FirstPersonController>().takeDamage(10, AttackRaycastArea.transform.position);
+        // push the zombie back 20 units
+        if (Vector3.Distance(fpsc.transform.position, AttackRaycastArea.transform.position) < 3.4f)
+        {
             transform.Translate(transform.forward * -1.5f, Space.World);
+        }
     }
     
 

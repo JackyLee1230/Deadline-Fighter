@@ -212,7 +212,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         public float takeDamage(float damage, Vector3 source){
 
             Debug.Log("distance to player: " + Vector3.Distance(source, m_Camera.transform.position ));
-            if (iFrames <= 0f && Vector3.Distance(source, m_Camera.transform.position ) < 2.4f){
+            if (iFrames <= 0f && Vector3.Distance(source, m_Camera.transform.position ) < 3.4f){
                 Debug.Log("Player took " + damage + " damage");
                 currentHealth -= damage;
                 setHealthBar(currentHealth);
