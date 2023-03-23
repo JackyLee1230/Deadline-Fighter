@@ -47,6 +47,7 @@ public class PauseScript : MonoBehaviour
         Cursor.visible = false;
         isPaused = false;
         Time.timeScale = 1f;
+        fpsc.enabled = true;
     }
 
     public void Pause(){
@@ -55,6 +56,7 @@ public class PauseScript : MonoBehaviour
         isPaused = true;
         Time.timeScale = 0f;
         hitEffect.SetActive(false);
+        fpsc.enabled = false;
     }
 
     public void Quit(){

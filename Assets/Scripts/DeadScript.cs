@@ -22,17 +22,31 @@ public class DeadScript : MonoBehaviour
     // Update is called once per frame
     public void Update()
     {
-        if(fpsc.currentHealth <= 0f) {
-            deadMenuUI.SetActive(true);
-            Cursor.visible = true;
-            Time.timeScale = 0f;
+        if(isEnded == false && fpsc.currentHealth <= 0f) {
+            End();
         }
+    }
+
+    public void End(){
+        deadMenuUI.SetActive(true);
+        Cursor.visible = true;
+        Time.timeScale = 0f;
+        Screen.lockCursor = false;
+        Cursor.lockState = CursorLockMode.None;
+        isEnded = true;
+        fpsc.enabled = false;
     }
 
     public void MainMenu(){
         Time.timeScale = 1f;
         Cursor.visible = true;
         SceneManager.LoadScene("MenuScene");
+    }
+
+    public void Restart(){
+        Time.timeScale = 1f;
+        Cursor.visible = true;
+        SceneManager.LoadScene("Scene");
     }
 
     public void Quit(){
