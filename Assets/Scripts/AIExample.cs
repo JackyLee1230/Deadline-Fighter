@@ -54,10 +54,19 @@ public class AIExample : MonoBehaviour {
         }
         else if (isDamage)
         {
-            AttackCooldown = 1.667f;
-            DamagedCooldown = 1.667f;
-            agent.speed = 0f;
-            animator.SetTrigger("Damage");
+            if(AttackCooldown > 0f && DamagedCooldown > 0f)
+            {
+                animator.SetTrigger("GreatDamage");
+                AttackCooldown = 1.667f;
+                DamagedCooldown = 1.667f;
+                agent.speed = 0f;
+            }
+            else
+            {
+                animator.SetTrigger("Damage");
+                AttackCooldown = 0.8f;
+            }
+            
 
             isDamage = false;
         }
