@@ -328,7 +328,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             UpdateCameraPosition(speed);
             // check if pauseMenu is active
             if (pauseMenu.activeSelf == false){
-                m_MouseLook.UpdateCursorLock();
+                //m_MouseLook.UpdateCursorLock();
             }
             // m_MouseLook.UpdateCursorLock();
         }
