@@ -260,7 +260,8 @@ public class AIExample : MonoBehaviour {
                 transform.Translate(transform.forward * -1.5f, Space.World);
             }
     }
-    
+
+    public GameObject damageEffect;
 
     public void onHit(float damage) {
         if (!isAware)
@@ -268,6 +269,7 @@ public class AIExample : MonoBehaviour {
             lastSeenPlayerPosistion = fpsc.transform.position;
             OnAware();
         }
+        Instantiate(damageEffect, transform.position, Quaternion.identity);
 
         health -= damage;
         if(health <= 0) {
