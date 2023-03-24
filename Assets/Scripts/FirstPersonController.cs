@@ -44,7 +44,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] public float timeSurvived = 0;
         [SerializeField] public GameObject TimeSurvivedUI;
 
-        [Header("Currnecy")]
+        [Header("Currency")]
         [SerializeField] public int currency = 0;
         [SerializeField] public int currencyMultiplier = 1;
         [SerializeField] public GameObject CurrencyUI;
@@ -106,7 +106,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         // Update is called once per frame
         private void Update()
         {
-            if(currentHealth > 0){
+            if (currentHealth > 0){
                 timeSurvived += Time.deltaTime;
             }
             RotateView();
