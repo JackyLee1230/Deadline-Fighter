@@ -32,6 +32,8 @@ public class AIExample : MonoBehaviour {
     private int waypointIndex = 0;
     private Animator animator;
 
+    private Vector3 lastSeenPlayerPosistion;
+
     [SerializeField] public float AttackCooldown;
     [SerializeField] public float DamagedCooldown;
     [SerializeField] public LayerMask playerLayer;
@@ -86,6 +88,7 @@ public class AIExample : MonoBehaviour {
         else if (isAware)
         {
             if (!isAttacking) { 
+                lastSeenPlayerPosistion = fpsc.transform.position;
                 agent.SetDestination(fpsc.transform.position);
                 animator.SetBool("Aware", true);
                 if(!(AttackCooldown > 0f))
@@ -111,9 +114,20 @@ public class AIExample : MonoBehaviour {
         } else
         {
             SearchForPlayer();
-            Wander();
+            if(lastSeenPlayerPosistion != Vector3.zero){
+                if(agent.transform.position.x == lastSeenPlayerPosistion.x && agent.transform.position.z == lastSeenPlayerPosistion.z){
+                    lastSeenPlayerPosistion = Vector3.zero;
+                }
+                else{
+                    agent.speed = wanderSpeed*2f;
+                    agent.SetDestination(lastSeenPlayerPosistion);
+                }
+            }
+            else{
+                agent.speed = wanderSpeed;
+                Wander();
+            }
             animator.SetBool("Aware", false);
-            agent.speed = wanderSpeed;
             //renderer.material.color = Color.blue;
         }
 
@@ -143,6 +157,8 @@ public class AIExample : MonoBehaviour {
                 {
                     if (hit.transform.CompareTag("Player"))
                     {
+                        lastSeenPlayerPosistion = hit.point;
+
                         OnAware();
                         Debug.Log("Tracked Player");
                         AttackPlayer();
@@ -249,6 +265,7 @@ public class AIExample : MonoBehaviour {
     public void onHit(float damage) {
         if (!isAware)
         {
+            lastSeenPlayerPosistion = fpsc.transform.position;
             OnAware();
         }
 
