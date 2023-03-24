@@ -37,10 +37,7 @@ public class EnemyManager : MonoBehaviour {
         }
 
         slider.transform.LookAt(player.transform);
-        if (IsAgentOnNavMesh(GetComponent<NavMeshAgent>()))
-        {
-            GetComponent<NavMeshAgent>().destination = player.transform.position;
-        }
+        GetComponent<NavMeshAgent>().destination = player.transform.position;
         if(GetComponent<NavMeshAgent>().velocity.magnitude > 1) {
             enemyAnimator.SetBool("isRunning", true);
         } else {
@@ -48,28 +45,7 @@ public class EnemyManager : MonoBehaviour {
         }
     }
 
-    public bool IsAgentOnNavMesh(NavMeshAgent agentObject)
-    {
-        float onMeshThreshold = 3;
-        Vector3 agentPosition = agentObject.transform.position;
-        NavMeshHit hit;
-
-        // Check for nearest point on navmesh to agent, within onMeshThreshold
-        if (NavMesh.SamplePosition(agentPosition, out hit, onMeshThreshold, NavMesh.AllAreas))
-        {
-            // Check if the positions are vertically aligned
-            if (Mathf.Approximately(agentPosition.x, hit.position.x)
-                && Mathf.Approximately(agentPosition.z, hit.position.z))
-            {
-                // Lastly, check if object is below navmesh
-                return agentPosition.y >= hit.position.y;
-            }
-        }
-
-        return false;
-    }
-
-        private void OnCollisionEnter(Collision collision) {
+    private void OnCollisionEnter(Collision collision) {
         if(collision.gameObject == player) {
             playerInReach = true;
         }
