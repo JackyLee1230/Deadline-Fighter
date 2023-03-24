@@ -14,8 +14,8 @@ public class AIExample : MonoBehaviour {
     public FirstPersonController fpsc;
     public WanderType wanderType = WanderType.Random;
     public float health = 100;
-    public float wanderSpeed = 4f;
-    public float chaseSpeed = 7f;
+    public float wanderSpeed;
+    public float chaseSpeed;
     public float fov = 120f;
     public float viewDistance = 10f;
     public float wanderRadius = 7f;
@@ -39,6 +39,8 @@ public class AIExample : MonoBehaviour {
 
     public void Start()
     {
+        chaseSpeed = 6f;
+
         agent = GetComponent<NavMeshAgent>();
         renderer = GetComponent<Renderer>();
         animator = GetComponentInChildren<Animator>();
@@ -54,17 +56,16 @@ public class AIExample : MonoBehaviour {
         }
         else if (isDamage)
         {
-            if(AttackCooldown > 0f && DamagedCooldown > 0f)
+            if(AttackCooldown > 0.7f && !(DamagedCooldown > 0f))
             {
                 animator.SetTrigger("GreatDamage");
-                AttackCooldown = 1.667f;
-                DamagedCooldown = 1.667f;
+                AttackCooldown = 0.977f;
+                DamagedCooldown = 0.977f;
                 agent.speed = 0f;
             }
             else
             {
                 animator.SetTrigger("Damage");
-                AttackCooldown = 0.8f;
             }
             
 
@@ -227,20 +228,25 @@ public class AIExample : MonoBehaviour {
 
     IEnumerator AttackPlyaer(RaycastHit hitInfo)
     {
-        yield return new WaitForSeconds(0.8f);
+        yield return new WaitForSeconds(0.75f);
 
         if(!(DamagedCooldown > 0f) && !isDead)
             hitInfo.transform.GetComponent<FirstPersonController>().takeDamage(10, AttackRaycastArea.transform.position);
             // push the zombie back 20 units
-            if (Vector3.Distance(fpsc.transform.position, AttackRaycastArea.transform.position) < 3.4f)
+            if (Vector3.Distance(fpsc.transform.position, AttackRaycastArea.transform.position) < 3.4f && !(DamagedCooldown > 0f))
             {
+                Debug.Log(DamagedCooldown);
                 transform.Translate(transform.forward * -1.5f, Space.World);
             }
     }
     
 
-
     public void onHit(float damage) {
+        if (!isAware)
+        {
+            OnAware();
+        }
+
         health -= damage;
         if(health <= 0) {
             agent.speed = 0f;
