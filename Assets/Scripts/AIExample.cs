@@ -39,6 +39,9 @@ public class AIExample : MonoBehaviour {
 
     public void Start()
     {
+        chaseSpeed = 6f;
+        wanderSpeed = 1.25f;
+
         agent = GetComponent<NavMeshAgent>();
         renderer = GetComponent<Renderer>();
         animator = GetComponentInChildren<Animator>();
@@ -48,9 +51,13 @@ public class AIExample : MonoBehaviour {
     public void Update()
     {
 
-        if (isDead)
+        if (isDead && AttackCooldown > 0f)
         {
-            animator.SetBool("Dead", true);
+            animator.SetBool("Dead1", true);
+        }
+        else if (isDead)
+        {
+            animator.SetBool("Dead2", true);
         }
         else if (isDamage)
         {
@@ -105,7 +112,7 @@ public class AIExample : MonoBehaviour {
 
         // if attack cooldown is greater than 0, reduce it by 1 every second
         if (AttackCooldown > 0f && !(DamagedCooldown > 0f) && !isDead){
-            agent.speed = wanderSpeed;
+            agent.speed = 5.5f;
             AttackCooldown -= Time.deltaTime;
         }
 
@@ -187,7 +194,7 @@ public class AIExample : MonoBehaviour {
         // if (AttackCooldown <= 0){
         if(AttackCooldown <= 0f){
             RaycastHit hitInfo;
-            if (Physics.Raycast(AttackRaycastArea.transform.position, AttackRaycastArea.transform.forward, out hitInfo, 2.4f)){
+            if (Physics.Raycast(AttackRaycastArea.transform.position, AttackRaycastArea.transform.forward, out hitInfo, 2.0f)){
                 isAttacking = true;
                 if (hitInfo.transform.CompareTag("Player")){
                     StartCoroutine(AttackPlyaer(hitInfo));
