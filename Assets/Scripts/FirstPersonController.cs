@@ -83,6 +83,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private bool m_Jumping;
         private AudioSource m_AudioSource;
 
+        public GameObject damageEffect;
+
         // Use this for initialization
         private void Start()
         {
@@ -176,6 +178,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
                   
                   if (Physics.Raycast(ray, out hit)) {
                       if (hit.transform.name == "Zombie" ){
+                        Instantiate (damageEffect, hit.point, Quaternion.identity);
+
                         hit.transform.GetComponent<AIExample>().onHit(25);
                         
                     }
@@ -328,7 +332,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             UpdateCameraPosition(speed);
             // check if pauseMenu is active
             if (pauseMenu.activeSelf == false){
-                //m_MouseLook.UpdateCursorLock();
+                m_MouseLook.UpdateCursorLock();
             }
             // m_MouseLook.UpdateCursorLock();
         }
