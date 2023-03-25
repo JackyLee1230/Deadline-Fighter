@@ -13,13 +13,14 @@ public class AIExample : MonoBehaviour {
 
     public FirstPersonController fpsc;
     public WanderType wanderType = WanderType.Random;
-    public float health = 100;
-    public float wanderSpeed;
-    public float chaseSpeed;
-    public float fov = 120f;
-    public float viewDistance = 10f;
-    public float wanderRadius = 7f;
-    public float attackRadius = 0.5f;
+    [SerializeField] public float health;
+    [SerializeField] public float wanderSpeed;
+    [SerializeField] public float chaseSpeed;
+    [SerializeField] public float fov;
+    [SerializeField] public float viewDistance;
+    [SerializeField] public float chaseDistance;
+    [SerializeField] public float wanderRadius;
+    [SerializeField] public float attackRadius;
     public Transform[] waypoints; //Array of waypoints is only used when waypoint wandering is selected
 
     [SerializeField] private bool isAware = false;
@@ -41,9 +42,6 @@ public class AIExample : MonoBehaviour {
 
     public void Start()
     {
-        chaseSpeed = 6f;
-        wanderSpeed = 1.25f;
-
         agent = GetComponent<NavMeshAgent>();
         renderer = GetComponent<Renderer>();
         animator = GetComponentInChildren<Animator>();
@@ -68,7 +66,7 @@ public class AIExample : MonoBehaviour {
                 animator.SetTrigger("GreatDamage");
                 AttackCooldown = 0.977f;
                 DamagedCooldown = 0.977f;
-                agent.speed = 0f;
+                transform.Translate(transform.forward * -0.5f, Space.World);
             }
             else
             {
@@ -81,8 +79,6 @@ public class AIExample : MonoBehaviour {
         else if (isAttacking)
         {
             animator.SetTrigger("Attack");
-            agent.speed = wanderSpeed;
-
             isAttacking = false;
         }
         else if (isAware)
@@ -97,7 +93,7 @@ public class AIExample : MonoBehaviour {
                 //renderer.material.color = Color.red;
             }
 
-            if(Vector3.Distance(fpsc.transform.position, AttackRaycastArea.transform.position) > 17){
+            if(Vector3.Distance(fpsc.transform.position, AttackRaycastArea.transform.position) > chaseDistance){
                 if (Vector3.Angle(Vector3.forward, transform.InverseTransformPoint(fpsc.transform.position)) < fov / 2f){
                     RaycastHit hit;
                     if (Physics.Linecast(transform.position, fpsc.transform.position, out hit, -1)){
@@ -131,10 +127,9 @@ public class AIExample : MonoBehaviour {
             //renderer.material.color = Color.blue;
         }
 
-
         // if attack cooldown is greater than 0, reduce it by 1 every second
         if (AttackCooldown > 0f && !(DamagedCooldown > 0f) && !isDead){
-            agent.speed = 5.5f;
+            agent.speed = chaseSpeed*0.55f;
             AttackCooldown -= Time.deltaTime;
         }
 
@@ -218,7 +213,7 @@ public class AIExample : MonoBehaviour {
         // if (AttackCooldown <= 0){
         if(AttackCooldown <= 0f){
             RaycastHit hitInfo;
-            if (Physics.Raycast(AttackRaycastArea.transform.position, AttackRaycastArea.transform.forward, out hitInfo, 2.0f)){
+            if (Physics.Raycast(AttackRaycastArea.transform.position, AttackRaycastArea.transform.forward, out hitInfo, attackRadius)){
                 isAttacking = true;
                 if (hitInfo.transform.CompareTag("Player")){
                     StartCoroutine(AttackPlyaer(hitInfo));
@@ -256,7 +251,6 @@ public class AIExample : MonoBehaviour {
             // push the zombie back 20 units
             if (Vector3.Distance(fpsc.transform.position, AttackRaycastArea.transform.position) < 3.4f && !(DamagedCooldown > 0f))
             {
-                Debug.Log(DamagedCooldown);
                 transform.Translate(transform.forward * -1.5f, Space.World);
             }
     }
