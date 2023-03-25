@@ -86,6 +86,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         // Use this for initialization
         private void Start()
         {
+            Application.targetFrameRate = 144;
             m_CharacterController = GetComponent<CharacterController>();
             m_Camera = Camera.main;
             m_OriginalCameraPosition = m_Camera.transform.localPosition;
@@ -231,18 +232,16 @@ namespace UnityStandardAssets.Characters.FirstPerson
         }
 
         void onShoot() {
-
-        RaycastHit hit;
-
-        if(Physics.Raycast(playerCam.transform.position, transform.forward, out hit, 100f)){
-            Debug.Log("hit");
-            enemyManager = hit.transform.GetComponent<AIExample>();
-            if(enemyManager != null) {
-                enemyManager.onHit(20);
+            RaycastHit hit; 
+            if(Physics.Raycast(playerCam.transform.position, transform.forward, out hit, 100f)){
+                Debug.Log("hit");
+                enemyManager = hit.transform.GetComponent<AIExample>();
+                if(enemyManager != null) {
+                    enemyManager.onHit(20);
+                }
             }
-        }
 
-    }
+        }
 
         public void playerDie(){
             // kill player
@@ -308,6 +307,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             if (m_CharacterController.isGrounded)
             {
+                // add collision checking for hitting something above
                 m_MoveDir.y = -m_StickToGroundForce;
 
                 if (m_Jump)
@@ -328,7 +328,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             UpdateCameraPosition(speed);
             // check if pauseMenu is active
             if (pauseMenu.activeSelf == false){
-                //m_MouseLook.UpdateCursorLock();
+                // m_MouseLook.UpdateCursorLock();
             }
             // m_MouseLook.UpdateCursorLock();
         }
@@ -387,7 +387,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             if (m_CharacterController.velocity.magnitude > 0 && m_CharacterController.isGrounded)
             {
                 m_Camera.transform.localPosition =
-                    m_HeadBob.DoHeadBob(m_CharacterController.velocity.magnitude +
+                    m_HeadBob.DoHeadBob(m_CharacterController.velocity.magnitude * 0.3f +
                                       (speed*(m_IsWalking ? 1f : m_RunstepLenghten)));
                 newCameraPosition = m_Camera.transform.localPosition;
                 newCameraPosition.y = m_Camera.transform.localPosition.y - m_JumpBob.Offset();
