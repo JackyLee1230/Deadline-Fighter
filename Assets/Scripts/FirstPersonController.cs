@@ -85,6 +85,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         public GameObject damageEffect;
         public GameObject damageHeadEffect;
+        public GameObject bulletHole;
+
 
         // Use this for initialization
         private void Start()
@@ -175,11 +177,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
 
             if (Input.GetMouseButtonDown(0)) {
-                 RaycastHit  hit;
-                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                  
-                  if (Physics.Raycast(ray, out hit)) {
-                      if (hit.transform.name == "Zombie" ){
+                RaycastHit  hit;
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                
+                if (Physics.Raycast(ray, out hit)) {
+                    if (hit.transform.name == "Zombie" ){
                         Debug.Log(hit.collider.GetType());
 
                         if(hit.collider.GetType() == typeof(SphereCollider)){
@@ -190,7 +192,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
                             hit.transform.GetComponent<AIExample>().onHit(25);
                         }
                     }
-                  }
+                    else{
+                        Instantiate(bulletHole, hit.point + hit.normal * 0.0001f, Quaternion.LookRotation(hit.normal));
+                        bulletHole.transform.up = hit.normal;
+                    }
+                }
               }
         
 
