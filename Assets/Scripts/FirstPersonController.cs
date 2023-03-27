@@ -84,6 +84,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private AudioSource m_AudioSource;
 
         public GameObject damageEffect;
+        public GameObject damageHeadEffect;
 
         // Use this for initialization
         private void Start()
@@ -179,10 +180,15 @@ namespace UnityStandardAssets.Characters.FirstPerson
                   
                   if (Physics.Raycast(ray, out hit)) {
                       if (hit.transform.name == "Zombie" ){
-                        Instantiate (damageEffect, hit.point, Quaternion.identity);
+                        Debug.Log(hit.collider.GetType());
 
-                        hit.transform.GetComponent<AIExample>().onHit(25);
-                        
+                        if(hit.collider.GetType() == typeof(SphereCollider)){
+                            Instantiate (damageHeadEffect, hit.point, Quaternion.identity);
+                            hit.transform.GetComponent<AIExample>().onHit(25*4);
+                        } else {
+                            Instantiate (damageEffect, hit.point, Quaternion.identity);
+                            hit.transform.GetComponent<AIExample>().onHit(25);
+                        }
                     }
                   }
               }
@@ -238,7 +244,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
         void onShoot() {
             RaycastHit hit; 
             if(Physics.Raycast(playerCam.transform.position, transform.forward, out hit, 100f)){
-                Debug.Log("hit");
                 enemyManager = hit.transform.GetComponent<AIExample>();
                 if(enemyManager != null) {
                     enemyManager.onHit(20);
