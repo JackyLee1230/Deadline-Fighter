@@ -13,28 +13,43 @@ public class AIExample : MonoBehaviour {
 
     public FirstPersonController fpsc;
     public WanderType wanderType = WanderType.Random;
-    public float health = 100;
-    public float wanderSpeed = 4f;
-    public float chaseSpeed = 7f;
-    public float fov = 120f;
-    public float viewDistance = 10f;
-    public float wanderRadius = 7f;
-    public float attackRadius = 0.5f;
+    [SerializeField] public float health;
+    [SerializeField] public float wanderSpeed;
+    [SerializeField] public float chaseSpeed;
+    [SerializeField] public float fov;
+    [SerializeField] public float viewDistance;
+    [SerializeField] public float chaseDistance;
+    [SerializeField] public float wanderRadius;
+    [SerializeField] public float attackRadius;
     public Transform[] waypoints; //Array of waypoints is only used when waypoint wandering is selected
 
+    [SerializeField] private float detectDistance;
     [SerializeField] private bool isAware = false;
     [SerializeField] private bool isAttacking = false;
     [SerializeField] private bool isDamage = false;
-    [SerializeField] private bool isDead = false;
+    [SerializeField] public bool isDead = false;
     private Vector3 wanderPoint;
     private NavMeshAgent agent;
     private Renderer renderer;
     private int waypointIndex = 0;
     private Animator animator;
 
+    private Vector3 lastSeenPlayerPosition;
+
     [SerializeField] public float AttackCooldown;
+    [SerializeField] public float DamagedCooldown;
     [SerializeField] public LayerMask playerLayer;
+
+    private int isPlayerStealth;
     
+    // audio
+    [SerializeField] public AudioClip zombieIdle;
+    [SerializeField] public AudioClip zombieChase;
+    [SerializeField] public AudioClip zombieDamage;
+    [SerializeField] public AudioClip zombieAttack;
+    [SerializeField] public AudioClip zombieDie;
+    [SerializeField] public AudioClip zombieNotice;
+
 
     public void Start()
     {
@@ -46,31 +61,45 @@ public class AIExample : MonoBehaviour {
     }
     public void Update()
     {
-
-        if (isDead)
+        isPlayerStealth = fpsc.GetPlayerStealthProfile();
+        if (isDead && AttackCooldown > 0f)
         {
-            animator.SetBool("Dead", true);
+            AudioSource.PlayClipAtPoint(zombieDie, transform.position, 0.5f);
+            animator.SetBool("Dead1", true);
+        }
+        else if (isDead)
+        {
+            AudioSource.PlayClipAtPoint(zombieDie, transform.position, 0.5f);
+            animator.SetBool("Dead2", true);
         }
         else if (isDamage)
         {
-            AttackCooldown = 1.667f;
-            agent.speed = 0.8f;
-            animator.SetTrigger("Damage");
-
-            transform.position += transform.forward * -1f;
+            AudioSource.PlayClipAtPoint(zombieDamage, transform.position, 0.5f);
+            if (AttackCooldown > 0.7f && !(DamagedCooldown > 0f))
+            {
+                animator.SetTrigger("GreatDamage");
+                AttackCooldown = 0.977f;
+                DamagedCooldown = 0.977f;
+                transform.Translate(transform.forward * -0.5f, Space.World);
+            }
+            else
+            {
+                animator.SetTrigger("Damage");
+            }
+            
 
             isDamage = false;
         }
         else if (isAttacking)
         {
+            AudioSource.PlayClipAtPoint(zombieAttack, transform.position, 0.5f);
             animator.SetTrigger("Attack");
-            agent.speed = 0.8f;
-
             isAttacking = false;
         }
         else if (isAware)
         {
             if (!isAttacking) { 
+                lastSeenPlayerPosition = fpsc.transform.position;
                 agent.SetDestination(fpsc.transform.position);
                 animator.SetBool("Aware", true);
                 if(!(AttackCooldown > 0f))
@@ -78,47 +107,71 @@ public class AIExample : MonoBehaviour {
                 AttackPlayer();
                 //renderer.material.color = Color.red;
             }
-            Debug.Log(Vector3.Distance(fpsc.transform.position, AttackRaycastArea.transform.position));
 
-            // if(Vector3.Distance(fpsc.transform.position, AttackRaycastArea.transform.position) > 20){
-            //     if (Vector3.Angle(Vector3.forward, transform.InverseTransformPoint(fpsc.transform.position)) > fov / 2f){
-            //         RaycastHit hit;
-            //         if (!Physics.Linecast(transform.position, fpsc.transform.position, out hit, -1)){
-            //             if (!hit.transform.CompareTag("Player")){
-            //                 isAware = false;
-            //             }
-            //         }
-            //     }
-            // }
+            if(Vector3.Distance(fpsc.transform.position, AttackRaycastArea.transform.position) > chaseDistance){
+                if (Vector3.Angle(Vector3.forward, transform.InverseTransformPoint(fpsc.transform.position)) < fov / 2f){
+                    RaycastHit hit;
+                    if (Physics.Linecast(transform.position, fpsc.transform.position, out hit, -1)){
+                        if (!hit.transform.CompareTag("Player")){
+                            isAware = false;
+                        }
+                    }
+                    else
+                    {
+                        isAware = false;
+                    }
+                }
+            }
         } else
         {
             SearchForPlayer();
-            Wander();
+            if(lastSeenPlayerPosition != Vector3.zero){
+                if(agent.transform.position.x == lastSeenPlayerPosition.x && agent.transform.position.z == lastSeenPlayerPosition.z){
+                    lastSeenPlayerPosition = Vector3.zero;
+                }
+                else{
+                    agent.speed = wanderSpeed*2f;
+                    agent.SetDestination(lastSeenPlayerPosition);
+                }
+            }
+            else{
+                agent.speed = wanderSpeed;
+                Wander();
+            }
             animator.SetBool("Aware", false);
-            agent.speed = wanderSpeed;
             //renderer.material.color = Color.blue;
         }
 
-
         // if attack cooldown is greater than 0, reduce it by 1 every second
-        if (AttackCooldown > 0f){
-            agent.speed = 0.8f;
+        if (AttackCooldown > 0f && !(DamagedCooldown > 0f) && !isDead){
+            agent.speed = chaseSpeed*0.55f;
             AttackCooldown -= Time.deltaTime;
         }
-        
+
+        // if attack cooldown is greater than 0, reduce it by 1 every second
+        else if (DamagedCooldown > 0f && !isDead)
+        {
+            agent.speed = 0f;
+            DamagedCooldown -= Time.deltaTime;
+        }
     }
 
     public void SearchForPlayer()
     {
+        float modifiedViewDistance = isPlayerStealth == 2 ? viewDistance*2.5f : isPlayerStealth == 1 ? viewDistance/1.5f : viewDistance;
+        float modifiedDetectDistance = isPlayerStealth == 2 ? detectDistance*3.5f : isPlayerStealth == 1 ? detectDistance/3f : detectDistance;
+
         if (Vector3.Angle(Vector3.forward, transform.InverseTransformPoint(fpsc.transform.position)) < fov / 2f)
         {
-            if (Vector3.Distance(fpsc.transform.position, transform.position) < viewDistance)
+            if (Vector3.Distance(fpsc.transform.position, transform.position) < modifiedViewDistance)
             {
                 RaycastHit hit;
                 if (Physics.Linecast(transform.position, fpsc.transform.position, out hit, -1))
                 {
                     if (hit.transform.CompareTag("Player"))
                     {
+                        lastSeenPlayerPosition = hit.point;
+
                         OnAware();
                         Debug.Log("Tracked Player");
                         AttackPlayer();
@@ -126,16 +179,23 @@ public class AIExample : MonoBehaviour {
                 }
             }
         }
+        else if ((Vector3.Distance(fpsc.transform.position, transform.position) < modifiedDetectDistance)) {
+            OnAware();
+            // TODO: ADD some zombie notice sound effect
+            AudioSource.PlayClipAtPoint(zombieNotice, transform.position, 0.5f);
+        }
     }
 
     public void OnAware()
     {
+        AudioSource.PlayClipAtPoint(zombieChase, transform.position, 0.5f);
         isAware = true;
     }
 
 
     public void Wander()
     {
+        AudioSource.PlayClipAtPoint(zombieIdle, transform.position, 0.5f);
         if (wanderType == WanderType.Random)
         {
             if (Vector3.Distance(transform.position, wanderPoint) < 2f)
@@ -178,12 +238,13 @@ public class AIExample : MonoBehaviour {
         // if (AttackCooldown <= 0){
         if(AttackCooldown <= 0f){
             RaycastHit hitInfo;
-            if (Physics.Raycast(AttackRaycastArea.transform.position, AttackRaycastArea.transform.forward, out hitInfo, 2)){
+            if (Physics.Raycast(AttackRaycastArea.transform.position, AttackRaycastArea.transform.forward, out hitInfo, attackRadius)){
                 isAttacking = true;
+                AudioSource.PlayClipAtPoint(zombieAttack, transform.position, 0.5f);
                 if (hitInfo.transform.CompareTag("Player")){
-                    StartCoroutine(AttackPlyaer(hitInfo));
+                    StartCoroutine(DelayAttackPlayer(hitInfo));
                     Debug.Log("Zombie Hitting Player"); 
-                    AttackCooldown = 2.1f;
+                    AttackCooldown = 1.4f;
                 }
             }
 
@@ -207,17 +268,26 @@ public class AIExample : MonoBehaviour {
         Destroy(GetComponent<NavMeshAgent>());
     }
 
-    IEnumerator AttackPlyaer(RaycastHit hitInfo)
+    IEnumerator DelayAttackPlayer(RaycastHit hitInfo)
     {
-        yield return new WaitForSeconds(0.7f);
-            hitInfo.transform.GetComponent<FirstPersonController>().takeDamage(10, AttackRaycastArea.transform.position);     
-            // push the zombie back 20 units
-            transform.Translate(transform.forward * -1.5f, Space.World);
-    }
-    
+        yield return new WaitForSeconds(0.75f);
 
+        if(!(DamagedCooldown > 0f) && !isDead)
+            hitInfo.transform.GetComponent<FirstPersonController>().takeDamage(10, AttackRaycastArea.transform.position, Vector3.Angle(Vector3.forward, transform.InverseTransformPoint(fpsc.transform.position)) < fov / 2f);
+            // push the zombie back 20 units
+            if (Vector3.Distance(fpsc.transform.position, AttackRaycastArea.transform.position) < 3.4f && !(DamagedCooldown > 0f) && Vector3.Angle(Vector3.forward, transform.InverseTransformPoint(fpsc.transform.position)) < fov / 2f)
+            {
+                transform.Translate(transform.forward * -1.5f, Space.World);
+            }
+    }
 
     public void onHit(float damage) {
+        if (!isAware)
+        {
+            lastSeenPlayerPosition = fpsc.transform.position;
+            OnAware();
+        }
+
         health -= damage;
         if(health <= 0) {
             agent.speed = 0f;
@@ -225,6 +295,7 @@ public class AIExample : MonoBehaviour {
 
             Destroy(GetComponent<EnemyManager>());
             Destroy(GetComponent<CapsuleCollider>());
+            Destroy(GetComponent<SphereCollider>());
             fpsc.addScore(50);
             Debug.Log(fpsc.score);
             StartCoroutine(RemoveGameObject());

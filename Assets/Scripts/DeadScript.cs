@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityStandardAssets.Characters.FirstPerson;
+using TMPro;
+ 
 
 public class DeadScript : MonoBehaviour
 {
@@ -12,11 +14,14 @@ public class DeadScript : MonoBehaviour
     [SerializeField] public GameObject deadMenuUI;
     [SerializeField] public FirstPersonController fpsc;
 
+    [SerializeField] public TextMeshProUGUI scoreUI;
+
 
     // Start is called before the first frame update
     void Start()
     {
         deadMenuUI.SetActive(false);
+        scoreUI = deadMenuUI.transform.Find("DeadMenu").Find("Score").GetComponent<TextMeshProUGUI>();
     }
 
     // Update is called once per frame
@@ -35,6 +40,7 @@ public class DeadScript : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         isEnded = true;
         fpsc.enabled = false;
+        scoreUI.text = "Score: " + fpsc.score;
     }
 
     public void MainMenu(){

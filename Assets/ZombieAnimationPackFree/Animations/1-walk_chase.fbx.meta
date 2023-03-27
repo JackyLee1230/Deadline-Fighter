@@ -1,290 +1,848 @@
 fileFormatVersion: 2
 guid: 4427ff7ccdf204f49860d80928896422
 ModelImporter:
-  serializedVersion: 23
-  fileIDToRecycleName:
-    100000: //RootNode
-    100002: Chest
-    100004: Head
-    100006: Hips
-    100008: Jaw
-    100010: LeftEye
-    100012: LeftFoot
-    100014: LeftHand
-    100016: LeftIndexDistal
-    100018: LeftIndexIntermediate
-    100020: LeftIndexProximal
-    100022: LeftLittleDistal
-    100024: LeftLittleIntermediate
-    100026: LeftLittleProximal
-    100028: LeftLowerArm
-    100030: LeftLowerLeg
-    100032: LeftMiddleDistal
-    100034: LeftMiddleIntermediate
-    100036: LeftMiddleProximal
-    100038: LeftRingDistal
-    100040: LeftRingIntermediate
-    100042: LeftRingProximal
-    100044: LeftShoulder
-    100046: LeftThumbDistal
-    100048: LeftThumbIntermediate
-    100050: LeftThumbProximal
-    100052: LeftToes
-    100054: LeftUpperArm
-    100056: LeftUpperLeg
-    100058: Neck
-    100060: RightEye
-    100062: RightFoot
-    100064: RightHand
-    100066: RightIndexDistal
-    100068: RightIndexIntermediate
-    100070: RightIndexProximal
-    100072: RightLittleDistal
-    100074: RightLittleIntermediate
-    100076: RightLittleProximal
-    100078: RightLowerArm
-    100080: RightLowerLeg
-    100082: RightMiddleDistal
-    100084: RightMiddleIntermediate
-    100086: RightMiddleProximal
-    100088: RightRingDistal
-    100090: RightRingIntermediate
-    100092: RightRingProximal
-    100094: RightShoulder
-    100096: RightThumbDistal
-    100098: RightThumbIntermediate
-    100100: RightThumbProximal
-    100102: RightToes
-    100104: RightUpperArm
-    100106: RightUpperLeg
-    100108: Root
-    100110: Spine
-    100112: UpperChest
-    100114: Zombie_Ctrl:ChestEndEffector 1
-    100116: Zombie_Ctrl:ChestOriginEffector 1
-    100118: Zombie_Ctrl:Head 1
-    100120: Zombie_Ctrl:HeadEffector 1
-    100122: Zombie_Ctrl:Hips 1
-    100124: Zombie_Ctrl:HipsEffector 1
-    100126: Zombie_Ctrl:LeftAnkleEffector 1
-    100128: Zombie_Ctrl:LeftArm 1
-    100130: Zombie_Ctrl:LeftElbowEffector 1
-    100132: Zombie_Ctrl:LeftFoot 1
-    100134: Zombie_Ctrl:LeftFootIndex1
-    100136: Zombie_Ctrl:LeftFootIndexEffector
-    100138: Zombie_Ctrl:LeftForeArm 1
-    100140: Zombie_Ctrl:LeftHand 1
-    100142: Zombie_Ctrl:LeftHandIndex5
-    100144: Zombie_Ctrl:LeftHandIndex6
-    100146: Zombie_Ctrl:LeftHandIndex7
-    100148: Zombie_Ctrl:LeftHandIndexEffector 1
-    100150: Zombie_Ctrl:LeftHandMiddle5
-    100152: Zombie_Ctrl:LeftHandMiddle6
-    100154: Zombie_Ctrl:LeftHandMiddle7
-    100156: Zombie_Ctrl:LeftHandMiddleEffector 1
-    100158: Zombie_Ctrl:LeftHandPinky5
-    100160: Zombie_Ctrl:LeftHandPinky6
-    100162: Zombie_Ctrl:LeftHandPinky7
-    100164: Zombie_Ctrl:LeftHandPinkyEffector 1
-    100166: Zombie_Ctrl:LeftHandRing5
-    100168: Zombie_Ctrl:LeftHandRing6
-    100170: Zombie_Ctrl:LeftHandRing7
-    100172: Zombie_Ctrl:LeftHandRingEffector 1
-    100174: Zombie_Ctrl:LeftHandThumb5
-    100176: Zombie_Ctrl:LeftHandThumb6
-    100178: Zombie_Ctrl:LeftHandThumb7
-    100180: Zombie_Ctrl:LeftHandThumbEffector 1
-    100182: Zombie_Ctrl:LeftHipEffector 1
-    100184: Zombie_Ctrl:LeftKneeEffector 1
-    100186: Zombie_Ctrl:LeftLeg 1
-    100188: Zombie_Ctrl:LeftShoulder 1
-    100190: Zombie_Ctrl:LeftShoulderEffector 1
-    100192: Zombie_Ctrl:LeftUpLeg 1
-    100194: Zombie_Ctrl:LeftWristEffector 1
-    100196: Zombie_Ctrl:Neck 1
-    100198: Zombie_Ctrl:Reference 1
-    100200: Zombie_Ctrl:RightAnkleEffector 1
-    100202: Zombie_Ctrl:RightArm 1
-    100204: Zombie_Ctrl:RightElbowEffector 1
-    100206: Zombie_Ctrl:RightFoot 1
-    100208: Zombie_Ctrl:RightFootIndex1
-    100210: Zombie_Ctrl:RightFootIndexEffector
-    100212: Zombie_Ctrl:RightForeArm 1
-    100214: Zombie_Ctrl:RightHand 1
-    100216: Zombie_Ctrl:RightHandIndex5
-    100218: Zombie_Ctrl:RightHandIndex6
-    100220: Zombie_Ctrl:RightHandIndex7
-    100222: Zombie_Ctrl:RightHandIndexEffector 1
-    100224: Zombie_Ctrl:RightHandMiddle5
-    100226: Zombie_Ctrl:RightHandMiddle6
-    100228: Zombie_Ctrl:RightHandMiddle7
-    100230: Zombie_Ctrl:RightHandMiddleEffector 1
-    100232: Zombie_Ctrl:RightHandPinky5
-    100234: Zombie_Ctrl:RightHandPinky6
-    100236: Zombie_Ctrl:RightHandPinky7
-    100238: Zombie_Ctrl:RightHandPinkyEffector 1
-    100240: Zombie_Ctrl:RightHandRing5
-    100242: Zombie_Ctrl:RightHandRing6
-    100244: Zombie_Ctrl:RightHandRing7
-    100246: Zombie_Ctrl:RightHandRingEffector 1
-    100248: Zombie_Ctrl:RightHandThumb5
-    100250: Zombie_Ctrl:RightHandThumb6
-    100252: Zombie_Ctrl:RightHandThumb7
-    100254: Zombie_Ctrl:RightHandThumbEffector 1
-    100256: Zombie_Ctrl:RightHipEffector 1
-    100258: Zombie_Ctrl:RightKneeEffector 1
-    100260: Zombie_Ctrl:RightLeg 1
-    100262: Zombie_Ctrl:RightShoulder 1
-    100264: Zombie_Ctrl:RightShoulderEffector 1
-    100266: Zombie_Ctrl:RightUpLeg 1
-    100268: Zombie_Ctrl:RightWristEffector 1
-    100270: Zombie_Ctrl:Spine 1
-    100272: Zombie_Ctrl:Spine3
-    100274: Zombie_Ctrl:Spine4
-    400000: //RootNode
-    400002: Chest
-    400004: Head
-    400006: Hips
-    400008: Jaw
-    400010: LeftEye
-    400012: LeftFoot
-    400014: LeftHand
-    400016: LeftIndexDistal
-    400018: LeftIndexIntermediate
-    400020: LeftIndexProximal
-    400022: LeftLittleDistal
-    400024: LeftLittleIntermediate
-    400026: LeftLittleProximal
-    400028: LeftLowerArm
-    400030: LeftLowerLeg
-    400032: LeftMiddleDistal
-    400034: LeftMiddleIntermediate
-    400036: LeftMiddleProximal
-    400038: LeftRingDistal
-    400040: LeftRingIntermediate
-    400042: LeftRingProximal
-    400044: LeftShoulder
-    400046: LeftThumbDistal
-    400048: LeftThumbIntermediate
-    400050: LeftThumbProximal
-    400052: LeftToes
-    400054: LeftUpperArm
-    400056: LeftUpperLeg
-    400058: Neck
-    400060: RightEye
-    400062: RightFoot
-    400064: RightHand
-    400066: RightIndexDistal
-    400068: RightIndexIntermediate
-    400070: RightIndexProximal
-    400072: RightLittleDistal
-    400074: RightLittleIntermediate
-    400076: RightLittleProximal
-    400078: RightLowerArm
-    400080: RightLowerLeg
-    400082: RightMiddleDistal
-    400084: RightMiddleIntermediate
-    400086: RightMiddleProximal
-    400088: RightRingDistal
-    400090: RightRingIntermediate
-    400092: RightRingProximal
-    400094: RightShoulder
-    400096: RightThumbDistal
-    400098: RightThumbIntermediate
-    400100: RightThumbProximal
-    400102: RightToes
-    400104: RightUpperArm
-    400106: RightUpperLeg
-    400108: Root
-    400110: Spine
-    400112: UpperChest
-    400114: Zombie_Ctrl:ChestEndEffector 1
-    400116: Zombie_Ctrl:ChestOriginEffector 1
-    400118: Zombie_Ctrl:Head 1
-    400120: Zombie_Ctrl:HeadEffector 1
-    400122: Zombie_Ctrl:Hips 1
-    400124: Zombie_Ctrl:HipsEffector 1
-    400126: Zombie_Ctrl:LeftAnkleEffector 1
-    400128: Zombie_Ctrl:LeftArm 1
-    400130: Zombie_Ctrl:LeftElbowEffector 1
-    400132: Zombie_Ctrl:LeftFoot 1
-    400134: Zombie_Ctrl:LeftFootIndex1
-    400136: Zombie_Ctrl:LeftFootIndexEffector
-    400138: Zombie_Ctrl:LeftForeArm 1
-    400140: Zombie_Ctrl:LeftHand 1
-    400142: Zombie_Ctrl:LeftHandIndex5
-    400144: Zombie_Ctrl:LeftHandIndex6
-    400146: Zombie_Ctrl:LeftHandIndex7
-    400148: Zombie_Ctrl:LeftHandIndexEffector 1
-    400150: Zombie_Ctrl:LeftHandMiddle5
-    400152: Zombie_Ctrl:LeftHandMiddle6
-    400154: Zombie_Ctrl:LeftHandMiddle7
-    400156: Zombie_Ctrl:LeftHandMiddleEffector 1
-    400158: Zombie_Ctrl:LeftHandPinky5
-    400160: Zombie_Ctrl:LeftHandPinky6
-    400162: Zombie_Ctrl:LeftHandPinky7
-    400164: Zombie_Ctrl:LeftHandPinkyEffector 1
-    400166: Zombie_Ctrl:LeftHandRing5
-    400168: Zombie_Ctrl:LeftHandRing6
-    400170: Zombie_Ctrl:LeftHandRing7
-    400172: Zombie_Ctrl:LeftHandRingEffector 1
-    400174: Zombie_Ctrl:LeftHandThumb5
-    400176: Zombie_Ctrl:LeftHandThumb6
-    400178: Zombie_Ctrl:LeftHandThumb7
-    400180: Zombie_Ctrl:LeftHandThumbEffector 1
-    400182: Zombie_Ctrl:LeftHipEffector 1
-    400184: Zombie_Ctrl:LeftKneeEffector 1
-    400186: Zombie_Ctrl:LeftLeg 1
-    400188: Zombie_Ctrl:LeftShoulder 1
-    400190: Zombie_Ctrl:LeftShoulderEffector 1
-    400192: Zombie_Ctrl:LeftUpLeg 1
-    400194: Zombie_Ctrl:LeftWristEffector 1
-    400196: Zombie_Ctrl:Neck 1
-    400198: Zombie_Ctrl:Reference 1
-    400200: Zombie_Ctrl:RightAnkleEffector 1
-    400202: Zombie_Ctrl:RightArm 1
-    400204: Zombie_Ctrl:RightElbowEffector 1
-    400206: Zombie_Ctrl:RightFoot 1
-    400208: Zombie_Ctrl:RightFootIndex1
-    400210: Zombie_Ctrl:RightFootIndexEffector
-    400212: Zombie_Ctrl:RightForeArm 1
-    400214: Zombie_Ctrl:RightHand 1
-    400216: Zombie_Ctrl:RightHandIndex5
-    400218: Zombie_Ctrl:RightHandIndex6
-    400220: Zombie_Ctrl:RightHandIndex7
-    400222: Zombie_Ctrl:RightHandIndexEffector 1
-    400224: Zombie_Ctrl:RightHandMiddle5
-    400226: Zombie_Ctrl:RightHandMiddle6
-    400228: Zombie_Ctrl:RightHandMiddle7
-    400230: Zombie_Ctrl:RightHandMiddleEffector 1
-    400232: Zombie_Ctrl:RightHandPinky5
-    400234: Zombie_Ctrl:RightHandPinky6
-    400236: Zombie_Ctrl:RightHandPinky7
-    400238: Zombie_Ctrl:RightHandPinkyEffector 1
-    400240: Zombie_Ctrl:RightHandRing5
-    400242: Zombie_Ctrl:RightHandRing6
-    400244: Zombie_Ctrl:RightHandRing7
-    400246: Zombie_Ctrl:RightHandRingEffector 1
-    400248: Zombie_Ctrl:RightHandThumb5
-    400250: Zombie_Ctrl:RightHandThumb6
-    400252: Zombie_Ctrl:RightHandThumb7
-    400254: Zombie_Ctrl:RightHandThumbEffector 1
-    400256: Zombie_Ctrl:RightHipEffector 1
-    400258: Zombie_Ctrl:RightKneeEffector 1
-    400260: Zombie_Ctrl:RightLeg 1
-    400262: Zombie_Ctrl:RightShoulder 1
-    400264: Zombie_Ctrl:RightShoulderEffector 1
-    400266: Zombie_Ctrl:RightUpLeg 1
-    400268: Zombie_Ctrl:RightWristEffector 1
-    400270: Zombie_Ctrl:Spine 1
-    400272: Zombie_Ctrl:Spine3
-    400274: Zombie_Ctrl:Spine4
-    7400000: 1-walk_chase
-    9500000: //RootNode
-    2186277476908879412: ImportLogs
+  serializedVersion: 21300
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: //RootNode
+  - first:
+      1: 100002
+    second: Chest
+  - first:
+      1: 100004
+    second: Head
+  - first:
+      1: 100006
+    second: Hips
+  - first:
+      1: 100008
+    second: Jaw
+  - first:
+      1: 100010
+    second: LeftEye
+  - first:
+      1: 100012
+    second: LeftFoot
+  - first:
+      1: 100014
+    second: LeftHand
+  - first:
+      1: 100016
+    second: LeftIndexDistal
+  - first:
+      1: 100018
+    second: LeftIndexIntermediate
+  - first:
+      1: 100020
+    second: LeftIndexProximal
+  - first:
+      1: 100022
+    second: LeftLittleDistal
+  - first:
+      1: 100024
+    second: LeftLittleIntermediate
+  - first:
+      1: 100026
+    second: LeftLittleProximal
+  - first:
+      1: 100028
+    second: LeftLowerArm
+  - first:
+      1: 100030
+    second: LeftLowerLeg
+  - first:
+      1: 100032
+    second: LeftMiddleDistal
+  - first:
+      1: 100034
+    second: LeftMiddleIntermediate
+  - first:
+      1: 100036
+    second: LeftMiddleProximal
+  - first:
+      1: 100038
+    second: LeftRingDistal
+  - first:
+      1: 100040
+    second: LeftRingIntermediate
+  - first:
+      1: 100042
+    second: LeftRingProximal
+  - first:
+      1: 100044
+    second: LeftShoulder
+  - first:
+      1: 100046
+    second: LeftThumbDistal
+  - first:
+      1: 100048
+    second: LeftThumbIntermediate
+  - first:
+      1: 100050
+    second: LeftThumbProximal
+  - first:
+      1: 100052
+    second: LeftToes
+  - first:
+      1: 100054
+    second: LeftUpperArm
+  - first:
+      1: 100056
+    second: LeftUpperLeg
+  - first:
+      1: 100058
+    second: Neck
+  - first:
+      1: 100060
+    second: RightEye
+  - first:
+      1: 100062
+    second: RightFoot
+  - first:
+      1: 100064
+    second: RightHand
+  - first:
+      1: 100066
+    second: RightIndexDistal
+  - first:
+      1: 100068
+    second: RightIndexIntermediate
+  - first:
+      1: 100070
+    second: RightIndexProximal
+  - first:
+      1: 100072
+    second: RightLittleDistal
+  - first:
+      1: 100074
+    second: RightLittleIntermediate
+  - first:
+      1: 100076
+    second: RightLittleProximal
+  - first:
+      1: 100078
+    second: RightLowerArm
+  - first:
+      1: 100080
+    second: RightLowerLeg
+  - first:
+      1: 100082
+    second: RightMiddleDistal
+  - first:
+      1: 100084
+    second: RightMiddleIntermediate
+  - first:
+      1: 100086
+    second: RightMiddleProximal
+  - first:
+      1: 100088
+    second: RightRingDistal
+  - first:
+      1: 100090
+    second: RightRingIntermediate
+  - first:
+      1: 100092
+    second: RightRingProximal
+  - first:
+      1: 100094
+    second: RightShoulder
+  - first:
+      1: 100096
+    second: RightThumbDistal
+  - first:
+      1: 100098
+    second: RightThumbIntermediate
+  - first:
+      1: 100100
+    second: RightThumbProximal
+  - first:
+      1: 100102
+    second: RightToes
+  - first:
+      1: 100104
+    second: RightUpperArm
+  - first:
+      1: 100106
+    second: RightUpperLeg
+  - first:
+      1: 100108
+    second: Root
+  - first:
+      1: 100110
+    second: Spine
+  - first:
+      1: 100112
+    second: UpperChest
+  - first:
+      1: 100114
+    second: Zombie_Ctrl:ChestEndEffector 1
+  - first:
+      1: 100116
+    second: Zombie_Ctrl:ChestOriginEffector 1
+  - first:
+      1: 100118
+    second: Zombie_Ctrl:Head 1
+  - first:
+      1: 100120
+    second: Zombie_Ctrl:HeadEffector 1
+  - first:
+      1: 100122
+    second: Zombie_Ctrl:Hips 1
+  - first:
+      1: 100124
+    second: Zombie_Ctrl:HipsEffector 1
+  - first:
+      1: 100126
+    second: Zombie_Ctrl:LeftAnkleEffector 1
+  - first:
+      1: 100128
+    second: Zombie_Ctrl:LeftArm 1
+  - first:
+      1: 100130
+    second: Zombie_Ctrl:LeftElbowEffector 1
+  - first:
+      1: 100132
+    second: Zombie_Ctrl:LeftFoot 1
+  - first:
+      1: 100134
+    second: Zombie_Ctrl:LeftFootIndex1
+  - first:
+      1: 100136
+    second: Zombie_Ctrl:LeftFootIndexEffector
+  - first:
+      1: 100138
+    second: Zombie_Ctrl:LeftForeArm 1
+  - first:
+      1: 100140
+    second: Zombie_Ctrl:LeftHand 1
+  - first:
+      1: 100142
+    second: Zombie_Ctrl:LeftHandIndex5
+  - first:
+      1: 100144
+    second: Zombie_Ctrl:LeftHandIndex6
+  - first:
+      1: 100146
+    second: Zombie_Ctrl:LeftHandIndex7
+  - first:
+      1: 100148
+    second: Zombie_Ctrl:LeftHandIndexEffector 1
+  - first:
+      1: 100150
+    second: Zombie_Ctrl:LeftHandMiddle5
+  - first:
+      1: 100152
+    second: Zombie_Ctrl:LeftHandMiddle6
+  - first:
+      1: 100154
+    second: Zombie_Ctrl:LeftHandMiddle7
+  - first:
+      1: 100156
+    second: Zombie_Ctrl:LeftHandMiddleEffector 1
+  - first:
+      1: 100158
+    second: Zombie_Ctrl:LeftHandPinky5
+  - first:
+      1: 100160
+    second: Zombie_Ctrl:LeftHandPinky6
+  - first:
+      1: 100162
+    second: Zombie_Ctrl:LeftHandPinky7
+  - first:
+      1: 100164
+    second: Zombie_Ctrl:LeftHandPinkyEffector 1
+  - first:
+      1: 100166
+    second: Zombie_Ctrl:LeftHandRing5
+  - first:
+      1: 100168
+    second: Zombie_Ctrl:LeftHandRing6
+  - first:
+      1: 100170
+    second: Zombie_Ctrl:LeftHandRing7
+  - first:
+      1: 100172
+    second: Zombie_Ctrl:LeftHandRingEffector 1
+  - first:
+      1: 100174
+    second: Zombie_Ctrl:LeftHandThumb5
+  - first:
+      1: 100176
+    second: Zombie_Ctrl:LeftHandThumb6
+  - first:
+      1: 100178
+    second: Zombie_Ctrl:LeftHandThumb7
+  - first:
+      1: 100180
+    second: Zombie_Ctrl:LeftHandThumbEffector 1
+  - first:
+      1: 100182
+    second: Zombie_Ctrl:LeftHipEffector 1
+  - first:
+      1: 100184
+    second: Zombie_Ctrl:LeftKneeEffector 1
+  - first:
+      1: 100186
+    second: Zombie_Ctrl:LeftLeg 1
+  - first:
+      1: 100188
+    second: Zombie_Ctrl:LeftShoulder 1
+  - first:
+      1: 100190
+    second: Zombie_Ctrl:LeftShoulderEffector 1
+  - first:
+      1: 100192
+    second: Zombie_Ctrl:LeftUpLeg 1
+  - first:
+      1: 100194
+    second: Zombie_Ctrl:LeftWristEffector 1
+  - first:
+      1: 100196
+    second: Zombie_Ctrl:Neck 1
+  - first:
+      1: 100198
+    second: Zombie_Ctrl:Reference 1
+  - first:
+      1: 100200
+    second: Zombie_Ctrl:RightAnkleEffector 1
+  - first:
+      1: 100202
+    second: Zombie_Ctrl:RightArm 1
+  - first:
+      1: 100204
+    second: Zombie_Ctrl:RightElbowEffector 1
+  - first:
+      1: 100206
+    second: Zombie_Ctrl:RightFoot 1
+  - first:
+      1: 100208
+    second: Zombie_Ctrl:RightFootIndex1
+  - first:
+      1: 100210
+    second: Zombie_Ctrl:RightFootIndexEffector
+  - first:
+      1: 100212
+    second: Zombie_Ctrl:RightForeArm 1
+  - first:
+      1: 100214
+    second: Zombie_Ctrl:RightHand 1
+  - first:
+      1: 100216
+    second: Zombie_Ctrl:RightHandIndex5
+  - first:
+      1: 100218
+    second: Zombie_Ctrl:RightHandIndex6
+  - first:
+      1: 100220
+    second: Zombie_Ctrl:RightHandIndex7
+  - first:
+      1: 100222
+    second: Zombie_Ctrl:RightHandIndexEffector 1
+  - first:
+      1: 100224
+    second: Zombie_Ctrl:RightHandMiddle5
+  - first:
+      1: 100226
+    second: Zombie_Ctrl:RightHandMiddle6
+  - first:
+      1: 100228
+    second: Zombie_Ctrl:RightHandMiddle7
+  - first:
+      1: 100230
+    second: Zombie_Ctrl:RightHandMiddleEffector 1
+  - first:
+      1: 100232
+    second: Zombie_Ctrl:RightHandPinky5
+  - first:
+      1: 100234
+    second: Zombie_Ctrl:RightHandPinky6
+  - first:
+      1: 100236
+    second: Zombie_Ctrl:RightHandPinky7
+  - first:
+      1: 100238
+    second: Zombie_Ctrl:RightHandPinkyEffector 1
+  - first:
+      1: 100240
+    second: Zombie_Ctrl:RightHandRing5
+  - first:
+      1: 100242
+    second: Zombie_Ctrl:RightHandRing6
+  - first:
+      1: 100244
+    second: Zombie_Ctrl:RightHandRing7
+  - first:
+      1: 100246
+    second: Zombie_Ctrl:RightHandRingEffector 1
+  - first:
+      1: 100248
+    second: Zombie_Ctrl:RightHandThumb5
+  - first:
+      1: 100250
+    second: Zombie_Ctrl:RightHandThumb6
+  - first:
+      1: 100252
+    second: Zombie_Ctrl:RightHandThumb7
+  - first:
+      1: 100254
+    second: Zombie_Ctrl:RightHandThumbEffector 1
+  - first:
+      1: 100256
+    second: Zombie_Ctrl:RightHipEffector 1
+  - first:
+      1: 100258
+    second: Zombie_Ctrl:RightKneeEffector 1
+  - first:
+      1: 100260
+    second: Zombie_Ctrl:RightLeg 1
+  - first:
+      1: 100262
+    second: Zombie_Ctrl:RightShoulder 1
+  - first:
+      1: 100264
+    second: Zombie_Ctrl:RightShoulderEffector 1
+  - first:
+      1: 100266
+    second: Zombie_Ctrl:RightUpLeg 1
+  - first:
+      1: 100268
+    second: Zombie_Ctrl:RightWristEffector 1
+  - first:
+      1: 100270
+    second: Zombie_Ctrl:Spine 1
+  - first:
+      1: 100272
+    second: Zombie_Ctrl:Spine3
+  - first:
+      1: 100274
+    second: Zombie_Ctrl:Spine4
+  - first:
+      4: 400000
+    second: //RootNode
+  - first:
+      4: 400002
+    second: Chest
+  - first:
+      4: 400004
+    second: Head
+  - first:
+      4: 400006
+    second: Hips
+  - first:
+      4: 400008
+    second: Jaw
+  - first:
+      4: 400010
+    second: LeftEye
+  - first:
+      4: 400012
+    second: LeftFoot
+  - first:
+      4: 400014
+    second: LeftHand
+  - first:
+      4: 400016
+    second: LeftIndexDistal
+  - first:
+      4: 400018
+    second: LeftIndexIntermediate
+  - first:
+      4: 400020
+    second: LeftIndexProximal
+  - first:
+      4: 400022
+    second: LeftLittleDistal
+  - first:
+      4: 400024
+    second: LeftLittleIntermediate
+  - first:
+      4: 400026
+    second: LeftLittleProximal
+  - first:
+      4: 400028
+    second: LeftLowerArm
+  - first:
+      4: 400030
+    second: LeftLowerLeg
+  - first:
+      4: 400032
+    second: LeftMiddleDistal
+  - first:
+      4: 400034
+    second: LeftMiddleIntermediate
+  - first:
+      4: 400036
+    second: LeftMiddleProximal
+  - first:
+      4: 400038
+    second: LeftRingDistal
+  - first:
+      4: 400040
+    second: LeftRingIntermediate
+  - first:
+      4: 400042
+    second: LeftRingProximal
+  - first:
+      4: 400044
+    second: LeftShoulder
+  - first:
+      4: 400046
+    second: LeftThumbDistal
+  - first:
+      4: 400048
+    second: LeftThumbIntermediate
+  - first:
+      4: 400050
+    second: LeftThumbProximal
+  - first:
+      4: 400052
+    second: LeftToes
+  - first:
+      4: 400054
+    second: LeftUpperArm
+  - first:
+      4: 400056
+    second: LeftUpperLeg
+  - first:
+      4: 400058
+    second: Neck
+  - first:
+      4: 400060
+    second: RightEye
+  - first:
+      4: 400062
+    second: RightFoot
+  - first:
+      4: 400064
+    second: RightHand
+  - first:
+      4: 400066
+    second: RightIndexDistal
+  - first:
+      4: 400068
+    second: RightIndexIntermediate
+  - first:
+      4: 400070
+    second: RightIndexProximal
+  - first:
+      4: 400072
+    second: RightLittleDistal
+  - first:
+      4: 400074
+    second: RightLittleIntermediate
+  - first:
+      4: 400076
+    second: RightLittleProximal
+  - first:
+      4: 400078
+    second: RightLowerArm
+  - first:
+      4: 400080
+    second: RightLowerLeg
+  - first:
+      4: 400082
+    second: RightMiddleDistal
+  - first:
+      4: 400084
+    second: RightMiddleIntermediate
+  - first:
+      4: 400086
+    second: RightMiddleProximal
+  - first:
+      4: 400088
+    second: RightRingDistal
+  - first:
+      4: 400090
+    second: RightRingIntermediate
+  - first:
+      4: 400092
+    second: RightRingProximal
+  - first:
+      4: 400094
+    second: RightShoulder
+  - first:
+      4: 400096
+    second: RightThumbDistal
+  - first:
+      4: 400098
+    second: RightThumbIntermediate
+  - first:
+      4: 400100
+    second: RightThumbProximal
+  - first:
+      4: 400102
+    second: RightToes
+  - first:
+      4: 400104
+    second: RightUpperArm
+  - first:
+      4: 400106
+    second: RightUpperLeg
+  - first:
+      4: 400108
+    second: Root
+  - first:
+      4: 400110
+    second: Spine
+  - first:
+      4: 400112
+    second: UpperChest
+  - first:
+      4: 400114
+    second: Zombie_Ctrl:ChestEndEffector 1
+  - first:
+      4: 400116
+    second: Zombie_Ctrl:ChestOriginEffector 1
+  - first:
+      4: 400118
+    second: Zombie_Ctrl:Head 1
+  - first:
+      4: 400120
+    second: Zombie_Ctrl:HeadEffector 1
+  - first:
+      4: 400122
+    second: Zombie_Ctrl:Hips 1
+  - first:
+      4: 400124
+    second: Zombie_Ctrl:HipsEffector 1
+  - first:
+      4: 400126
+    second: Zombie_Ctrl:LeftAnkleEffector 1
+  - first:
+      4: 400128
+    second: Zombie_Ctrl:LeftArm 1
+  - first:
+      4: 400130
+    second: Zombie_Ctrl:LeftElbowEffector 1
+  - first:
+      4: 400132
+    second: Zombie_Ctrl:LeftFoot 1
+  - first:
+      4: 400134
+    second: Zombie_Ctrl:LeftFootIndex1
+  - first:
+      4: 400136
+    second: Zombie_Ctrl:LeftFootIndexEffector
+  - first:
+      4: 400138
+    second: Zombie_Ctrl:LeftForeArm 1
+  - first:
+      4: 400140
+    second: Zombie_Ctrl:LeftHand 1
+  - first:
+      4: 400142
+    second: Zombie_Ctrl:LeftHandIndex5
+  - first:
+      4: 400144
+    second: Zombie_Ctrl:LeftHandIndex6
+  - first:
+      4: 400146
+    second: Zombie_Ctrl:LeftHandIndex7
+  - first:
+      4: 400148
+    second: Zombie_Ctrl:LeftHandIndexEffector 1
+  - first:
+      4: 400150
+    second: Zombie_Ctrl:LeftHandMiddle5
+  - first:
+      4: 400152
+    second: Zombie_Ctrl:LeftHandMiddle6
+  - first:
+      4: 400154
+    second: Zombie_Ctrl:LeftHandMiddle7
+  - first:
+      4: 400156
+    second: Zombie_Ctrl:LeftHandMiddleEffector 1
+  - first:
+      4: 400158
+    second: Zombie_Ctrl:LeftHandPinky5
+  - first:
+      4: 400160
+    second: Zombie_Ctrl:LeftHandPinky6
+  - first:
+      4: 400162
+    second: Zombie_Ctrl:LeftHandPinky7
+  - first:
+      4: 400164
+    second: Zombie_Ctrl:LeftHandPinkyEffector 1
+  - first:
+      4: 400166
+    second: Zombie_Ctrl:LeftHandRing5
+  - first:
+      4: 400168
+    second: Zombie_Ctrl:LeftHandRing6
+  - first:
+      4: 400170
+    second: Zombie_Ctrl:LeftHandRing7
+  - first:
+      4: 400172
+    second: Zombie_Ctrl:LeftHandRingEffector 1
+  - first:
+      4: 400174
+    second: Zombie_Ctrl:LeftHandThumb5
+  - first:
+      4: 400176
+    second: Zombie_Ctrl:LeftHandThumb6
+  - first:
+      4: 400178
+    second: Zombie_Ctrl:LeftHandThumb7
+  - first:
+      4: 400180
+    second: Zombie_Ctrl:LeftHandThumbEffector 1
+  - first:
+      4: 400182
+    second: Zombie_Ctrl:LeftHipEffector 1
+  - first:
+      4: 400184
+    second: Zombie_Ctrl:LeftKneeEffector 1
+  - first:
+      4: 400186
+    second: Zombie_Ctrl:LeftLeg 1
+  - first:
+      4: 400188
+    second: Zombie_Ctrl:LeftShoulder 1
+  - first:
+      4: 400190
+    second: Zombie_Ctrl:LeftShoulderEffector 1
+  - first:
+      4: 400192
+    second: Zombie_Ctrl:LeftUpLeg 1
+  - first:
+      4: 400194
+    second: Zombie_Ctrl:LeftWristEffector 1
+  - first:
+      4: 400196
+    second: Zombie_Ctrl:Neck 1
+  - first:
+      4: 400198
+    second: Zombie_Ctrl:Reference 1
+  - first:
+      4: 400200
+    second: Zombie_Ctrl:RightAnkleEffector 1
+  - first:
+      4: 400202
+    second: Zombie_Ctrl:RightArm 1
+  - first:
+      4: 400204
+    second: Zombie_Ctrl:RightElbowEffector 1
+  - first:
+      4: 400206
+    second: Zombie_Ctrl:RightFoot 1
+  - first:
+      4: 400208
+    second: Zombie_Ctrl:RightFootIndex1
+  - first:
+      4: 400210
+    second: Zombie_Ctrl:RightFootIndexEffector
+  - first:
+      4: 400212
+    second: Zombie_Ctrl:RightForeArm 1
+  - first:
+      4: 400214
+    second: Zombie_Ctrl:RightHand 1
+  - first:
+      4: 400216
+    second: Zombie_Ctrl:RightHandIndex5
+  - first:
+      4: 400218
+    second: Zombie_Ctrl:RightHandIndex6
+  - first:
+      4: 400220
+    second: Zombie_Ctrl:RightHandIndex7
+  - first:
+      4: 400222
+    second: Zombie_Ctrl:RightHandIndexEffector 1
+  - first:
+      4: 400224
+    second: Zombie_Ctrl:RightHandMiddle5
+  - first:
+      4: 400226
+    second: Zombie_Ctrl:RightHandMiddle6
+  - first:
+      4: 400228
+    second: Zombie_Ctrl:RightHandMiddle7
+  - first:
+      4: 400230
+    second: Zombie_Ctrl:RightHandMiddleEffector 1
+  - first:
+      4: 400232
+    second: Zombie_Ctrl:RightHandPinky5
+  - first:
+      4: 400234
+    second: Zombie_Ctrl:RightHandPinky6
+  - first:
+      4: 400236
+    second: Zombie_Ctrl:RightHandPinky7
+  - first:
+      4: 400238
+    second: Zombie_Ctrl:RightHandPinkyEffector 1
+  - first:
+      4: 400240
+    second: Zombie_Ctrl:RightHandRing5
+  - first:
+      4: 400242
+    second: Zombie_Ctrl:RightHandRing6
+  - first:
+      4: 400244
+    second: Zombie_Ctrl:RightHandRing7
+  - first:
+      4: 400246
+    second: Zombie_Ctrl:RightHandRingEffector 1
+  - first:
+      4: 400248
+    second: Zombie_Ctrl:RightHandThumb5
+  - first:
+      4: 400250
+    second: Zombie_Ctrl:RightHandThumb6
+  - first:
+      4: 400252
+    second: Zombie_Ctrl:RightHandThumb7
+  - first:
+      4: 400254
+    second: Zombie_Ctrl:RightHandThumbEffector 1
+  - first:
+      4: 400256
+    second: Zombie_Ctrl:RightHipEffector 1
+  - first:
+      4: 400258
+    second: Zombie_Ctrl:RightKneeEffector 1
+  - first:
+      4: 400260
+    second: Zombie_Ctrl:RightLeg 1
+  - first:
+      4: 400262
+    second: Zombie_Ctrl:RightShoulder 1
+  - first:
+      4: 400264
+    second: Zombie_Ctrl:RightShoulderEffector 1
+  - first:
+      4: 400266
+    second: Zombie_Ctrl:RightUpLeg 1
+  - first:
+      4: 400268
+    second: Zombie_Ctrl:RightWristEffector 1
+  - first:
+      4: 400270
+    second: Zombie_Ctrl:Spine 1
+  - first:
+      4: 400272
+    second: Zombie_Ctrl:Spine3
+  - first:
+      4: 400274
+    second: Zombie_Ctrl:Spine4
+  - first:
+      74: 7400000
+    second: 1-walk_chase
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      41386430: 2186277476908879412
+    second: ImportLogs
   externalObjects: {}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -293,6 +851,7 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: "Copied Avatar Rig Configuration mis-match. Bone length in
@@ -310,15 +869,16 @@ ModelImporter:
       mm\n\t'LeftLittleIntermediate' : position error = 7.912321 mm\n\t'LeftLittleDistal'
       : position error = 2.637441 mm\n\t'RightIndexProximal' : position error = 10.510956
       mm\n\t'RightIndexIntermediate' : position error = 13.330895 mm\n\t'RightIndexDistal'
-      : position error = 4.229947 mm\n\t'RightMiddleProximal' : position error = 9.229070
-      mm\n\t'RightMiddleIntermediate' : position error = 15.125533 mm\n\t'RightMiddleDistal'
+      : position error = 4.229947 mm\n\t'RightMiddleProximal' : position error =
+      9.229070 mm\n\t'RightMiddleIntermediate' : position error = 15.125533 mm\n\t'RightMiddleDistal'
       : position error = 1.153661 mm\n\t'RightRingProximal' : position error = 13.587317
       mm\n\t'RightRingIntermediate' : position error = 13.202739 mm\n\t'RightRingDistal'
-      : position error = 1.922658 mm\n\t'RightLittleProximal' : position error = 17.304655
-      mm\n\t'RightLittleIntermediate' : position error = 8.716444 mm\n\t'RightLittleDistal'
+      : position error = 1.922658 mm\n\t'RightLittleProximal' : position error =
+      17.304655 mm\n\t'RightLittleIntermediate' : position error = 8.716444 mm\n\t'RightLittleDistal'
       : position error = 3.204574 mm\n\t'RightThumbProximal' : position error = 16.897802
       mm\n\t'RightThumbIntermediate' : position error = 5.933570 mm\n\t'RightThumbDistal'
-      : position error = 6.062574 mm\n\t'RightToes' : position error = 17.893751 mm\n"
+      : position error = 6.062574 mm\n\t'RightToes' : position error = 17.893751
+      mm\n"
     animationImportErrors: 
     animationImportWarnings: "\nClip 'Story clip export' has import animation warnings
       that might lower retargeting quality:\nNote: Activate translation DOF on avatar
@@ -340,6 +900,7 @@ ModelImporter:
     - serializedVersion: 16
       name: 1-walk_chase
       takeName: Story clip export
+      internalID: 0
       firstFrame: 0
       lastFrame: 186
       wrapMode: 0
@@ -371,34 +932,47 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 0.01
-    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 1
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human:
     - boneName: Hips
       humanName: Hips
@@ -1163,15 +1737,19 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 83df9562de1b27646afd2f8bfb8d8927,
     type: 3}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1
+  avatarSetup: 2
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

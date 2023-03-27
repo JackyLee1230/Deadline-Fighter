@@ -44,7 +44,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] public float timeSurvived = 0;
         [SerializeField] public GameObject TimeSurvivedUI;
 
-        [Header("Currnecy")]
+        [Header("Currency")]
         [SerializeField] public int currency = 0;
         [SerializeField] public int currencyMultiplier = 1;
         [SerializeField] public GameObject CurrencyUI;
@@ -81,11 +81,18 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private float m_StepCycle;
         private float m_NextStep;
         private bool m_Jumping;
+        private bool m_Shooting;
         private AudioSource m_AudioSource;
+
+        public GameObject damageEffect;
+        public GameObject damageHeadEffect;
+        public GameObject bulletHole;
+
 
         // Use this for initialization
         private void Start()
         {
+            Application.targetFrameRate = 144;
             m_CharacterController = GetComponent<CharacterController>();
             m_Camera = Camera.main;
             m_OriginalCameraPosition = m_Camera.transform.localPosition;
@@ -94,6 +101,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_StepCycle = 0f;
             m_NextStep = m_StepCycle/2f;
             m_Jumping = false;
+            m_Shooting = false;
             m_AudioSource = GetComponent<AudioSource>();
 			m_MouseLook.Init(transform , m_Camera.transform);
             currentHealth = maxHealth;
@@ -106,7 +114,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         // Update is called once per frame
         private void Update()
         {
-            if(currentHealth > 0){
+            if (currentHealth > 0){
                 timeSurvived += Time.deltaTime;
             }
             RotateView();
@@ -171,15 +179,29 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
 
             if (Input.GetMouseButtonDown(0)) {
-                 RaycastHit  hit;
-                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                  
-                  if (Physics.Raycast(ray, out hit)) {
-                      if (hit.transform.name == "Zombie" ){
-                        hit.transform.GetComponent<AIExample>().onHit(25);
-                        
+                m_Shooting = true;
+                RaycastHit  hit;
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                
+                if (Physics.Raycast(ray, out hit)) {
+                    if (hit.transform.name == "Zombie(Clone)" || hit.transform.name == "Zombie"){
+                        Debug.Log(hit.collider.GetType());
+
+                        if(hit.collider.GetType() == typeof(SphereCollider)){
+                            Instantiate (damageHeadEffect, hit.point, Quaternion.identity);
+                            hit.transform.GetComponent<AIExample>().onHit(25*4);
+                        } else {
+                            Instantiate (damageEffect, hit.point, Quaternion.identity);
+                            hit.transform.GetComponent<AIExample>().onHit(25);
+                        }
                     }
-                  }
+                    else{
+                        Instantiate(bulletHole, hit.point + hit.normal * 0.0001f, Quaternion.LookRotation(hit.normal));
+                        bulletHole.transform.up = hit.normal;
+                    }
+                }
+
+                StartCoroutine(RemoveShootingStatus());
               }
         
 
@@ -209,10 +231,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_Camera.transform.localPosition = m_OriginalCameraPosition;
         }
 
-        public float takeDamage(float damage, Vector3 source){
-
-            Debug.Log("distance to player: " + Vector3.Distance(source, m_Camera.transform.position ));
-            if (iFrames <= 0f && Vector3.Distance(source, m_Camera.transform.position ) < 2.4f){
+        public float takeDamage(float damage, Vector3 source, bool inFOV){
+            if (iFrames <= 0f && Vector3.Distance(source, m_Camera.transform.position ) < 3.4f && inFOV){
                 Debug.Log("Player took " + damage + " damage");
                 currentHealth -= damage;
                 setHealthBar(currentHealth);
@@ -231,18 +251,15 @@ namespace UnityStandardAssets.Characters.FirstPerson
         }
 
         void onShoot() {
-
-        RaycastHit hit;
-
-        if(Physics.Raycast(playerCam.transform.position, transform.forward, out hit, 100f)){
-            Debug.Log("hit");
-            enemyManager = hit.transform.GetComponent<AIExample>();
-            if(enemyManager != null) {
-                enemyManager.onHit(20);
+            RaycastHit hit; 
+            if(Physics.Raycast(playerCam.transform.position, transform.forward, out hit, 100f)){
+                enemyManager = hit.transform.GetComponent<AIExample>();
+                if(enemyManager != null) {
+                    enemyManager.onHit(20);
+                }
             }
-        }
 
-    }
+        }
 
         public void playerDie(){
             // kill player
@@ -308,6 +325,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             if (m_CharacterController.isGrounded)
             {
+                // add collision checking for hitting something above
                 m_MoveDir.y = -m_StickToGroundForce;
 
                 if (m_Jump)
@@ -387,7 +405,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             if (m_CharacterController.velocity.magnitude > 0 && m_CharacterController.isGrounded)
             {
                 m_Camera.transform.localPosition =
-                    m_HeadBob.DoHeadBob(m_CharacterController.velocity.magnitude +
+                    m_HeadBob.DoHeadBob(m_CharacterController.velocity.magnitude * 0.3f +
                                       (speed*(m_IsWalking ? 1f : m_RunstepLenghten)));
                 newCameraPosition = m_Camera.transform.localPosition;
                 newCameraPosition.y = m_Camera.transform.localPosition.y - m_JumpBob.Offset();
@@ -441,7 +459,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         public int GetPlayerStealthProfile()
         {
-            if (m_IsWalking)
+            if (m_Shooting)
+            {
+                return 2;
+            } else if (m_IsWalking)
             {
                 return 0;
             } else
@@ -464,6 +485,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 return;
             }
             body.AddForceAtPosition(m_CharacterController.velocity*0.1f, hit.point, ForceMode.Impulse);
+        }
+
+        IEnumerator RemoveShootingStatus()
+        {
+            yield return new WaitForSeconds(0.5f);
+            m_Shooting = false;
         }
     }
 }
