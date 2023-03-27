@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityStandardAssets.Characters.FirstPerson;
 
 public class EnemySpawner : MonoBehaviour
+
 {
     [SerializeField]
     public int enemiesAlive = 0;
@@ -24,11 +25,14 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     public GameObject[] enemies;
 
+    [SerializeField]
+    public AudioClip roundWin; //test
+
     public TextMeshProUGUI roundNum;
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -45,8 +49,11 @@ public class EnemySpawner : MonoBehaviour
         roundNum.text = "Round: " + round.ToString() + "; Alive: " + enemiesAlive.ToString();
         if (enemiesAlive == 0) {
             // add a random number of score  between (round * 100) to (round * 200 ) to fpsc.score
-            fpsc.score += UnityEngine.Random.Range(round * 100, round * 200); 
+            fpsc.score += UnityEngine.Random.Range(round * 100, round * 200);
+
             // TODO: play some round win sound effect
+            AudioSource.PlayClipAtPoint(roundWin, transform.position, 1.5f);
+
             round++;
             nextWave(round);
             roundNum.text = "Round: " + round.ToString() + "; Alive: " + enemiesAlive.ToString();

@@ -39,7 +39,15 @@ public class AIExample : MonoBehaviour {
     [SerializeField] public float AttackCooldown;
     [SerializeField] public float DamagedCooldown;
     [SerializeField] public LayerMask playerLayer;
-    
+
+    // audio
+    [SerializeField] public AudioClip zombieIdle;
+    [SerializeField] public AudioClip zombieChase;
+    [SerializeField] public AudioClip zombieDamage;
+    [SerializeField] public AudioClip zombieAttack;
+    [SerializeField] public AudioClip zombieDie;
+    [SerializeField] public AudioClip zombieNotice;
+
 
     public void Start()
     {
@@ -54,15 +62,18 @@ public class AIExample : MonoBehaviour {
 
         if (isDead && AttackCooldown > 0f)
         {
+            AudioSource.PlayClipAtPoint(zombieDie, transform.position, 0.5f);
             animator.SetBool("Dead1", true);
         }
         else if (isDead)
         {
+            AudioSource.PlayClipAtPoint(zombieDie, transform.position, 0.5f);
             animator.SetBool("Dead2", true);
         }
         else if (isDamage)
         {
-            if(AttackCooldown > 0.7f && !(DamagedCooldown > 0f))
+            AudioSource.PlayClipAtPoint(zombieDamage, transform.position, 0.5f);
+            if (AttackCooldown > 0.7f && !(DamagedCooldown > 0f))
             {
                 animator.SetTrigger("GreatDamage");
                 AttackCooldown = 0.977f;
@@ -79,6 +90,7 @@ public class AIExample : MonoBehaviour {
         }
         else if (isAttacking)
         {
+            AudioSource.PlayClipAtPoint(zombieAttack, transform.position, 0.5f);
             animator.SetTrigger("Attack");
             isAttacking = false;
         }
@@ -165,17 +177,20 @@ public class AIExample : MonoBehaviour {
         else if ((Vector3.Distance(fpsc.transform.position, transform.position) < detectDistance)) {
             OnAware();
             // TODO: ADD some zombie notice sound effect
+            AudioSource.PlayClipAtPoint(zombieNotice, transform.position, 0.5f);
         }
     }
 
     public void OnAware()
     {
+        AudioSource.PlayClipAtPoint(zombieChase, transform.position, 0.5f);
         isAware = true;
     }
 
 
     public void Wander()
     {
+        AudioSource.PlayClipAtPoint(zombieIdle, transform.position, 0.5f);
         if (wanderType == WanderType.Random)
         {
             if (Vector3.Distance(transform.position, wanderPoint) < 2f)
@@ -220,6 +235,7 @@ public class AIExample : MonoBehaviour {
             RaycastHit hitInfo;
             if (Physics.Raycast(AttackRaycastArea.transform.position, AttackRaycastArea.transform.forward, out hitInfo, attackRadius)){
                 isAttacking = true;
+                AudioSource.PlayClipAtPoint(zombieAttack, transform.position, 0.5f);
                 if (hitInfo.transform.CompareTag("Player")){
                     StartCoroutine(AttackPlyaer(hitInfo));
                     Debug.Log("Zombie Hitting Player"); 
