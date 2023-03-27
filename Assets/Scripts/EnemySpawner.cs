@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class EnemySpawner : MonoBehaviour
 
     [SerializeField]
     public GameObject[] spawnPoints;
+
+    [SerializeField] public FirstPersonController fpsc;
 
     [SerializeField]
     public GameObject[] enemyPrefabs;
@@ -53,6 +56,7 @@ public class EnemySpawner : MonoBehaviour
             GameObject spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
 
             GameObject enemySpawned = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Length)], spawnPoint.transform.position, Quaternion.identity);
+            enemySpawned.GetComponentInChildren<AIExample>().fpsc = fpsc;
             //add the enemy to the enemies array
             enemies[i] = enemySpawned;
             enemiesAlive++;

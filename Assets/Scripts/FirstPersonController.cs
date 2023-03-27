@@ -181,7 +181,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 
                 if (Physics.Raycast(ray, out hit)) {
-                    if (hit.transform.name == "Zombie" ){
+                    if (hit.transform.name == "Zombie(Clone)" || hit.transform.name == "Zombie"){
                         Debug.Log(hit.collider.GetType());
 
                         if(hit.collider.GetType() == typeof(SphereCollider)){
