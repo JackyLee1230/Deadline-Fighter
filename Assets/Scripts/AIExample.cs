@@ -252,9 +252,9 @@ public class AIExample : MonoBehaviour {
         yield return new WaitForSeconds(0.75f);
 
         if(!(DamagedCooldown > 0f) && !isDead)
-            hitInfo.transform.GetComponent<FirstPersonController>().takeDamage(10, AttackRaycastArea.transform.position);
+            hitInfo.transform.GetComponent<FirstPersonController>().takeDamage(10, AttackRaycastArea.transform.position, Vector3.Angle(Vector3.forward, transform.InverseTransformPoint(fpsc.transform.position)) < fov / 2f);
             // push the zombie back 20 units
-            if (Vector3.Distance(fpsc.transform.position, AttackRaycastArea.transform.position) < 3.4f && !(DamagedCooldown > 0f))
+            if (Vector3.Distance(fpsc.transform.position, AttackRaycastArea.transform.position) < 3.4f && !(DamagedCooldown > 0f) && Vector3.Angle(Vector3.forward, transform.InverseTransformPoint(fpsc.transform.position)) < fov / 2f)
             {
                 transform.Translate(transform.forward * -1.5f, Space.World);
             }

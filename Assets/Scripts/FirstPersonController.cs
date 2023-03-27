@@ -226,10 +226,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_Camera.transform.localPosition = m_OriginalCameraPosition;
         }
 
-        public float takeDamage(float damage, Vector3 source){
-
-            Debug.Log("distance to player: " + Vector3.Distance(source, m_Camera.transform.position ));
-            if (iFrames <= 0f && Vector3.Distance(source, m_Camera.transform.position ) < 3.4f){
+        public float takeDamage(float damage, Vector3 source, bool inFOV){
+            if (iFrames <= 0f && Vector3.Distance(source, m_Camera.transform.position ) < 3.4f && inFOV){
                 Debug.Log("Player took " + damage + " damage");
                 currentHealth -= damage;
                 setHealthBar(currentHealth);
