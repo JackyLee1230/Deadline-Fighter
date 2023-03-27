@@ -81,7 +81,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private float m_StepCycle;
         private float m_NextStep;
         private bool m_Jumping;
-        private bool m_Shooting;
+        public bool m_Shooting;
         private AudioSource m_AudioSource;
 
         public GameObject damageEffect;
@@ -178,31 +178,31 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 iFrameIcon.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.1f);
             }
 
-            if (Input.GetMouseButtonDown(0)) {
-                m_Shooting = true;
-                RaycastHit  hit;
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            // if (Input.GetMouseButtonDown(0)) {
+            //     m_Shooting = true;
+            //     RaycastHit  hit;
+            //     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 
-                if (Physics.Raycast(ray, out hit)) {
-                    if (hit.transform.name == "Zombie(Clone)" || hit.transform.name == "Zombie"){
-                        Debug.Log(hit.collider.GetType());
+            //     if (Physics.Raycast(ray, out hit)) {
+            //         if (hit.transform.name == "Zombie(Clone)" || hit.transform.name == "Zombie"){
+            //             Debug.Log(hit.collider.GetType());
 
-                        if(hit.collider.GetType() == typeof(SphereCollider)){
-                            Instantiate (damageHeadEffect, hit.point, Quaternion.identity);
-                            hit.transform.GetComponent<AIExample>().onHit(25*4);
-                        } else {
-                            Instantiate (damageEffect, hit.point, Quaternion.identity);
-                            hit.transform.GetComponent<AIExample>().onHit(25);
-                        }
-                    }
-                    else{
-                        Instantiate(bulletHole, hit.point + hit.normal * 0.0001f, Quaternion.LookRotation(hit.normal));
-                        bulletHole.transform.up = hit.normal;
-                    }
-                }
+            //             if(hit.collider.GetType() == typeof(SphereCollider)){
+            //                 Instantiate (damageHeadEffect, hit.point, Quaternion.identity);
+            //                 hit.transform.GetComponent<AIExample>().onHit(25*4);
+            //             } else {
+            //                 Instantiate (damageEffect, hit.point, Quaternion.identity);
+            //                 hit.transform.GetComponent<AIExample>().onHit(25);
+            //             }
+            //         }
+            //         else{
+            //             Instantiate(bulletHole, hit.point + hit.normal * 0.0001f, Quaternion.LookRotation(hit.normal));
+            //             bulletHole.transform.up = hit.normal;
+            //         }
+            //     }
 
-                StartCoroutine(RemoveShootingStatus());
-              }
+            //     StartCoroutine(RemoveShootingStatus());
+            //   }
         
 
             setHealthBar(currentHealth);
@@ -250,16 +250,16 @@ namespace UnityStandardAssets.Characters.FirstPerson
             return currentHealth;
         }
 
-        void onShoot() {
-            RaycastHit hit; 
-            if(Physics.Raycast(playerCam.transform.position, transform.forward, out hit, 100f)){
-                enemyManager = hit.transform.GetComponent<AIExample>();
-                if(enemyManager != null) {
-                    enemyManager.onHit(20);
-                }
-            }
+        // void onShoot() {
+        //     RaycastHit hit; 
+        //     if(Physics.Raycast(playerCam.transform.position, transform.forward, out hit, 100f)){
+        //         enemyManager = hit.transform.GetComponent<AIExample>();
+        //         if(enemyManager != null) {
+        //             enemyManager.onHit(20);
+        //         }
+        //     }
 
-        }
+        // }
 
         public void playerDie(){
             // kill player
@@ -487,7 +487,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             body.AddForceAtPosition(m_CharacterController.velocity*0.1f, hit.point, ForceMode.Impulse);
         }
 
-        IEnumerator RemoveShootingStatus()
+        public IEnumerator RemoveShootingStatus()
         {
             yield return new WaitForSeconds(0.5f);
             m_Shooting = false;
