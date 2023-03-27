@@ -39,6 +39,8 @@ public class AIExample : MonoBehaviour {
     [SerializeField] public float AttackCooldown;
     [SerializeField] public float DamagedCooldown;
     [SerializeField] public LayerMask playerLayer;
+
+    private int isPlayerStealth;
     
 
     public void Start()
@@ -51,7 +53,7 @@ public class AIExample : MonoBehaviour {
     }
     public void Update()
     {
-
+        isPlayerStealth = fpsc.GetPlayerStealthProfile();
         if (isDead && AttackCooldown > 0f)
         {
             animator.SetBool("Dead1", true);
@@ -144,9 +146,12 @@ public class AIExample : MonoBehaviour {
 
     public void SearchForPlayer()
     {
+        float modifiedViewDistance = isPlayerStealth == 2 ? viewDistance*2.5f : isPlayerStealth == 1 ? viewDistance/1.5f : viewDistance;
+        float modifiedDetectDistance = isPlayerStealth == 2 ? detectDistance*3.5f : isPlayerStealth == 1 ? detectDistance/3f : detectDistance;
+
         if (Vector3.Angle(Vector3.forward, transform.InverseTransformPoint(fpsc.transform.position)) < fov / 2f)
         {
-            if (Vector3.Distance(fpsc.transform.position, transform.position) < viewDistance)
+            if (Vector3.Distance(fpsc.transform.position, transform.position) < modifiedViewDistance)
             {
                 RaycastHit hit;
                 if (Physics.Linecast(transform.position, fpsc.transform.position, out hit, -1))
@@ -162,7 +167,7 @@ public class AIExample : MonoBehaviour {
                 }
             }
         }
-        else if ((Vector3.Distance(fpsc.transform.position, transform.position) < detectDistance)) {
+        else if ((Vector3.Distance(fpsc.transform.position, transform.position) < modifiedDetectDistance)) {
             OnAware();
             // TODO: ADD some zombie notice sound effect
         }

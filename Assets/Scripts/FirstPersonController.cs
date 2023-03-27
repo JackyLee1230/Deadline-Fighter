@@ -81,6 +81,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private float m_StepCycle;
         private float m_NextStep;
         private bool m_Jumping;
+        private bool m_Shooting;
         private AudioSource m_AudioSource;
 
         public GameObject damageEffect;
@@ -100,6 +101,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_StepCycle = 0f;
             m_NextStep = m_StepCycle/2f;
             m_Jumping = false;
+            m_Shooting = false;
             m_AudioSource = GetComponent<AudioSource>();
 			m_MouseLook.Init(transform , m_Camera.transform);
             currentHealth = maxHealth;
@@ -177,6 +179,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
 
             if (Input.GetMouseButtonDown(0)) {
+                m_Shooting = true;
                 RaycastHit  hit;
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 
@@ -197,6 +200,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
                         bulletHole.transform.up = hit.normal;
                     }
                 }
+
+                StartCoroutine(RemoveShootingStatus());
               }
         
 
@@ -454,7 +459,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         public int GetPlayerStealthProfile()
         {
-            if (m_IsWalking)
+            if (m_Shooting)
+            {
+                return 2;
+            } else if (m_IsWalking)
             {
                 return 0;
             } else
@@ -477,6 +485,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 return;
             }
             body.AddForceAtPosition(m_CharacterController.velocity*0.1f, hit.point, ForceMode.Impulse);
+        }
+
+        IEnumerator RemoveShootingStatus()
+        {
+            yield return new WaitForSeconds(0.5f);
+            m_Shooting = false;
         }
     }
 }
