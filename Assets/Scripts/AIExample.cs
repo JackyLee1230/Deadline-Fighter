@@ -274,6 +274,7 @@ public class AIExample : MonoBehaviour {
 
             Destroy(GetComponent<EnemyManager>());
             Destroy(GetComponent<CapsuleCollider>());
+            Destroy(GetComponent<SphereCollider>());
             fpsc.addScore(50);
             Debug.Log(fpsc.score);
             StartCoroutine(RemoveGameObject());
