@@ -5,7 +5,6 @@ using UnityStandardAssets.Characters.FirstPerson;
 using UnityEngine.AI;
 
 public class AIExample : MonoBehaviour {
-
     public enum WanderType { Random, Waypoint};
 
     [Header("zombie camera and hit scan")]
@@ -50,9 +49,12 @@ public class AIExample : MonoBehaviour {
     [SerializeField] public AudioClip zombieDie;
     [SerializeField] public AudioClip zombieNotice;
 
+    private AudioSource e_AudioSource;
+
 
     public void Start()
     {
+        e_AudioSource = GetComponent<AudioSource>();
         agent = GetComponent<NavMeshAgent>();
         renderer = GetComponent<Renderer>();
         animator = GetComponentInChildren<Animator>();
@@ -64,17 +66,14 @@ public class AIExample : MonoBehaviour {
         isPlayerStealth = fpsc.GetPlayerStealthProfile();
         if (isDead && AttackCooldown > 0f)
         {
-            AudioSource.PlayClipAtPoint(zombieDie, transform.position, 0.5f);
             animator.SetBool("Dead1", true);
         }
         else if (isDead)
         {
-            AudioSource.PlayClipAtPoint(zombieDie, transform.position, 0.5f);
             animator.SetBool("Dead2", true);
         }
         else if (isDamage)
         {
-            AudioSource.PlayClipAtPoint(zombieDamage, transform.position, 0.5f);
             if (AttackCooldown > 0.7f && !(DamagedCooldown > 0f))
             {
                 animator.SetTrigger("GreatDamage");
@@ -92,12 +91,18 @@ public class AIExample : MonoBehaviour {
         }
         else if (isAttacking)
         {
-            AudioSource.PlayClipAtPoint(zombieAttack, transform.position, 0.5f);
+            e_AudioSource.clip = zombieAttack;
+            e_AudioSource.Play();
             animator.SetTrigger("Attack");
             isAttacking = false;
         }
         else if (isAware)
         {
+            if (!e_AudioSource.isPlaying) {
+                e_AudioSource.clip = zombieChase;
+                e_AudioSource.Play();
+            }
+
             if (!isAttacking) { 
                 lastSeenPlayerPosition = fpsc.transform.position;
                 agent.SetDestination(fpsc.transform.position);
@@ -124,6 +129,11 @@ public class AIExample : MonoBehaviour {
             }
         } else
         {
+            if (!e_AudioSource.isPlaying) {
+                e_AudioSource.clip = zombieIdle;
+                e_AudioSource.Play();
+            }
+
             SearchForPlayer();
             if(lastSeenPlayerPosition != Vector3.zero){
                 if(agent.transform.position.x == lastSeenPlayerPosition.x && agent.transform.position.z == lastSeenPlayerPosition.z){
@@ -181,21 +191,18 @@ public class AIExample : MonoBehaviour {
         }
         else if ((Vector3.Distance(fpsc.transform.position, transform.position) < modifiedDetectDistance)) {
             OnAware();
-            // TODO: ADD some zombie notice sound effect
-            AudioSource.PlayClipAtPoint(zombieNotice, transform.position, 0.5f);
         }
     }
 
     public void OnAware()
     {
-        AudioSource.PlayClipAtPoint(zombieChase, transform.position, 0.5f);
+        e_AudioSource.PlayOneShot(zombieNotice);
         isAware = true;
     }
 
 
     public void Wander()
     {
-        AudioSource.PlayClipAtPoint(zombieIdle, transform.position, 0.5f);
         if (wanderType == WanderType.Random)
         {
             if (Vector3.Distance(transform.position, wanderPoint) < 2f)
@@ -240,7 +247,6 @@ public class AIExample : MonoBehaviour {
             RaycastHit hitInfo;
             if (Physics.Raycast(AttackRaycastArea.transform.position, AttackRaycastArea.transform.forward, out hitInfo, attackRadius)){
                 isAttacking = true;
-                AudioSource.PlayClipAtPoint(zombieAttack, transform.position, 0.5f);
                 if (hitInfo.transform.CompareTag("Player")){
                     StartCoroutine(DelayAttackPlayer(hitInfo));
                     Debug.Log("Zombie Hitting Player"); 
@@ -290,6 +296,9 @@ public class AIExample : MonoBehaviour {
 
         health -= damage;
         if(health <= 0) {
+            e_AudioSource.clip = zombieDie;
+            e_AudioSource.Play();
+
             agent.speed = 0f;
             isDead = true;
 
@@ -302,6 +311,8 @@ public class AIExample : MonoBehaviour {
         }
         else
         {
+            e_AudioSource.clip = zombieDamage;
+            e_AudioSource.Play();
             isDamage = true;
         }
     }
