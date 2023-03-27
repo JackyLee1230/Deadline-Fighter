@@ -51,9 +51,6 @@ public class EnemySpawner : MonoBehaviour
             // add a random number of score  between (round * 100) to (round * 200 ) to fpsc.score
             fpsc.score += UnityEngine.Random.Range(round * 100, round * 200);
 
-            // TODO: play some round win sound effect
-            AudioSource.PlayClipAtPoint(roundWin, transform.position, 1.5f);
-
             round++;
             nextWave(round);
             roundNum.text = "Round: " + round.ToString() + "; Alive: " + enemiesAlive.ToString();
@@ -72,7 +69,7 @@ public class EnemySpawner : MonoBehaviour
 
     public void nextWave(int round) {
         // create a new array of enemies
-
+        AudioSource.PlayClipAtPoint(roundWin, transform.position, 1.5f);
         int spwanCount = UnityEngine.Random.Range(round, round * 10);
         enemies = new GameObject[spwanCount];
         Debug.Log("round " + round + " spwanCount " + spwanCount);
