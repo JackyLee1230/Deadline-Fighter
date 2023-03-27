@@ -27,7 +27,7 @@ public class AIExample : MonoBehaviour {
     [SerializeField] private bool isAware = false;
     [SerializeField] private bool isAttacking = false;
     [SerializeField] private bool isDamage = false;
-    [SerializeField] private bool isDead = false;
+    [SerializeField] public bool isDead = false;
     private Vector3 wanderPoint;
     private NavMeshAgent agent;
     private Renderer renderer;

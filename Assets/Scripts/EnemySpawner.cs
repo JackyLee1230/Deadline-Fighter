@@ -35,7 +35,7 @@ public class EnemySpawner : MonoBehaviour
     void Update()
     {
         for (int i =0; i < enemies.Length; i++) {
-            if (enemies[i] == null) {
+            if (enemies[i] == null || enemies[i].GetComponentInChildren<AIExample>().isDead == true) {
                 enemiesAlive = enemies.Length - 1;
                 enemies[i] = enemies[enemies.Length - 1];
                 // finally, let's decrement Array's size by one
