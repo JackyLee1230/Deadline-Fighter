@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityStandardAssets.Characters.FirstPerson;
@@ -20,6 +21,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     public GameObject[] enemyPrefabs;
 
+    [SerializeField]
     public GameObject[] enemies;
 
     public TextMeshProUGUI roundNum;
@@ -32,10 +34,22 @@ public class EnemySpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        for (int i =0; i < enemies.Length; i++) {
+            if (enemies[i] == null) {
+                enemiesAlive = enemies.Length - 1;
+                enemies[i] = enemies[enemies.Length - 1];
+                // finally, let's decrement Array's size by one
+                Array.Resize(ref enemies, enemies.Length - 1);
+            }
+        }
+        roundNum.text = "Round: " + round.ToString() + "; Alive: " + enemiesAlive.ToString();
         if (enemiesAlive == 0) {
+            // add a random number of score  between (round * 100) to (round * 200 ) to fpsc.score
+            fpsc.score += UnityEngine.Random.Range(round * 100, round * 200); 
+            // TODO: play some round win sound effect
             round++;
             nextWave(round);
-            roundNum.text = "Round: " + round.ToString();
+            roundNum.text = "Round: " + round.ToString() + "; Alive: " + enemiesAlive.ToString();
         }
 
         if (Input.GetKeyDown(KeyCode.Return)) {
@@ -45,17 +59,20 @@ public class EnemySpawner : MonoBehaviour
             }
             round++;
             nextWave(round);
-            roundNum.text = "Round: " + round.ToString();
+            roundNum.text = "Round: " + round.ToString() + "; Alive: " + enemiesAlive.ToString();
         }
     }
 
     public void nextWave(int round) {
         // create a new array of enemies
-        enemies = new GameObject[round];
-        for (int i = 0; i < round; i++) {
-            GameObject spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
 
-            GameObject enemySpawned = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Length)], spawnPoint.transform.position, Quaternion.identity);
+        int spwanCount = UnityEngine.Random.Range(round, round * 10);
+        enemies = new GameObject[spwanCount];
+        Debug.Log("round " + round + " spwanCount " + spwanCount);
+        for (int i = 0; i < spwanCount; i++) {
+            GameObject spawnPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)];
+
+            GameObject enemySpawned = Instantiate(enemyPrefabs[UnityEngine.Random.Range(0, enemyPrefabs.Length)], spawnPoint.transform.position, Quaternion.identity);
             enemySpawned.GetComponentInChildren<AIExample>().fpsc = fpsc;
             //add the enemy to the enemies array
             enemies[i] = enemySpawned;

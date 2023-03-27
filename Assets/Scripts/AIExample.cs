@@ -23,6 +23,7 @@ public class AIExample : MonoBehaviour {
     [SerializeField] public float attackRadius;
     public Transform[] waypoints; //Array of waypoints is only used when waypoint wandering is selected
 
+    [SerializeField] private float detectDistance;
     [SerializeField] private bool isAware = false;
     [SerializeField] private bool isAttacking = false;
     [SerializeField] private bool isDamage = false;
@@ -160,6 +161,10 @@ public class AIExample : MonoBehaviour {
                     }
                 }
             }
+        }
+        else if ((Vector3.Distance(fpsc.transform.position, transform.position) < detectDistance)) {
+            OnAware();
+            // TODO: ADD some zombie notice sound effect
         }
     }
 
