@@ -34,7 +34,7 @@ public class AIExample : MonoBehaviour {
     private int waypointIndex = 0;
     private Animator animator;
 
-    private Vector3 lastSeenPlayerPosistion;
+    private Vector3 lastSeenPlayerPosition;
 
     [SerializeField] public float AttackCooldown;
     [SerializeField] public float DamagedCooldown;
@@ -85,7 +85,7 @@ public class AIExample : MonoBehaviour {
         else if (isAware)
         {
             if (!isAttacking) { 
-                lastSeenPlayerPosistion = fpsc.transform.position;
+                lastSeenPlayerPosition = fpsc.transform.position;
                 agent.SetDestination(fpsc.transform.position);
                 animator.SetBool("Aware", true);
                 if(!(AttackCooldown > 0f))
@@ -111,13 +111,13 @@ public class AIExample : MonoBehaviour {
         } else
         {
             SearchForPlayer();
-            if(lastSeenPlayerPosistion != Vector3.zero){
-                if(agent.transform.position.x == lastSeenPlayerPosistion.x && agent.transform.position.z == lastSeenPlayerPosistion.z){
-                    lastSeenPlayerPosistion = Vector3.zero;
+            if(lastSeenPlayerPosition != Vector3.zero){
+                if(agent.transform.position.x == lastSeenPlayerPosition.x && agent.transform.position.z == lastSeenPlayerPosition.z){
+                    lastSeenPlayerPosition = Vector3.zero;
                 }
                 else{
                     agent.speed = wanderSpeed*2f;
-                    agent.SetDestination(lastSeenPlayerPosistion);
+                    agent.SetDestination(lastSeenPlayerPosition);
                 }
             }
             else{
@@ -153,7 +153,7 @@ public class AIExample : MonoBehaviour {
                 {
                     if (hit.transform.CompareTag("Player"))
                     {
-                        lastSeenPlayerPosistion = hit.point;
+                        lastSeenPlayerPosition = hit.point;
 
                         OnAware();
                         Debug.Log("Tracked Player");
@@ -221,7 +221,7 @@ public class AIExample : MonoBehaviour {
             if (Physics.Raycast(AttackRaycastArea.transform.position, AttackRaycastArea.transform.forward, out hitInfo, attackRadius)){
                 isAttacking = true;
                 if (hitInfo.transform.CompareTag("Player")){
-                    StartCoroutine(AttackPlyaer(hitInfo));
+                    StartCoroutine(DelayAttackPlayer(hitInfo));
                     Debug.Log("Zombie Hitting Player"); 
                     AttackCooldown = 1.4f;
                 }
@@ -247,7 +247,7 @@ public class AIExample : MonoBehaviour {
         Destroy(GetComponent<NavMeshAgent>());
     }
 
-    IEnumerator AttackPlyaer(RaycastHit hitInfo)
+    IEnumerator DelayAttackPlayer(RaycastHit hitInfo)
     {
         yield return new WaitForSeconds(0.75f);
 
@@ -263,7 +263,7 @@ public class AIExample : MonoBehaviour {
     public void onHit(float damage) {
         if (!isAware)
         {
-            lastSeenPlayerPosistion = fpsc.transform.position;
+            lastSeenPlayerPosition = fpsc.transform.position;
             OnAware();
         }
 
