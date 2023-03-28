@@ -11,6 +11,8 @@ public class Gun : MonoBehaviour {
     
     float timeSinceLastShot;
     public GameObject bulletHole;
+    public GameObject bulletImpactEffect;
+    public GameObject bulletImpactFreshEffect;
     public GameObject damageEffect;
     public GameObject damageHeadEffect;
     public AudioSource m_AudioSource;
@@ -80,6 +82,7 @@ public class Gun : MonoBehaviour {
                 // add a layer mask to the raycast to only hit the zombies, ignore layer 3
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~layerMask)) {
                     if (hit.transform.name == "Zombie(Clone)" || hit.transform.name == "Zombie"){
+                        Instantiate (bulletImpactFreshEffect, hit.point, Quaternion.LookRotation(hit.normal));
                         if(hit.collider.GetType() == typeof(SphereCollider)){
                             Instantiate (damageHeadEffect, hit.point, Quaternion.identity);
                             hit.transform.GetComponent<AIExample>().onHit(gunData.damage*5);
@@ -89,6 +92,7 @@ public class Gun : MonoBehaviour {
                         }
                     }
                     else{
+                        Instantiate(bulletImpactEffect, hit.point, Quaternion.LookRotation(hit.normal));
                         Instantiate(bulletHole, hit.point + hit.normal * 0.0001f, Quaternion.LookRotation(hit.normal));
                         bulletHole.transform.up = hit.normal;
                     }
