@@ -20,6 +20,15 @@ public class Gun : MonoBehaviour {
     public bool isAutoReload;
     bool AutoReloading = false;
 
+    [SerializeField] private float noClipRadius;
+	[SerializeField] private float noClipDistance;
+
+    [SerializeField] private AnimationCurve offsetCurve;
+
+	[SerializeField] private LayerMask clippingLayerMask;
+
+    private Vector3 _originalLocalPosition;
+
 
     private void Start() {
         m_AudioSource = GetComponent<AudioSource>();
@@ -28,6 +37,7 @@ public class Gun : MonoBehaviour {
         PlayerShoot.reloadInput += StartReload;
         gunData.currentAmmo = gunData.magSize;
         gunData.reservedAmmo = gunData.magSize * 3;
+        _originalLocalPosition = transform.localPosition;
     }
 
     private void OnDisable() => gunData.reloading = false;
@@ -112,6 +122,15 @@ public class Gun : MonoBehaviour {
 
     private void Update() {
         timeSinceLastShot += Time.deltaTime;
+        if (Physics.SphereCast(Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f)), noClipRadius, out var hit, noClipDistance, clippingLayerMask))
+		{
+            Debug.Log(hit.distance);
+			transform.localPosition = _originalLocalPosition - new Vector3(0.0f, 0.0f, offsetCurve.Evaluate(hit.distance / noClipDistance));
+		}
+		else
+		{
+			transform.localPosition = _originalLocalPosition;
+		}
     }
 
     private void OnGunShot() {  }
