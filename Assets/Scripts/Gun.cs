@@ -19,6 +19,12 @@ public class Gun : MonoBehaviour {
     public AudioClip shootSound;
     public AudioClip reloadSound;
     public AudioClip emptyFire;
+
+    public GameObject muzzleFlash;
+    public GameObject muzzleSpawnPoint;
+
+    private GameObject holdFlash;
+
     public bool isAutoReload;
     bool AutoReloading = false;
 
@@ -76,6 +82,11 @@ public class Gun : MonoBehaviour {
         if (gunData.currentAmmo > 0) {
             Debug.Log("In Mag Ammo:" + gunData.currentAmmo + " Remaining Ammo" + gunData.reservedAmmo);
             if (CanShoot()) {
+                holdFlash = Instantiate(muzzleFlash, muzzleSpawnPoint.transform.position, muzzleSpawnPoint.transform.rotation * Quaternion.Euler(0,0,90) ) as GameObject;
+                holdFlash.transform.parent = muzzleSpawnPoint.transform;
+
+                Destroy(holdFlash, 0.15f);
+
                 m_AudioSource.PlayOneShot(shootSound);
                 RaycastHit  hit;
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);  
