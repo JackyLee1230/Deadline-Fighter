@@ -10,7 +10,7 @@ public class Gun : MonoBehaviour {
     [SerializeField] public LayerMask layerMask = 1 << 3;
     
     float timeSinceLastShot;
-    public GameObject bulletHole;
+    public GameObject[] bulletHole;
     public GameObject bulletImpactEffect;
     public GameObject bulletImpactFreshEffect;
     public GameObject damageEffect;
@@ -103,9 +103,11 @@ public class Gun : MonoBehaviour {
                         }
                     }
                     else{
+                        int randomNumberForBulletHole = UnityEngine.Random.Range(0,3);
+
                         Instantiate(bulletImpactEffect, hit.point, Quaternion.LookRotation(hit.normal));
-                        Instantiate(bulletHole, hit.point + hit.normal * 0.0001f, Quaternion.LookRotation(hit.normal));
-                        bulletHole.transform.up = hit.normal;
+                        Instantiate(bulletHole[randomNumberForBulletHole], hit.point + hit.normal * 0.0001f, Quaternion.LookRotation(hit.normal));
+                        bulletHole[randomNumberForBulletHole].transform.up = hit.normal;
                     }
                 }
 
