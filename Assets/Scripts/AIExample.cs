@@ -196,7 +196,8 @@ public class AIExample : MonoBehaviour {
 
     public void OnAware()
     {
-        e_AudioSource.PlayOneShot(zombieNotice);
+        e_AudioSource.clip = zombieNotice;
+        e_AudioSource.Play();
         isAware = true;
     }
 
