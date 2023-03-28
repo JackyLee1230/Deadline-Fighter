@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-// Cartoon FX  - (c) 2015 Jean Moreno
+// Cartoon FX  - (c) 2015, Jean Moreno
 
 // Decreases a light's intensity over time.
 
