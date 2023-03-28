@@ -27,6 +27,7 @@ public class Gun : MonoBehaviour {
         PlayerShoot.shootInput += Shoot;
         PlayerShoot.reloadInput += StartReload;
         gunData.currentAmmo = gunData.magSize;
+        gunData.reservedAmmo = gunData.magSize * 3;
     }
 
     private void OnDisable() => gunData.reloading = false;
@@ -37,13 +38,20 @@ public class Gun : MonoBehaviour {
     }
 
     private IEnumerator Reload() {
+        if (gunData.reservedAmmo <= 0)
+            yield break;
+
         gunData.reloading = true;
 
         m_AudioSource.clip = reloadSound;
         m_AudioSource.Play();
         yield return new WaitForSeconds(gunData.reloadTime);
 
-        gunData.currentAmmo = gunData.magSize;
+        // if there are still ammo left in the mag, add it to the currentAmmo
+        gunData.reservedAmmo += gunData.currentAmmo;
+        int min = Mathf.Min(gunData.reservedAmmo, gunData.magSize);
+        gunData.reservedAmmo -= min ;
+        gunData.currentAmmo = min;
 
         gunData.reloading = false;
 
@@ -54,7 +62,7 @@ public class Gun : MonoBehaviour {
 
     private void Shoot() {
         if (gunData.currentAmmo > 0) {
-            Debug.Log(gunData.currentAmmo);
+            Debug.Log("In Mag Ammo:" + gunData.currentAmmo + " Remaining Ammo" + gunData.reservedAmmo);
             if (CanShoot()) {
                 m_AudioSource.PlayOneShot(shootSound);
                 RaycastHit  hit;
@@ -94,7 +102,7 @@ public class Gun : MonoBehaviour {
 
     IEnumerator DelayReload()
     {
-        if(!AutoReloading){
+        if(!AutoReloading && gunData.reservedAmmo > 0){
             AutoReloading = true;
             yield return new WaitForSeconds(0.5f);
             StartReload();
