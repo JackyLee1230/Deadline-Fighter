@@ -168,8 +168,8 @@ public class AIExample : MonoBehaviour {
 
     public void SearchForPlayer()
     {
-        float modifiedViewDistance = isPlayerStealth == 2 ? viewDistance*2.5f : isPlayerStealth == 1 ? viewDistance/1.5f : viewDistance;
-        float modifiedDetectDistance = isPlayerStealth == 2 ? detectDistance*3.5f : isPlayerStealth == 1 ? detectDistance/3f : detectDistance;
+        float modifiedViewDistance = isPlayerStealth == 2 ? viewDistance*2.5f : isPlayerStealth == 1 ? viewDistance : viewDistance/1.5f;
+        float modifiedDetectDistance = isPlayerStealth == 2 ? detectDistance*3.5f : isPlayerStealth == 1 ? detectDistance : 0;
 
         if (Vector3.Angle(Vector3.forward, transform.InverseTransformPoint(fpsc.transform.position)) < fov / 2f)
         {
@@ -189,7 +189,7 @@ public class AIExample : MonoBehaviour {
                 }
             }
         }
-        else if ((Vector3.Distance(fpsc.transform.position, transform.position) < modifiedDetectDistance)) {
+        else if ((Vector3.Distance(fpsc.transform.position, transform.position) < modifiedDetectDistance && modifiedDetectDistance != 0)) {
             OnAware();
         }
     }

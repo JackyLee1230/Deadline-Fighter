@@ -16,6 +16,9 @@ public class Gun : MonoBehaviour {
     public AudioClip shootSound;
     public AudioClip reloadSound;
     public AudioClip emptyFire;
+    public bool isAutoReload;
+    bool AutoReloading = false;
+
 
     private void Start() {
         m_AudioSource = GetComponent<AudioSource>();
@@ -28,7 +31,7 @@ public class Gun : MonoBehaviour {
     private void OnDisable() => gunData.reloading = false;
 
     public void StartReload() {
-        if (!gunData.reloading && this.gameObject.activeSelf)
+        if (!gunData.reloading && this.gameObject.activeSelf && gunData.currentAmmo < gunData.magSize)
             StartCoroutine(Reload());
     }
 
@@ -42,6 +45,8 @@ public class Gun : MonoBehaviour {
         gunData.currentAmmo = gunData.magSize;
 
         gunData.reloading = false;
+
+        AutoReloading = false;
     }
 
     private bool CanShoot() => !gunData.reloading && timeSinceLastShot > 1f / (gunData.fireRate / 60f);
@@ -49,9 +54,8 @@ public class Gun : MonoBehaviour {
     private void Shoot() {
         if (gunData.currentAmmo > 0) {
             Debug.Log(gunData.currentAmmo);
-            m_AudioSource.clip = shootSound;
             if (CanShoot()) {
-                m_AudioSource.Play();
+                m_AudioSource.PlayOneShot(shootSound);
                 RaycastHit  hit;
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);  
                 if (Physics.Raycast(ray, out hit)) {
@@ -76,9 +80,24 @@ public class Gun : MonoBehaviour {
             }
         }
         else{
-                m_AudioSource.clip = emptyFire;
-                m_AudioSource.Play();
+            if(CanShoot()){
+                m_AudioSource.PlayOneShot(emptyFire);
+                timeSinceLastShot = 0;
+            }
+            if(isAutoReload){
+                StartCoroutine(DelayReload());
+            }
         }
+    }
+
+    IEnumerator DelayReload()
+    {
+        if(!AutoReloading){
+            AutoReloading = true;
+            yield return new WaitForSeconds(0.5f);
+            StartReload();
+        }
+
     }
 
     private void Update() {
