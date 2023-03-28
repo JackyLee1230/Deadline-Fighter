@@ -17,6 +17,9 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     public GameObject[] spawnPoints;
 
+    [SerializeField]
+    public float minDistanceToSpawn = 10;
+
     [SerializeField] public FirstPersonController fpsc;
 
     [SerializeField]
@@ -75,6 +78,9 @@ public class EnemySpawner : MonoBehaviour
         Debug.Log("round " + round + " spwanCount " + spwanCount);
         for (int i = 0; i < spwanCount; i++) {
             GameObject spawnPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)];
+            while(Vector3.Distance(fpsc.transform.position, spawnPoint.transform.position) < minDistanceToSpawn) {
+                spawnPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)];
+            }
 
             GameObject enemySpawned = Instantiate(enemyPrefabs[UnityEngine.Random.Range(0, enemyPrefabs.Length)], spawnPoint.transform.position, Quaternion.identity);
             enemySpawned.GetComponentInChildren<AIExample>().fpsc = fpsc;
