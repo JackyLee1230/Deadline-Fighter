@@ -7,6 +7,7 @@ public class Gun : MonoBehaviour {
 
     [Header("References")]
     [SerializeField] private GunData gunData;
+    [SerializeField] public LayerMask layerMask = 1 << 3;
     
     float timeSinceLastShot;
     public GameObject bulletHole;
@@ -58,7 +59,8 @@ public class Gun : MonoBehaviour {
                 m_AudioSource.PlayOneShot(shootSound);
                 RaycastHit  hit;
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);  
-                if (Physics.Raycast(ray, out hit)) {
+                // add a layer mask to the raycast to only hit the zombies, ignore layer 3
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~layerMask)) {
                     if (hit.transform.name == "Zombie(Clone)" || hit.transform.name == "Zombie"){
                         if(hit.collider.GetType() == typeof(SphereCollider)){
                             Instantiate (damageHeadEffect, hit.point, Quaternion.identity);
