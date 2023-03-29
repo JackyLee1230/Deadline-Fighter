@@ -27,7 +27,7 @@ public class Gun : MonoBehaviour {
     public TrailRenderer bulletTrail;
     public GameObject bulletSpawnPoint;
 
-    public GameObject bulletCasting;
+    public GameObject bulletCasing;
     public GameObject bulletShellSpawnPoint;
 
     public bool isAutoReload;
@@ -99,7 +99,7 @@ public class Gun : MonoBehaviour {
         if (gunData.currentAmmo > 0) {
             Debug.Log("In Mag Ammo:" + gunData.currentAmmo + " Remaining Ammo" + gunData.reservedAmmo);
             if (CanShoot()) {
-                GameObject bulletShell = Instantiate(bulletCasting, bulletShellSpawnPoint.transform.position, bulletShellSpawnPoint.transform.rotation);
+                GameObject bulletShell = Instantiate(bulletCasing, bulletShellSpawnPoint.transform.position, bulletShellSpawnPoint.transform.rotation);
 
                 holdFlash = Instantiate(muzzleFlash, muzzleSpawnPoint.transform.position, muzzleSpawnPoint.transform.rotation * Quaternion.Euler(0,0,90) ) as GameObject;
                 holdFlash.transform.parent = muzzleSpawnPoint.transform;
