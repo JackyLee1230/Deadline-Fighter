@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityStandardAssets.Characters.FirstPerson;
 using UnityEngine;
 
 public class Gun : MonoBehaviour {
@@ -9,6 +10,8 @@ public class Gun : MonoBehaviour {
     [SerializeField] public GunData gunData;
     [SerializeField] public LayerMask layerMask = 1 << 3;
     
+    public FirstPersonController fpsc;
+
     float timeSinceLastShot;
     public GameObject[] bulletHole;
     public GameObject bulletImpactEffect;
@@ -114,7 +117,7 @@ public class Gun : MonoBehaviour {
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~layerMask)) {    
                     TrailRenderer trail = Instantiate(bulletTrail, bulletSpawnPoint.transform.position, Quaternion.identity);
                     trail.transform.parent = bulletSpawnPoint.transform;
-                    StartCoroutine(SpawnTrail(trail, hit));
+                    StartCoroutine(SpawnTrail(trail, hit.point, true));
                     if (hit.transform.name == "Zombie(Clone)" || hit.transform.name == "Zombie"){
                         Instantiate (bulletImpactFreshEffect, hit.point, Quaternion.LookRotation(hit.normal));
                         float damage = calcDropOffDamage(hit.distance, gunData.minDamage, gunData.maxDamage, 30, 100);
@@ -135,6 +138,13 @@ public class Gun : MonoBehaviour {
                         Instantiate(bulletHole[randomNumberForBulletHole], hit.point + hit.normal * 0.0001f, Quaternion.LookRotation(hit.normal));
                         bulletHole[randomNumberForBulletHole].transform.up = hit.normal;
                     }
+                }
+                else{
+                    Vector3 hitProjectPoint = fpsc.transform.position + transform.forward *100f;
+
+                    TrailRenderer trail = Instantiate(bulletTrail, bulletSpawnPoint.transform.position, Quaternion.identity);
+                    trail.transform.parent = bulletSpawnPoint.transform;
+                    StartCoroutine(SpawnTrail(trail, hitProjectPoint, false));
                 }
 
                 gunData.currentAmmo--;
@@ -163,13 +173,13 @@ public class Gun : MonoBehaviour {
 
     }
 
-    IEnumerator SpawnTrail(TrailRenderer trail, RaycastHit hit)
+    IEnumerator SpawnTrail(TrailRenderer trail, Vector3 hitPoint, bool hasHit)
     {
         float time = 0;
         Vector3 startPosition = bulletSpawnPoint.transform.position;
 
-        while(time < 1){
-            trail.transform.position = Vector3.Lerp(startPosition, hit.point, time);
+        while(time < (hasHit? 1 : 3)){
+            trail.transform.position = Vector3.Lerp(startPosition, hitPoint, time);
             time += Time.deltaTime / trail.time;
 
             yield return null;
