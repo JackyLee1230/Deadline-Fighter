@@ -6,7 +6,7 @@ using UnityEngine;
 public class Gun : MonoBehaviour {
 
     [Header("References")]
-    [SerializeField] private GunData gunData;
+    [SerializeField] public GunData gunData;
     [SerializeField] public LayerMask layerMask = 1 << 3;
     
     float timeSinceLastShot;
@@ -57,7 +57,7 @@ public class Gun : MonoBehaviour {
             if (bulletDist >= dropOffEnd) return minDamage;
 
             float dropOffRange = dropOffEnd - dropOffStart;
-            return Mathf.Lerp(maxDamage, minDamage, (bulletDistance - dropOffStart) / dropOffRange);
+            return Mathf.Lerp(maxDamage, minDamage, (bulletDist - dropOffStart) / dropOffRange);
         }
 
     public void StartReload() {
@@ -92,7 +92,7 @@ public class Gun : MonoBehaviour {
 
     private void Shoot() {
         if (gunData.currentAmmo > 0) {
-            // Debug.Log("In Mag Ammo:" + gunData.currentAmmo + " Remaining Ammo" + gunData.reservedAmmo);
+            Debug.Log("In Mag Ammo:" + gunData.currentAmmo + " Remaining Ammo" + gunData.reservedAmmo);
             if (CanShoot()) {
                 holdFlash = Instantiate(muzzleFlash, muzzleSpawnPoint.transform.position, muzzleSpawnPoint.transform.rotation * Quaternion.Euler(0,0,90) ) as GameObject;
                 holdFlash.transform.parent = muzzleSpawnPoint.transform;
