@@ -27,6 +27,9 @@ public class Gun : MonoBehaviour {
     public TrailRenderer bulletTrail;
     public GameObject bulletSpawnPoint;
 
+    public GameObject bulletCasting;
+    public GameObject bulletShellSpawnPoint;
+
     public bool isAutoReload;
     bool AutoReloading = false;
 
@@ -96,9 +99,12 @@ public class Gun : MonoBehaviour {
         if (gunData.currentAmmo > 0) {
             Debug.Log("In Mag Ammo:" + gunData.currentAmmo + " Remaining Ammo" + gunData.reservedAmmo);
             if (CanShoot()) {
+                GameObject bulletShell = Instantiate(bulletCasting, bulletShellSpawnPoint.transform.position, bulletShellSpawnPoint.transform.rotation);
+
                 holdFlash = Instantiate(muzzleFlash, muzzleSpawnPoint.transform.position, muzzleSpawnPoint.transform.rotation * Quaternion.Euler(0,0,90) ) as GameObject;
                 holdFlash.transform.parent = muzzleSpawnPoint.transform;
 
+                Destroy(bulletShell, 0.3f);
                 Destroy(holdFlash, 0.15f);
 
                 m_AudioSource.PlayOneShot(shootSound);
@@ -108,9 +114,7 @@ public class Gun : MonoBehaviour {
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~layerMask)) {    
                     TrailRenderer trail = Instantiate(bulletTrail, bulletSpawnPoint.transform.position, Quaternion.identity);
                     trail.transform.parent = bulletSpawnPoint.transform;
-
                     StartCoroutine(SpawnTrail(trail, hit));
-
                     if (hit.transform.name == "Zombie(Clone)" || hit.transform.name == "Zombie"){
                         Instantiate (bulletImpactFreshEffect, hit.point, Quaternion.LookRotation(hit.normal));
                         float damage = calcDropOffDamage(hit.distance, gunData.minDamage, gunData.maxDamage, 30, 100);
