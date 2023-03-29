@@ -6,7 +6,7 @@ using UnityEngine;
 public class Gun : MonoBehaviour {
 
     [Header("References")]
-    [SerializeField] private GunData gunData;
+    [SerializeField] public GunData gunData;
     [SerializeField] public LayerMask layerMask = 1 << 3;
     
     float timeSinceLastShot;
@@ -52,14 +52,26 @@ public class Gun : MonoBehaviour {
 
     private void OnDisable() => gunData.reloading = false;
 
+
+    
+    float calcDropOffDamage(float bulletDist, float minDamage, float maxDamage, float dropOffStart, float dropOffEnd) {
+            if (bulletDist <= dropOffStart) return maxDamage;
+            if (bulletDist >= dropOffEnd) return minDamage;
+
+            float dropOffRange = dropOffEnd - dropOffStart;
+            return Mathf.Lerp(maxDamage, minDamage, (bulletDist - dropOffStart) / dropOffRange);
+        }
+
     public void StartReload() {
         if (!gunData.reloading && this.gameObject.activeSelf && gunData.currentAmmo < gunData.magSize)
             StartCoroutine(Reload());
     }
 
     private IEnumerator Reload() {
-        if (gunData.reservedAmmo <= 0)
+        if (gunData.reservedAmmo <= 0){
+            m_AudioSource.PlayOneShot(emptyFire);
             yield break;
+        }
 
         gunData.reloading = true;
 
@@ -101,12 +113,15 @@ public class Gun : MonoBehaviour {
 
                     if (hit.transform.name == "Zombie(Clone)" || hit.transform.name == "Zombie"){
                         Instantiate (bulletImpactFreshEffect, hit.point, Quaternion.LookRotation(hit.normal));
+                        float damage = calcDropOffDamage(hit.distance, gunData.minDamage, gunData.maxDamage, 30, 100);
                         if(hit.collider.GetType() == typeof(SphereCollider)){
                             Instantiate (damageHeadEffect, hit.point, Quaternion.identity);
-                            hit.transform.GetComponent<AIExample>().onHit(gunData.damage*5);
+                            hit.transform.GetComponent<AIExample>().onHit(damage*5);
+                            Debug.Log("Hit for " + damage*5 + " damage; Distance" + hit.distance );
                         } else {
                             Instantiate (damageEffect, hit.point, Quaternion.identity);
-                            hit.transform.GetComponent<AIExample>().onHit(gunData.damage);
+                            hit.transform.GetComponent<AIExample>().onHit(damage);
+                            Debug.Log("Hit for " + damage + " damage; Distance" + hit.distance );
                         }
                     }
                     else{
