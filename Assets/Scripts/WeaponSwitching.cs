@@ -54,5 +54,11 @@ public class WeaponSwitching : MonoBehaviour {
         OnWeaponSelected();
     }
 
+    public bool isGun()
+    { // hard coded 0 and 1 guns and 2 melee for now
+        bool a = selectedWeapon < 2 ? true : false;
+        return a;
+    }
+
     private void OnWeaponSelected() {  }
 }

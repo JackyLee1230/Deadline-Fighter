@@ -33,6 +33,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] public float gunBaseRange = 200f;
         [SerializeField] public GameObject pauseMenu;
 
+        [Header("Weapon(Melee)")]
+        [SerializeField] public float meleeBaseDamage = 10;
+        [SerializeField] public float meleeBaseAttackRate = 1.1f;
+
         [Header("Scores")]
         [SerializeField] public int score = 0;
         [SerializeField] public GameObject ScoreUI;

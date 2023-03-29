@@ -15,12 +15,14 @@ public class PlayerExample : MonoBehaviour {
     [SerializeField] private AudioSource audioSource;
     private FirstPersonController fpsc;
     private SphereCollider sphereCollider;
+    private WeaponSwitching w;
 
     public void Start()
     {
         audioSource = GetComponent<AudioSource>();
         fpsc = GetComponent<FirstPersonController>();
         sphereCollider = GetComponent<SphereCollider>();
+        w = GetComponent<WeaponSwitching>();
     }
 
     public void Update()
@@ -31,7 +33,11 @@ public class PlayerExample : MonoBehaviour {
         }
         if (Input.GetMouseButtonDown(0))
         {
-            Fire();
+            if (w.isGun())
+            {
+                Fire();
+            }
+            // don't play shootSound with a melee weapon
         }
         if (fpsc.GetPlayerStealthProfile() == 0)
         {
