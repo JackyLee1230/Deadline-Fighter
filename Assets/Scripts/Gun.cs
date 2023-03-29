@@ -21,9 +21,11 @@ public class Gun : MonoBehaviour {
     public AudioClip emptyFire;
 
     public GameObject muzzleFlash;
+    private GameObject holdFlash;
     public GameObject muzzleSpawnPoint;
 
-    private GameObject holdFlash;
+    public TrailRenderer bulletTrail;
+    public GameObject bulletSpawnPoint;
 
     public bool isAutoReload;
     bool AutoReloading = false;
@@ -91,7 +93,12 @@ public class Gun : MonoBehaviour {
                 RaycastHit  hit;
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);  
                 // add a layer mask to the raycast to only hit the zombies, ignore layer 3
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~layerMask)) {
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~layerMask)) {    
+                    TrailRenderer trail = Instantiate(bulletTrail, bulletSpawnPoint.transform.position, Quaternion.identity);
+                    trail.transform.parent = bulletSpawnPoint.transform;
+
+                    StartCoroutine(SpawnTrail(trail, hit));
+
                     if (hit.transform.name == "Zombie(Clone)" || hit.transform.name == "Zombie"){
                         Instantiate (bulletImpactFreshEffect, hit.point, Quaternion.LookRotation(hit.normal));
                         if(hit.collider.GetType() == typeof(SphereCollider)){
@@ -135,6 +142,21 @@ public class Gun : MonoBehaviour {
             StartReload();
         }
 
+    }
+
+    IEnumerator SpawnTrail(TrailRenderer trail, RaycastHit hit)
+    {
+        float time = 0;
+        Vector3 startPosition = bulletSpawnPoint.transform.position;
+
+        while(time < 1){
+            trail.transform.position = Vector3.Lerp(startPosition, hit.point, time);
+            time += Time.deltaTime / trail.time;
+
+            yield return null;
+        }
+
+        Destroy(trail.gameObject, trail.time);
     }
 
     private void Update() {
