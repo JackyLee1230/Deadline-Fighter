@@ -91,7 +91,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
         public GameObject damageEffect;
         public GameObject damageHeadEffect;
         public GameObject bulletHole;
-        public WeaponSwitching WeaponSwitching;
 
 
         // Use this for initialization
