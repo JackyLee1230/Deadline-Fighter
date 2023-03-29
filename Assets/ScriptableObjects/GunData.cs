@@ -20,5 +20,8 @@ public class GunData : ScriptableObject {
     [Tooltip("In RPM")] public float fireRate;
     public float reloadTime;
     [HideInInspector] public bool reloading;
+    [SerializeField] public GameObject Ammo;
+
+
 
 }
