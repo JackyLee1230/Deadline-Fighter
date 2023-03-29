@@ -9,8 +9,8 @@ public class GunData : ScriptableObject {
     public new string name;
 
     [Header("Shooting")]
-    public float maxDamage;
-    public float minDamage;
+    public float damage;
+    public float maxDistance;
     
     [Header("Reloading")]
     public int currentAmmo;
@@ -20,5 +20,5 @@ public class GunData : ScriptableObject {
     [Tooltip("In RPM")] public float fireRate;
     public float reloadTime;
     [HideInInspector] public bool reloading;
-
+    
 }

@@ -11,10 +11,6 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     public int enemiesAlive = 0;
 
-    [SerializeField] List<float> timeTook;
-
-    [SerializeField] public float currentRoundTime;
-
     [SerializeField]
     public int round = 0;
 
@@ -39,13 +35,12 @@ public class EnemySpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        timeTook = new List<float>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        currentRoundTime += Time.deltaTime;
         for (int i =0; i < enemies.Length; i++) {
             if (enemies[i] == null || enemies[i].GetComponentInChildren<AIExample>().isDead == true) {
                 enemiesAlive = enemies.Length - 1;
@@ -54,14 +49,14 @@ public class EnemySpawner : MonoBehaviour
                 Array.Resize(ref enemies, enemies.Length - 1);
             }
         }
-        roundNum.text = "Round: " + round.ToString() + " Time:" + currentRoundTime.ToString("F0") + "s; Alive: " + enemiesAlive.ToString();
+        roundNum.text = "Round: " + round.ToString() + "; Alive: " + enemiesAlive.ToString();
         if (enemiesAlive == 0) {
             // add a random number of score  between (round * 100) to (round * 200 ) to fpsc.score
             fpsc.score += UnityEngine.Random.Range(round * 100, round * 200);
 
             round++;
             nextWave(round);
-        roundNum.text = "Round: " + round.ToString() + " Time:" + currentRoundTime.ToString("F0") + "s; Alive: " + enemiesAlive.ToString();
+            roundNum.text = "Round: " + round.ToString() + "; Alive: " + enemiesAlive.ToString();
         }
 
         if (Input.GetKeyDown(KeyCode.Return)) {
@@ -71,14 +66,11 @@ public class EnemySpawner : MonoBehaviour
             }
             round++;
             nextWave(round);
-        roundNum.text = "Round: " + round.ToString() + " Time:" + currentRoundTime.ToString("F0") + "s; Alive: " + enemiesAlive.ToString();
+            roundNum.text = "Round: " + round.ToString() + "; Alive: " + enemiesAlive.ToString();
         }
     }
 
     public void nextWave(int round) {
-        // add the time it took to complete the round to the list
-        timeTook.Add(currentRoundTime);
-        currentRoundTime = 0.0f;
         // create a new array of enemies
         AudioSource.PlayClipAtPoint(roundWin, transform.position, 1.5f);
         int spwanCount = UnityEngine.Random.Range(round, round * 10);
