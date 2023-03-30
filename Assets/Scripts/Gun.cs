@@ -59,6 +59,16 @@ public class Gun : MonoBehaviour {
 
     private void OnDisable() => gunData.reloading = false;
 
+    public bool getIsReloading(){
+        return gunData.reloading;
+    }
+
+    // private void OnEnable() {
+    //     for (var child in transform){
+    //         if child name contain bsp
+    //     }
+    // }
+
 
     
     float calcDropOffDamage(float bulletDist, float minDamage, float maxDamage, float dropOffStart, float dropOffEnd) {
@@ -81,7 +91,7 @@ public class Gun : MonoBehaviour {
         }
 
         gunData.reloading = true;
-
+        fpsc.setReloadIcon(true);
         m_AudioSource.clip = reloadSound;
         m_AudioSource.Play();
         yield return new WaitForSeconds(gunData.reloadTime);
@@ -93,6 +103,7 @@ public class Gun : MonoBehaviour {
         gunData.currentAmmo = min;
 
         gunData.reloading = false;
+        fpsc.setReloadIcon(false);
 
         AutoReloading = false;
     }
@@ -117,6 +128,7 @@ public class Gun : MonoBehaviour {
                 // add a layer mask to the raycast to only hit the zombies, ignore layer 3
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~layerMask)) {    
                     TrailRenderer trail = Instantiate(bulletTrail, bulletSpawnPoint.transform.position, Quaternion.identity);
+                    trail.autodestruct = true;
                     trail.transform.parent = bulletSpawnPoint.transform;
                     StartCoroutine(SpawnTrail(trail, hit.point, true));
                     if (hit.transform.name == "Zombie(Clone)" || hit.transform.name == "Zombie"){

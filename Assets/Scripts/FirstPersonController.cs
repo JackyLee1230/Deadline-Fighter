@@ -55,6 +55,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         [Header("Movement")]
         public GameObject sprintIcon;
+        [SerializeField] public GameObject reloadingIcon;
         [SerializeField] private bool m_IsWalking;
         [SerializeField] private float m_WalkSpeed;
         [SerializeField] private float m_RunSpeed;
@@ -111,6 +112,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             currentHealth = maxHealth;
             iFrames = 0f;
             playerDamage.SetActive(false); // disable the damage taking effect
+            setReloadIcon(false);
             resetHealthBar();
         }
 
@@ -182,6 +184,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 iFrameIcon.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.1f);
             }
 
+    
+
             // if (Input.GetMouseButtonDown(0)) {
             //     m_Shooting = true;
             //     RaycastHit  hit;
@@ -219,6 +223,14 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 healthBarFill.GetComponent<Image>().color = Color.yellow;
             } else {
                 healthBarFill.GetComponent<Image>().color = Color.green;
+            }
+        }
+
+        public void setReloadIcon(bool isReloading){
+            if(isReloading){
+                reloadingIcon.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            } else {
+                reloadingIcon.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.1f);
             }
         }
 
