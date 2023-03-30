@@ -51,6 +51,7 @@ public class Gun : MonoBehaviour {
         m_AudioSource.clip = shootSound;
         PlayerShoot.shootInput += Shoot;
         PlayerShoot.reloadInput += StartReload;
+        PlayerShoot.isAuto = gunData.isAuto;
         gunData.currentAmmo = gunData.magSize;
         gunData.reservedAmmo = gunData.magSize * 3;
         _originalLocalPosition = transform.localPosition;
@@ -189,6 +190,8 @@ public class Gun : MonoBehaviour {
     }
 
     private void Update() {
+        PlayerShoot.isAuto = gunData.isAuto;
+
         timeSinceLastShot += Time.deltaTime;
         if (Physics.SphereCast(Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f)), noClipRadius, out var hit, noClipDistance, clippingLayerMask))
 		{

@@ -8,16 +8,26 @@ public class PlayerShoot : MonoBehaviour {
 
     public static Action shootInput;
     public static Action reloadInput;
+    public static bool isAuto;
     public FirstPersonController fpsc;
 
     [SerializeField] private KeyCode reloadKey = KeyCode.R;
 
     private void Update()
     {
-        if (Input.GetMouseButton(0)){
-            fpsc.m_Shooting = true;
-            shootInput?.Invoke();
-            StartCoroutine(fpsc.RemoveShootingStatus());
+        if(isAuto){
+            if (Input.GetMouseButton(0)){
+                fpsc.m_Shooting = true;
+                shootInput?.Invoke();
+                StartCoroutine(fpsc.RemoveShootingStatus());
+            }
+        }
+        else{
+            if (Input.GetMouseButtonDown(0)){
+                fpsc.m_Shooting = true;
+                shootInput?.Invoke();
+                StartCoroutine(fpsc.RemoveShootingStatus());
+            }
         }
 
         if (Input.GetKeyDown(reloadKey))

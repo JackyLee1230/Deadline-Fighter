@@ -21,4 +21,7 @@ public class GunData : ScriptableObject {
     public float reloadTime;
     [HideInInspector] public bool reloading;
 
+    [Header("Fire Mode")]
+    public bool isAuto;
+
 }
