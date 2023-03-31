@@ -48,7 +48,6 @@ public class Gun : MonoBehaviour {
 
     private void Start() {
         m_AudioSource = GetComponent<AudioSource>();
-        m_AudioSource.clip = shootSound;
         PlayerShoot.shootInput += Shoot;
         PlayerShoot.reloadInput += StartReload;
         PlayerShoot.isAuto = gunData.isAuto;
@@ -87,8 +86,10 @@ public class Gun : MonoBehaviour {
         }
 
     public void StartReload() {
-        if (!gunData.reloading && this.gameObject.activeSelf && gunData.currentAmmo < gunData.magSize)
-            StartCoroutine(Reload());
+        if(gameObject.activeSelf){
+            if (!gunData.reloading && this.gameObject.activeSelf && gunData.currentAmmo < gunData.magSize)
+                StartCoroutine(Reload());
+        }
     }
 
     private IEnumerator Reload() {
@@ -118,78 +119,67 @@ public class Gun : MonoBehaviour {
     private bool CanShoot() => !gunData.reloading && timeSinceLastShot > 1f / (gunData.fireRate / 60f);
 
     private void Shoot() {
-        if (gunData.currentAmmo > 0) {
-            Debug.Log("In Mag Ammo:" + gunData.currentAmmo + " Remaining Ammo" + gunData.reservedAmmo);
-            if (CanShoot()) {
-                GameObject bulletShell = Instantiate(bulletCasing, bulletShellSpawnPoint.transform.position, bulletShellSpawnPoint.transform.rotation);
+        if(gameObject.activeSelf){
+            if (gunData.currentAmmo > 0) {
+                Debug.Log("In Mag Ammo:" + gunData.currentAmmo + " Remaining Ammo" + gunData.reservedAmmo);
+                if (CanShoot()) {
+                    GameObject bulletShell = Instantiate(bulletCasing, bulletShellSpawnPoint.transform.position, bulletShellSpawnPoint.transform.rotation);
 
-                holdFlash = Instantiate(muzzleFlash, muzzleSpawnPoint.transform.position, muzzleSpawnPoint.transform.rotation * Quaternion.Euler(0,0,90) ) as GameObject;
-                holdFlash.transform.parent = muzzleSpawnPoint.transform;
+                    holdFlash = Instantiate(muzzleFlash, muzzleSpawnPoint.transform.position, muzzleSpawnPoint.transform.rotation * Quaternion.Euler(0,0,90) ) as GameObject;
+                    holdFlash.transform.parent = muzzleSpawnPoint.transform;
 
-                Destroy(bulletShell, 0.3f);
-                Destroy(holdFlash, 0.15f);
+                    Destroy(bulletShell, 0.3f);
+                    Destroy(holdFlash, 0.15f);
 
-                m_AudioSource.PlayOneShot(shootSound);
-                RaycastHit  hit;
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);  
-                // add a layer mask to the raycast to only hit the zombies, ignore layer 3
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~layerMask)) {    
-                    TrailRenderer trail = Instantiate(bulletTrail, bulletSpawnPoint.transform.position, Quaternion.identity);
-                    trail.autodestruct = true;
-                    trail.transform.parent = bulletSpawnPoint.transform;
-                    if(gameObject.activeSelf){
-                        StartCoroutine(SpawnTrail(trail, hit.point, true));
-                    }
-                    else {
-                        Destroy(trail.gameObject);
-                    }
+                    m_AudioSource.PlayOneShot(shootSound);
+                    RaycastHit  hit;
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);  
+                    // add a layer mask to the raycast to only hit the zombies, ignore layer 3
+                    if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~layerMask)) {    
+                        TrailRenderer trail = Instantiate(bulletTrail, bulletSpawnPoint.transform.position, Quaternion.identity);
+                        StartCoroutine(SpawnTrail(trail, hit.point));
+                        
+                        if (hit.transform.name == "Zombie(Clone)" || hit.transform.name == "Zombie"){
+                            Instantiate (bulletImpactFreshEffect, hit.point, Quaternion.LookRotation(hit.normal));
+                            float damage = calcDropOffDamage(hit.distance, gunData.minDamage, gunData.maxDamage, 30, 100);
+                            if(hit.collider.GetType() == typeof(SphereCollider)){
+                                Instantiate (damageHeadEffect, hit.point, Quaternion.identity);
+                                hit.transform.GetComponent<AIExample>().onHit(damage*5);
+                                Debug.Log("Hit for " + damage*5 + " damage; Distance" + hit.distance );
+                            } else {
+                                Instantiate (damageEffect, hit.point, Quaternion.identity);
+                                hit.transform.GetComponent<AIExample>().onHit(damage);
+                                Debug.Log("Hit for " + damage + " damage; Distance" + hit.distance );
+                            }
+                        }
+                        else{
+                            int randomNumberForBulletHole = UnityEngine.Random.Range(0,3);
 
-                    if (hit.transform.name == "Zombie(Clone)" || hit.transform.name == "Zombie"){
-                        Instantiate (bulletImpactFreshEffect, hit.point, Quaternion.LookRotation(hit.normal));
-                        float damage = calcDropOffDamage(hit.distance, gunData.minDamage, gunData.maxDamage, 30, 100);
-                        if(hit.collider.GetType() == typeof(SphereCollider)){
-                            Instantiate (damageHeadEffect, hit.point, Quaternion.identity);
-                            hit.transform.GetComponent<AIExample>().onHit(damage*5);
-                            Debug.Log("Hit for " + damage*5 + " damage; Distance" + hit.distance );
-                        } else {
-                            Instantiate (damageEffect, hit.point, Quaternion.identity);
-                            hit.transform.GetComponent<AIExample>().onHit(damage);
-                            Debug.Log("Hit for " + damage + " damage; Distance" + hit.distance );
+                            Instantiate(bulletImpactEffect, hit.point, Quaternion.LookRotation(hit.normal));
+                            Instantiate(bulletHole[randomNumberForBulletHole], hit.point + hit.normal * 0.0001f, Quaternion.LookRotation(hit.normal));
+                            bulletHole[randomNumberForBulletHole].transform.up = hit.normal;
                         }
                     }
                     else{
-                        int randomNumberForBulletHole = UnityEngine.Random.Range(0,3);
+                        Vector3 hitProjectPoint = fpsc.transform.position + transform.forward *100f;
 
-                        Instantiate(bulletImpactEffect, hit.point, Quaternion.LookRotation(hit.normal));
-                        Instantiate(bulletHole[randomNumberForBulletHole], hit.point + hit.normal * 0.0001f, Quaternion.LookRotation(hit.normal));
-                        bulletHole[randomNumberForBulletHole].transform.up = hit.normal;
+                        TrailRenderer trail = Instantiate(bulletTrail, bulletSpawnPoint.transform.position, Quaternion.identity);
+                        StartCoroutine(SpawnTrail(trail, hitProjectPoint));
                     }
+
+                    gunData.currentAmmo--;
+                    timeSinceLastShot = 0;
+                    OnGunShot();
                 }
-                else{
-                    Vector3 hitProjectPoint = fpsc.transform.position + transform.forward *100f;
-
-                    TrailRenderer trail = Instantiate(bulletTrail, bulletSpawnPoint.transform.position, Quaternion.identity);
-                    trail.transform.parent = bulletSpawnPoint.transform;
-                    if(gameObject.activeSelf){
-                        StartCoroutine(SpawnTrail(trail, hitProjectPoint, false));
-                    }
-                    else {
-                        Destroy(trail.gameObject);
-                    }
+            }
+            else{
+                if(CanShoot()){
+                    m_AudioSource.PlayOneShot(emptyFire);
+                    timeSinceLastShot = 0;
                 }
-
-                gunData.currentAmmo--;
-                timeSinceLastShot = 0;
-                OnGunShot();
-            }
-        }
-        else{
-            if(CanShoot()){
-                m_AudioSource.PlayOneShot(emptyFire);
-                timeSinceLastShot = 0;
-            }
-            if(isAutoReload && gameObject.activeSelf){
-                StartCoroutine(DelayReload());
+                if(isAutoReload && gameObject.activeSelf){
+                    StartCoroutine(DelayReload());
+                }
             }
         }
     }
@@ -204,35 +194,39 @@ public class Gun : MonoBehaviour {
 
     }
 
-    IEnumerator SpawnTrail(TrailRenderer trail, Vector3 hitPoint, bool hasHit)
+    IEnumerator SpawnTrail(TrailRenderer trail, Vector3 hitPoint)
     {
-        Debug.Log(gameObject.transform.name);
         float time = 0;
         Vector3 startPosition = bulletSpawnPoint.transform.position;
 
-        while(time < (hasHit? 1 : 3)){
+        while(time < 1){
             trail.transform.position = Vector3.Lerp(startPosition, hitPoint, time);
             time += Time.deltaTime / trail.time;
 
+            Debug.Log(trail.transform.position);
+
             yield return null;
         }
-
+        trail.transform.position = hitPoint;
+        trail.Clear();
         Destroy(trail.gameObject, trail.time);
     }
 
     private void Update() {
-        PlayerShoot.isAuto = gunData.isAuto;
+        if(gameObject.activeSelf){
+            PlayerShoot.isAuto = gunData.isAuto;
 
-        timeSinceLastShot += Time.deltaTime;
-        if (Physics.SphereCast(Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f)), noClipRadius, out var hit, noClipDistance, clippingLayerMask))
-		{
-            Debug.Log(hit.distance);
-			transform.localPosition = _originalLocalPosition - new Vector3(0.0f, 0.0f, offsetCurve.Evaluate(hit.distance / noClipDistance));
-		}
-		else
-		{
-			transform.localPosition = _originalLocalPosition;
-		}
+            timeSinceLastShot += Time.deltaTime;
+            if (Physics.SphereCast(Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f)), noClipRadius, out var hit, noClipDistance, clippingLayerMask))
+            {
+                Debug.Log(hit.distance);
+                transform.localPosition = _originalLocalPosition - new Vector3(0.0f, 0.0f, offsetCurve.Evaluate(hit.distance / noClipDistance));
+            }
+            else
+            {
+                transform.localPosition = _originalLocalPosition;
+            }
+        }
     }
 
     private void OnGunShot() {  }
