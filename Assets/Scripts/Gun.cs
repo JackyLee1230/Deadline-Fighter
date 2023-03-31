@@ -47,9 +47,10 @@ public class Gun : MonoBehaviour {
 
 
     private void Start() {
+        PlayerShoot.isGunActive = true;
         m_AudioSource = GetComponent<AudioSource>();
-        PlayerShoot.shootInput += Shoot;
-        PlayerShoot.reloadInput += StartReload;
+        PlayerShoot.shootInput = Shoot;
+        PlayerShoot.reloadInput = StartReload;
         PlayerShoot.isAuto = gunData.isAuto;
         gunData.currentAmmo = gunData.magSize;
         gunData.reservedAmmo = gunData.magSize * 3;
@@ -59,10 +60,19 @@ public class Gun : MonoBehaviour {
     // private void OnDisable() => gunData.reloading = false;
 
     private void OnDisable() {
+        PlayerShoot.isGunActive = false;
         gunData.reloading = false;
         foreach (Transform child in bulletSpawnPoint.transform) {
             GameObject.Destroy(child.gameObject);
         }
+    }
+
+    private void OnEnable() {
+        m_AudioSource.Stop();
+        PlayerShoot.isGunActive = true;
+        PlayerShoot.shootInput = Shoot;
+        PlayerShoot.reloadInput = StartReload;
+        PlayerShoot.isAuto = gunData.isAuto;
     }
 
     public bool getIsReloading(){
@@ -86,10 +96,8 @@ public class Gun : MonoBehaviour {
         }
 
     public void StartReload() {
-        if(gameObject.activeSelf){
-            if (!gunData.reloading && this.gameObject.activeSelf && gunData.currentAmmo < gunData.magSize)
-                StartCoroutine(Reload());
-        }
+        if (!gunData.reloading && this.gameObject.activeSelf && gunData.currentAmmo < gunData.magSize)
+            StartCoroutine(Reload());
     }
 
     private IEnumerator Reload() {
@@ -101,6 +109,7 @@ public class Gun : MonoBehaviour {
         gunData.reloading = true;
         fpsc.setReloadIcon(true);
         m_AudioSource.clip = reloadSound;
+        Debug.Log("here");
         m_AudioSource.Play();
         yield return new WaitForSeconds(gunData.reloadTime);
 
@@ -203,8 +212,6 @@ public class Gun : MonoBehaviour {
             trail.transform.position = Vector3.Lerp(startPosition, hitPoint, time);
             time += Time.deltaTime / trail.time;
 
-            Debug.Log(trail.transform.position);
-
             yield return null;
         }
         trail.transform.position = hitPoint;
@@ -214,6 +221,8 @@ public class Gun : MonoBehaviour {
 
     private void Update() {
         if(gameObject.activeSelf){
+            PlayerShoot.isGunActive = true;
+
             PlayerShoot.isAuto = gunData.isAuto;
 
             timeSinceLastShot += Time.deltaTime;
@@ -226,6 +235,8 @@ public class Gun : MonoBehaviour {
             {
                 transform.localPosition = _originalLocalPosition;
             }
+        } else{
+            PlayerShoot.isGunActive = false;
         }
     }
 

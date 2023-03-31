@@ -23,7 +23,7 @@ public class AIExample : MonoBehaviour {
     public Transform[] waypoints; //Array of waypoints is only used when waypoint wandering is selected
 
     [SerializeField] private float detectDistance;
-    [SerializeField] private bool isAware = false;
+    [SerializeField] public bool isAware = false;
     [SerializeField] private bool isAttacking = false;
     [SerializeField] private bool isDamage = false;
     [SerializeField] public bool isDead = false;

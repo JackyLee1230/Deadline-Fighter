@@ -9,6 +9,7 @@ public class Melee : MonoBehaviour
     public float AttackCooldown = 0.5f;
     public AudioClip AttackSound;
     public bool isAttacking = false;
+    private AudioSource ml_audioSource;
 
     // Start is called before the first frame update
     //void Start()
@@ -17,6 +18,15 @@ public class Melee : MonoBehaviour
     //}
 
     // Update is called once per frame
+
+    private void Start() {
+        PlayerShoot.isGunActive = false;
+        PlayerShoot.shootInput = null;
+        PlayerShoot.reloadInput = null;
+        ml_audioSource = GetComponent<AudioSource>();
+    }
+
+
     void Update()
     {
         if(Input.GetMouseButtonDown(0))
@@ -28,27 +38,25 @@ public class Melee : MonoBehaviour
         }
     }
 
+    private void OnDisable(){
+        isAttacking = false;
+        CanAttack = true;
+    }
+
     public void MeleeAttack()
     {
         CanAttack = false;
         isAttacking = true;
+        ml_audioSource.PlayOneShot(AttackSound);
         Animator anim = Weapon.GetComponent<Animator>();
         anim.SetTrigger("Attack");
-        AudioSource ml_audioSource = GetComponent<AudioSource>();
-        ml_audioSource.PlayOneShot(AttackSound);
         StartCoroutine(ResetAttackCooldown());
     }
 
     IEnumerator ResetAttackCooldown()
     {
-        StartCoroutine(ResetAttackBool());
-        yield return new WaitForSeconds(AttackCooldown);
-        CanAttack = true;
-    }
-
-    IEnumerator ResetAttackBool()
-    {
-        yield return new WaitForSeconds(0.167f);
+        yield return new WaitForSeconds(AttackCooldown*2);
         isAttacking = false;
+        CanAttack = true;
     }
 }
