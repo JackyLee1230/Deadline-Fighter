@@ -21,6 +21,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] public float iFrames;
         public GameObject playerCam;
         public GameObject playerDamage;
+        public GameObject healthLowWarning;
         public GameObject healthBar;
         public GameObject healthBarFill;
         public Slider healthBarSlider;
@@ -112,6 +113,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             currentHealth = maxHealth;
             iFrames = 0f;
             playerDamage.SetActive(false); // disable the damage taking effect
+            healthLowWarning.SetActive(false);
             setReloadIcon(false);
             resetHealthBar();
         }
@@ -121,6 +123,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private void Update()
         {
             if (currentHealth > 0){
+                if (currentHealth < maxHealth*0.2f){
+                    healthLowWarning.SetActive(true);
+                }else{
+                    healthLowWarning.SetActive(false);
+                }
+
                 timeSurvived += Time.deltaTime;
             }
             RotateView();
@@ -253,7 +261,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 currentHealth -= damage;
                 setHealthBar(currentHealth);
                 StartCoroutine(Shake(0.4f, 0.2f));
-                StartCoroutine(playerDamageFlash());
+                playerDamage.SetActive(true);
                 iFrames = 1.0f;  
             }
 
@@ -281,12 +289,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
             // kill player
             Debug.Log("Player is dead");
             // Destroy(gameObject, 1.0f);
-        }
-
-        public IEnumerator playerDamageFlash(){
-            playerDamage.SetActive(true);
-            yield return new WaitForSeconds(0.8f);
-            playerDamage.SetActive(false);
         }
 
         public void resetHealthBar(){
