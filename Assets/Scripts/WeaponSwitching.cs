@@ -36,9 +36,28 @@ public class WeaponSwitching : MonoBehaviour {
     private void Update() {
         int previousSelectedWeapon = selectedWeapon;
 
+        /*
+         * Select with keys
+        */
         for (int i = 0; i < keys.Length; i++)
             if (Input.GetKeyDown(keys[i]) && timeSinceLastSwitch >= switchTime)
                 selectedWeapon = i;
+
+        /*
+         *  Select with scroll wheel
+        */ 
+        if(Input.GetAxis("Mouse ScrollWheel") > 0 && timeSinceLastSwitch >= switchTime){
+            selectedWeapon++;
+			if(selectedWeapon > 2){
+				selectedWeapon = 0;
+			}
+		}
+		if(Input.GetAxis("Mouse ScrollWheel") < 0 && timeSinceLastSwitch >= switchTime){
+            selectedWeapon--;
+			if(selectedWeapon < 0){
+				selectedWeapon = 2;
+			}
+		}
 
         if (previousSelectedWeapon != selectedWeapon) Select(selectedWeapon);
 

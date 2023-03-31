@@ -249,7 +249,8 @@ public class AIExample : MonoBehaviour {
             if (Physics.Raycast(AttackRaycastArea.transform.position, AttackRaycastArea.transform.forward, out hitInfo, attackRadius)){
                 isAttacking = true;
                 if (hitInfo.transform.CompareTag("Player")){
-                    StartCoroutine(DelayAttackPlayer(hitInfo));
+                    FirstPersonController fpsc = hitInfo.transform.GetComponent<FirstPersonController>();
+                    StartCoroutine(DelayAttackPlayer(hitInfo, fpsc));
                     Debug.Log("Zombie Hitting Player"); 
                     AttackCooldown = 1.4f;
                 }
@@ -275,12 +276,12 @@ public class AIExample : MonoBehaviour {
         Destroy(GetComponent<NavMeshAgent>());
     }
 
-    IEnumerator DelayAttackPlayer(RaycastHit hitInfo)
+    IEnumerator DelayAttackPlayer(RaycastHit hitInfo, FirstPersonController fpsc)
     {
         yield return new WaitForSeconds(0.75f);
 
         if(!(DamagedCooldown > 0f) && !isDead)
-            hitInfo.transform.GetComponent<FirstPersonController>().takeDamage(10, AttackRaycastArea.transform.position, Vector3.Angle(Vector3.forward, transform.InverseTransformPoint(fpsc.transform.position)) < fov / 2f);
+            fpsc.takeDamage(10, AttackRaycastArea.transform.position, Vector3.Angle(Vector3.forward, transform.InverseTransformPoint(fpsc.transform.position)) < fov / 2f);
             // push the zombie back 20 units
             if (Vector3.Distance(fpsc.transform.position, AttackRaycastArea.transform.position) < 3.4f && !(DamagedCooldown > 0f) && Vector3.Angle(Vector3.forward, transform.InverseTransformPoint(fpsc.transform.position)) < fov / 2f)
             {
