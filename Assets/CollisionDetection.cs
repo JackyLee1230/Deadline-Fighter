@@ -10,23 +10,34 @@ public class CollisionDetection : MonoBehaviour
     public GameObject effectPoint;
     public int damage;
     public float stealthMultipler;
+    public static float AttackCooldown;
 
-    private GameObject onHitEffectHold;
+    private bool damageCooldown;
+
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Zombie" && Melee.isAttacking)
-        {
-            if(!other.transform.GetComponent<AIExample>().isAware){
-                other.transform.GetComponent<AIExample>().onHit(damage*stealthMultipler);
-            }else{
-                other.transform.GetComponent<AIExample>().onHit(damage);
+        if(!damageCooldown){
+            if(other.tag == "Zombie" && Melee.isAttacking)
+            {
+                damageCooldown = true;
+                StartCoroutine(ResetDamageCooldown());
+                if(!other.transform.GetComponent<AIExample>().isAware){
+                    other.transform.GetComponent<AIExample>().onHit(damage*stealthMultipler);
+                }else{
+                    other.transform.GetComponent<AIExample>().onHit(damage);
+                }
+
+                Instantiate(HitParticle, new Vector3(other.transform.position.x, transform.position.y, other.transform.position.z), other.transform.rotation);
+
+                Instantiate(damageEffect, effectPoint.transform.position, Quaternion.identity);
             }
-
-            Instantiate(HitParticle, new Vector3(other.transform.position.x, transform.position.y, other.transform.position.z), other.transform.rotation);
-
-            onHitEffectHold = Instantiate(damageEffect, effectPoint.transform.position, Quaternion.identity ) as GameObject;
-//            onHitEffectHold.transform.parent = effectPoint.transform;
         }
+    }
+
+    IEnumerator ResetDamageCooldown()
+    {
+        yield return new WaitForSeconds(AttackCooldown*2);
+        damageCooldown = false;
     }
 }
