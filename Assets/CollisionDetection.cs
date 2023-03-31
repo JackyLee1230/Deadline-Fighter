@@ -37,7 +37,7 @@ public class CollisionDetection : MonoBehaviour
 
     IEnumerator ResetDamageCooldown()
     {
-        yield return new WaitForSeconds(AttackCooldown*2);
+        yield return new WaitForSeconds(AttackCooldown);
         damageCooldown = false;
     }
 }
