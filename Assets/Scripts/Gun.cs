@@ -57,7 +57,14 @@ public class Gun : MonoBehaviour {
         _originalLocalPosition = transform.localPosition;
     }
 
-    private void OnDisable() => gunData.reloading = false;
+    // private void OnDisable() => gunData.reloading = false;
+
+    private void OnDisable() {
+        gunData.reloading = false;
+        foreach (Transform child in bulletSpawnPoint.transform) {
+            GameObject.Destroy(child.gameObject);
+        }
+    }
 
     public bool getIsReloading(){
         return gunData.reloading;
@@ -130,7 +137,13 @@ public class Gun : MonoBehaviour {
                     TrailRenderer trail = Instantiate(bulletTrail, bulletSpawnPoint.transform.position, Quaternion.identity);
                     trail.autodestruct = true;
                     trail.transform.parent = bulletSpawnPoint.transform;
-                    StartCoroutine(SpawnTrail(trail, hit.point, true));
+                    if(gameObject.activeSelf){
+                        StartCoroutine(SpawnTrail(trail, hit.point, true));
+                    }
+                    else {
+                        Destroy(trail.gameObject);
+                    }
+
                     if (hit.transform.name == "Zombie(Clone)" || hit.transform.name == "Zombie"){
                         Instantiate (bulletImpactFreshEffect, hit.point, Quaternion.LookRotation(hit.normal));
                         float damage = calcDropOffDamage(hit.distance, gunData.minDamage, gunData.maxDamage, 30, 100);
@@ -157,7 +170,12 @@ public class Gun : MonoBehaviour {
 
                     TrailRenderer trail = Instantiate(bulletTrail, bulletSpawnPoint.transform.position, Quaternion.identity);
                     trail.transform.parent = bulletSpawnPoint.transform;
-                    StartCoroutine(SpawnTrail(trail, hitProjectPoint, false));
+                    if(gameObject.activeSelf){
+                        StartCoroutine(SpawnTrail(trail, hitProjectPoint, false));
+                    }
+                    else {
+                        Destroy(trail.gameObject);
+                    }
                 }
 
                 gunData.currentAmmo--;
@@ -170,7 +188,7 @@ public class Gun : MonoBehaviour {
                 m_AudioSource.PlayOneShot(emptyFire);
                 timeSinceLastShot = 0;
             }
-            if(isAutoReload){
+            if(isAutoReload && gameObject.activeSelf){
                 StartCoroutine(DelayReload());
             }
         }
@@ -188,6 +206,7 @@ public class Gun : MonoBehaviour {
 
     IEnumerator SpawnTrail(TrailRenderer trail, Vector3 hitPoint, bool hasHit)
     {
+        Debug.Log(gameObject.transform.name);
         float time = 0;
         Vector3 startPosition = bulletSpawnPoint.transform.position;
 
