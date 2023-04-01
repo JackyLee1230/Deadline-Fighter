@@ -64,13 +64,16 @@ public class AIExample : MonoBehaviour {
     public void Update()
     {
         isPlayerStealth = fpsc.GetPlayerStealthProfile();
-        if (isDead && AttackCooldown > 0f)
+        if (isDead)
         {
-            animator.SetBool("Dead1", true);
-        }
-        else if (isDead)
-        {
-            animator.SetBool("Dead2", true);
+            if (AttackCooldown > 0f)
+            {
+                animator.SetBool("Dead1", true);
+            }
+            else
+            {
+                animator.SetBool("Dead2", true);
+            }
         }
         else if (isDamage)
         {

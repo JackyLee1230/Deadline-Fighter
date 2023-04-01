@@ -17,9 +17,7 @@ public class CollisionDetection : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(!damageCooldown){
-            if(other.tag == "Zombie" && Melee.isAttacking)
-            {
+        if(!damageCooldown && other.tag == "Zombie" && Melee.isAttacking){
                 damageCooldown = true;
                 StartCoroutine(ResetDamageCooldown());
                 if(!other.transform.GetComponent<AIExample>().isAware){
@@ -32,7 +30,6 @@ public class CollisionDetection : MonoBehaviour
 
                 Instantiate(damageEffect, effectPoint.transform.position, Quaternion.identity);
             }
-        }
     }
 
     IEnumerator ResetDamageCooldown()

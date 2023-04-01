@@ -65,8 +65,12 @@ public class WeaponSwitching : MonoBehaviour {
     }
 
     private void Select(int weaponIndex) {
-        for (int i = 0; i < weapons.Length; i++)
+        for (int i = 0; i < weapons.Length; i++){
             weapons[i].gameObject.SetActive(i == weaponIndex);
+            if( i == weaponIndex){
+                isGun();
+            }
+        }
 
         timeSinceLastSwitch = 0f;
 
@@ -74,9 +78,15 @@ public class WeaponSwitching : MonoBehaviour {
     }
 
     public bool isGun()
-    { // hard coded 0 and 1 guns and 2 melee for now
-        bool a = selectedWeapon < 2 ? true : false;
-        return a;
+    { 
+        if (weapons[selectedWeapon].gameObject.GetComponent<Gun>() != null){
+            Debug.Log("Gun Selected");
+            return true;
+        }
+        else{
+            Debug.Log("Melee Selected");
+            return false;
+        }
     }
 
     private void OnWeaponSelected() {  }

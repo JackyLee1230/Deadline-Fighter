@@ -50,7 +50,6 @@ public class EnemySpawner : MonoBehaviour
             if (enemies[i] == null || enemies[i].GetComponentInChildren<AIExample>().isDead == true) {
                 enemiesAlive = enemies.Length - 1;
                 enemies[i] = enemies[enemies.Length - 1];
-                // finally, let's decrement Array's size by one
                 Array.Resize(ref enemies, enemies.Length - 1);
             }
         }
@@ -63,16 +62,21 @@ public class EnemySpawner : MonoBehaviour
             nextWave(round);
         roundNum.text = "Round: " + round.ToString() + " Time:" + currentRoundTime.ToString("F0") + "s; Alive: " + enemiesAlive.ToString();
         }
-
-        if (Input.GetKeyDown(KeyCode.Return)) {
-            // destroy all enemies in enemies
-            for (int i = 0; i < enemies.Length; i++) {
-                Destroy(enemies[i]);
+        
+        #if UNITY_EDITOR
+            if (Input.GetKeyDown(KeyCode.Return)) {
+                // destroy all enemies in enemies
+                for (int i = 0; i < enemies.Length; i++) {
+                    Destroy(enemies[i]);
+                }
+                round++;
+                nextWave(round);
+            roundNum.text = "Round: " + round.ToString() + " Time:" + currentRoundTime.ToString("F0") + "s; Alive: " + enemiesAlive.ToString();
             }
-            round++;
-            nextWave(round);
-        roundNum.text = "Round: " + round.ToString() + " Time:" + currentRoundTime.ToString("F0") + "s; Alive: " + enemiesAlive.ToString();
-        }
+        #else
+            Debug.Log("Skipping round only availble in editor mode");
+        #endif
+        
     }
 
     public void nextWave(int round) {

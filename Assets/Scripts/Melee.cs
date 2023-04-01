@@ -12,14 +12,6 @@ public class Melee : MonoBehaviour
     private AudioSource ml_audioSource;
     private Animator anim;
 
-    // Start is called before the first frame update
-    //void Start()
-    //{
-        
-    //}
-
-    // Update is called once per frame
-
     private void Start() {
         PlayerShoot.isGunActive = false;
         PlayerShoot.shootInput = null;
@@ -32,12 +24,9 @@ public class Melee : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if(Input.GetMouseButtonDown(0) && CanAttack)
         {
-            if (CanAttack)
-            {
-                MeleeAttack();
-            }
+            MeleeAttack();
         }
     }
 
