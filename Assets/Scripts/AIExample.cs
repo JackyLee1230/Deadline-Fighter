@@ -225,14 +225,7 @@ public class AIExample : MonoBehaviour {
             {
                 if (Vector3.Distance(waypoints[waypointIndex].position, transform.position) < 2f)
                 {
-                    if (waypointIndex == waypoints.Length - 1)
-                    {
-                        waypointIndex = 0;
-                    }
-                    else
-                    {
-                        waypointIndex++;
-                    }
+                    waypointIndex = (waypointIndex + 1) % waypoints.Length;
                 }
                 else
                 {
@@ -259,8 +252,7 @@ public class AIExample : MonoBehaviour {
                 }
             }
 
-            // scale the model to 2x
-            transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            // transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
         }
     }
 
