@@ -36,7 +36,9 @@ public class AIExample : MonoBehaviour {
     private Vector3 lastSeenPlayerPosition;
 
     [SerializeField] public float AttackCooldown;
+    [SerializeField] public float AttackCooldownMultiplier;
     [SerializeField] public float DamagedCooldown;
+    [SerializeField] public float DamagedCooldownMultiplier;
     [SerializeField] public LayerMask playerLayer;
 
     private int isPlayerStealth;
@@ -80,8 +82,8 @@ public class AIExample : MonoBehaviour {
             if (AttackCooldown > 0.7f && !(DamagedCooldown > 0f))
             {
                 animator.SetTrigger("GreatDamage");
-                AttackCooldown = 0.977f;
-                DamagedCooldown = 0.977f;
+                AttackCooldown = 0.977f * AttackCooldownMultiplier;
+                DamagedCooldown = 0.977f * DamagedCooldownMultiplier;
                 transform.Translate(transform.forward * -0.5f, Space.World);
             }
             else
@@ -248,7 +250,7 @@ public class AIExample : MonoBehaviour {
                     FirstPersonController fpsc = hitInfo.transform.GetComponent<FirstPersonController>();
                     StartCoroutine(DelayAttackPlayer(hitInfo, fpsc));
                     Debug.Log("Zombie Hitting Player"); 
-                    AttackCooldown = 1.4f;
+                    AttackCooldown = 1.4f * AttackCooldownMultiplier;
                 }
             }
 
