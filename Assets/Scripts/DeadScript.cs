@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityStandardAssets.Characters.FirstPerson;
 using TMPro;
- 
+
+using BayatGames.SaveGameFree; 
 
 public class DeadScript : MonoBehaviour
 {
@@ -41,6 +42,10 @@ public class DeadScript : MonoBehaviour
         isEnded = true;
         fpsc.enabled = false;
         scoreUI.text = "Score: " + fpsc.score;
+        int highScore = SaveGame.Load<int>("highScore");
+        if (fpsc.score > highScore){
+            SaveGame.Save<int>("highScore", fpsc.score);
+        }
     }
 
     public void MainMenu(){
