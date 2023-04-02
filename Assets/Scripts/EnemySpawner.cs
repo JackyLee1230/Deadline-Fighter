@@ -80,12 +80,18 @@ public class EnemySpawner : MonoBehaviour
     }
 
     public void nextWave(int round) {
+        // remove all enemies from the enemies array and the scene
+        for( int i = 0; i < enemies.Length; i++) {
+            Destroy(enemies[i]);
+        }
+        // reset the enemy count
+        enemiesAlive = 0;
         // add the time it took to complete the round to the list
         timeTook.Add(currentRoundTime);
         currentRoundTime = 0.0f;
         // create a new array of enemies
         AudioSource.PlayClipAtPoint(roundWin, transform.position, 1.5f);
-        int spwanCount = UnityEngine.Random.Range(round, round * 10);
+        int spwanCount = UnityEngine.Random.Range(round, round * 3);
         enemies = new GameObject[spwanCount];
         Debug.Log("round " + round + " spwanCount " + spwanCount);
         for (int i = 0; i < spwanCount; i++) {
@@ -95,6 +101,8 @@ public class EnemySpawner : MonoBehaviour
             }
 
             GameObject enemySpawned = Instantiate(enemyPrefabs[UnityEngine.Random.Range(0, enemyPrefabs.Length)], spawnPoint.transform.position, Quaternion.identity);
+            // increase enemy health by a linearly based on round number from 1 (round 1) to 5 in round(30)
+            enemySpawned.GetComponentInChildren<AIExample>().health *= UnityEngine.Random.Range(1, 5) * (round / 30.0f);
             enemySpawned.GetComponentInChildren<AIExample>().fpsc = fpsc;
             //add the enemy to the enemies array
             enemies[i] = enemySpawned;

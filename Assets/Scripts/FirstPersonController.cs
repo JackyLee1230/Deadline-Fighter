@@ -118,6 +118,18 @@ namespace UnityStandardAssets.Characters.FirstPerson
             resetHealthBar();
         }
 
+        private float applyLowHealthSpeedPenalty(){
+            if (currentHealth < maxHealth*0.2f){
+                return 0.3f;
+            }
+            else if (currentHealth < maxHealth*0.5f){
+                return 0.8f;
+            }
+            else{
+                return 1f;
+            }
+        }
+
 
         // Update is called once per frame
         private void Update()
@@ -337,8 +349,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
                                m_CharacterController.height/2f, Physics.AllLayers, QueryTriggerInteraction.Ignore);
             desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal).normalized;
 
-            m_MoveDir.x = desiredMove.x*speed;
-            m_MoveDir.z = desiredMove.z*speed;
+            m_MoveDir.x = desiredMove.x*speed * applyLowHealthSpeedPenalty();
+            m_MoveDir.z = desiredMove.z*speed * applyLowHealthSpeedPenalty();
 
 
             if (m_CharacterController.isGrounded)
