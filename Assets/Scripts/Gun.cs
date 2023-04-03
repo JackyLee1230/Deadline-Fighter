@@ -65,6 +65,7 @@ public class Gun : MonoBehaviour {
     // private void OnDisable() => gunData.reloading = false;
 
     private void OnDisable() {
+        fpsc.setReloadIcon(false);
         PlayerShoot.isGunActive = false;
         gunData.reloading = false;
         if(bulletSpawnPoint != null){
