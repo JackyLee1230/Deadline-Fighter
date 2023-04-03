@@ -21,6 +21,11 @@ public class Melee : MonoBehaviour
         anim = Weapon.GetComponent<Animator>();
     }
 
+    private void OnEnable(){
+        PlayerShoot.isGunActive = false;
+        PlayerShoot.shootInput = null;
+        PlayerShoot.reloadInput = null;
+    }
 
     void Update()
     {
