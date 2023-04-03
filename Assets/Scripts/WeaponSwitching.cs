@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.Characters.FirstPerson;
+using UnityEngine.UI;
 using TMPro;
 
 public class WeaponSwitching : MonoBehaviour {
@@ -10,6 +11,7 @@ public class WeaponSwitching : MonoBehaviour {
     [Header("References")]
     [SerializeField] private Transform[] weapons;
     [SerializeField] public GameObject Ammo;
+    [SerializeField] public GameObject WeaponIcon;
 
     [Header("Keys")]
     [SerializeField] private KeyCode[] keys;
@@ -50,7 +52,9 @@ public class WeaponSwitching : MonoBehaviour {
                     selectedWeapon = i;
                     int reserved = weapons[selectedWeapon].gameObject.GetComponent<Gun>().gunData.reservedAmmo;
                     int current = weapons[selectedWeapon].gameObject.GetComponent<Gun>().gunData.currentAmmo;
+                    Sprite icon = weapons[selectedWeapon].gameObject.GetComponent<Gun>().gunData.artworkImage;
                     Ammo.GetComponent<TextMeshProUGUI>().text = current + " / " + reserved;
+                    WeaponIcon.GetComponent<Image>().sprite = icon;
                     if (current == 0){
                         Ammo.GetComponent<TextMeshProUGUI>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
                     }

@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [CreateAssetMenu(fileName="Gun", menuName="Weapon/Gun")]
 public class GunData : ScriptableObject {
 
     [Header("Info")]
     public new string name;
+    public Sprite artworkImage;
 
     [Header("Shooting")]
     public float maxDamage;
