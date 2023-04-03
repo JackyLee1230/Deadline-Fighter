@@ -50,7 +50,8 @@ public class Gun : MonoBehaviour {
 
     private void Start() {
         gunAnimator = GetComponentInChildren<Animator>();
-        PlayerShoot.isGunActive = true;
+        PlayerShoot.isGunActive = false;
+        StartCoroutine(SwitchDelay());
         PlayerShoot.reloading = gunData.reloading;
         m_AudioSource = GetComponent<AudioSource>();
         PlayerShoot.shootInput = Shoot;
@@ -79,7 +80,8 @@ public class Gun : MonoBehaviour {
         if(m_AudioSource != null){
             m_AudioSource.Stop();
         }
-        PlayerShoot.isGunActive = true;
+        PlayerShoot.isGunActive = false;
+        StartCoroutine(SwitchDelay());
         PlayerShoot.shootInput = Shoot;
         PlayerShoot.reloadInput = StartReload;
         PlayerShoot.isAuto = gunData.isAuto;
@@ -214,6 +216,13 @@ public class Gun : MonoBehaviour {
 
     }
 
+    IEnumerator SwitchDelay()
+    {
+        yield return new WaitForSeconds(0.3f);
+        PlayerShoot.isGunActive = true;
+    }
+
+
     IEnumerator SpawnTrail(TrailRenderer trail, Vector3 hitPoint)
     {
         float time = 0;
@@ -237,8 +246,6 @@ public class Gun : MonoBehaviour {
             PlayerShoot.haveAmmo = gunData.currentAmmo > 0;
 
             PlayerShoot.reloading = gunData.reloading;
-
-            PlayerShoot.isGunActive = true;
 
             PlayerShoot.isAuto = gunData.isAuto;
 
