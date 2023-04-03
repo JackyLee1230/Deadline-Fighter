@@ -53,7 +53,13 @@ public class WeaponSwitching : MonoBehaviour {
                     int reserved = weapons[selectedWeapon].gameObject.GetComponent<Gun>().gunData.reservedAmmo;
                     int current = weapons[selectedWeapon].gameObject.GetComponent<Gun>().gunData.currentAmmo;
                     Sprite icon = weapons[selectedWeapon].gameObject.GetComponent<Gun>().gunData.artworkImage;
-                    Ammo.GetComponent<TextMeshProUGUI>().text = current + " / " + reserved;
+                    if (weapons[selectedWeapon].gameObject.GetComponent<Gun>().gunData.name != "Knife"){
+                        Ammo.GetComponent<TextMeshProUGUI>().text = current + " / " + reserved;
+                    }
+                    else{
+                        Ammo.GetComponent<TextMeshProUGUI>().text = "";
+                    }
+                    
                     WeaponIcon.GetComponent<Image>().sprite = icon;
                     if (current == 0){
                         Ammo.GetComponent<TextMeshProUGUI>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
