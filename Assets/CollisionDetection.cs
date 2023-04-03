@@ -20,10 +20,10 @@ public class CollisionDetection : MonoBehaviour
         if(!damageCooldown && other.tag == "Zombie" && Melee.isAttacking){
                 damageCooldown = true;
                 StartCoroutine(ResetDamageCooldown());
-                if(!other.transform.GetComponent<AIExample>().isAware){
-                    other.transform.GetComponent<AIExample>().onHit(damage*stealthMultipler);
+                if(!other.transform.root.GetComponent<AIExample>().isAware){
+                    other.transform.root.GetComponent<AIExample>().onHit(damage*stealthMultipler);
                 }else{
-                    other.transform.GetComponent<AIExample>().onHit(damage);
+                    other.transform.root.GetComponent<AIExample>().onHit(damage);
                 }
 
                 Instantiate(HitParticle, new Vector3(other.transform.position.x, transform.position.y, other.transform.position.z), other.transform.rotation);

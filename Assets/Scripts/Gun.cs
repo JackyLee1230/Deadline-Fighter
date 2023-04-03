@@ -33,6 +33,9 @@ public class Gun : MonoBehaviour {
     public GameObject bulletCasing;
     public GameObject bulletShellSpawnPoint;
 
+    public float headShotMultiplier;
+    public float limbShotMultiplier;
+
     public bool isAutoReload;
     bool AutoReloading = false;
 
@@ -163,21 +166,27 @@ public class Gun : MonoBehaviour {
                     if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~layerMask)) {    
                         TrailRenderer trail = Instantiate(bulletTrail, bulletSpawnPoint.transform.position, Quaternion.identity);
                         StartCoroutine(SpawnTrail(trail, hit.point));
-                        
-                        if (hit.transform.name == "Zombie(Clone)" || hit.transform.name == "Zombie"){
+
+                        if (hit.transform.CompareTag("Zombie")){
                             fpsc.shotsHit++;
                             Instantiate (bulletImpactFreshEffect, hit.point, Quaternion.LookRotation(hit.normal));
                             float damage = calcDropOffDamage(hit.distance, gunData.minDamage, gunData.maxDamage, 30, 100);
-                            
+
+                            Debug.Log("Type: "+ hit.collider.GetType());
+
                             if(hit.collider.GetType() == typeof(SphereCollider)){
                                 Instantiate (damageHeadEffect, hit.point, Quaternion.identity);
-                                hit.transform.GetComponent<AIExample>().onHit(damage*5);
+                                hit.transform.root.GetComponent<AIExample>().onHit(damage*headShotMultiplier);
                                 fpsc.headshots++;
-                                Debug.Log("Hit for " + damage*5 + " damage; Distance" + hit.distance );
-                            } else {
+                                Debug.Log("Hit for " + damage*headShotMultiplier + " damage; Distance" + hit.distance );
+                            } else if(hit.collider.GetType() == typeof(BoxCollider)){
                                 Instantiate (damageEffect, hit.point, Quaternion.identity);
-                                hit.transform.GetComponent<AIExample>().onHit(damage);
+                                hit.transform.root.GetComponent<AIExample>().onHit(damage);
                                 Debug.Log("Hit for " + damage + " damage; Distance" + hit.distance );
+                            } else{
+                                Instantiate (damageEffect, hit.point, Quaternion.identity);
+                                hit.transform.root.GetComponent<AIExample>().onHit(damage*limbShotMultiplier);
+                                Debug.Log("Hit for " + damage*limbShotMultiplier + " damage; Distance" + hit.distance );
                             }
                         }
                         else{

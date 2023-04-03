@@ -40,6 +40,7 @@ public class AIExample : MonoBehaviour {
     [SerializeField] public float DamagedCooldown;
     [SerializeField] public float DamagedCooldownMultiplier;
     [SerializeField] public LayerMask playerLayer;
+    [SerializeField] public LayerMask layerMask = 1 << 8;
 
     private int isPlayerStealth;
     
@@ -121,7 +122,7 @@ public class AIExample : MonoBehaviour {
             if(Vector3.Distance(fpsc.transform.position, AttackRaycastArea.transform.position) > chaseDistance){
                 if (Vector3.Angle(Vector3.forward, transform.InverseTransformPoint(fpsc.transform.position)) < fov / 2f){
                     RaycastHit hit;
-                    if (Physics.Linecast(transform.position, fpsc.transform.position, out hit, -1)){
+                    if (Physics.Linecast(transform.position, fpsc.transform.position, out hit, ~layerMask)){
                         if (!hit.transform.CompareTag("Player")){
                             isAware = false;
                         }
@@ -244,14 +245,14 @@ public class AIExample : MonoBehaviour {
         // if (AttackCooldown <= 0){
         if(AttackCooldown <= 0f){
             RaycastHit hitInfo;
-            if (Physics.Raycast(AttackRaycastArea.transform.position, AttackRaycastArea.transform.forward, out hitInfo, attackRadius)){
+            if (Physics.Raycast(AttackRaycastArea.transform.position, AttackRaycastArea.transform.forward, out hitInfo, attackRadius, ~layerMask)){
                 isAttacking = true;
                 if (hitInfo.transform.CompareTag("Player")){
                     FirstPersonController fpsc = hitInfo.transform.GetComponent<FirstPersonController>();
                     StartCoroutine(DelayAttackPlayer(hitInfo, fpsc));
                     Debug.Log("Zombie Hitting Player"); 
-                    AttackCooldown = 1.4f * AttackCooldownMultiplier;
                 }
+                AttackCooldown = 1.4f * AttackCooldownMultiplier;
             }
 
             // transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
@@ -287,6 +288,10 @@ public class AIExample : MonoBehaviour {
     }
 
     public void onHit(float damage) {
+        if(isDead){
+            return;
+        }
+
         if (!isAware)
         {
             lastSeenPlayerPosition = fpsc.transform.position;
@@ -302,9 +307,9 @@ public class AIExample : MonoBehaviour {
             agent.speed = 0f;
             isDead = true;
 
-            Destroy(GetComponent<EnemyManager>());
-            Destroy(GetComponent<CapsuleCollider>());
-            Destroy(GetComponent<SphereCollider>());
+            var allColliders = GetComponentsInChildren<Collider>();
+            foreach(var childCollider in allColliders) Destroy(childCollider);
+
             fpsc.addScore(50);
             fpsc.kills +=1;
             fpsc.currency += 10;
