@@ -45,8 +45,11 @@ public class Gun : MonoBehaviour {
 
     private Vector3 _originalLocalPosition;
 
+    private Animator gunAnimator;
+
 
     private void Start() {
+        gunAnimator = GetComponentInChildren<Animator>();
         PlayerShoot.isGunActive = true;
         PlayerShoot.reloading = gunData.reloading;
         m_AudioSource = GetComponent<AudioSource>();
@@ -137,6 +140,8 @@ public class Gun : MonoBehaviour {
             if (gunData.currentAmmo > 0) {
                 Debug.Log("In Mag Ammo:" + gunData.currentAmmo + " Remaining Ammo" + gunData.reservedAmmo);
                 if (CanShoot()) {
+                    gunAnimator.SetTrigger("Shooting");
+
                     GameObject bulletShell = Instantiate(bulletCasing, bulletShellSpawnPoint.transform.position, bulletShellSpawnPoint.transform.rotation);
 
                     holdFlash = Instantiate(muzzleFlash, muzzleSpawnPoint.transform.position, muzzleSpawnPoint.transform.rotation * Quaternion.Euler(0,0,90) ) as GameObject;
@@ -225,7 +230,9 @@ public class Gun : MonoBehaviour {
     }
 
     private void Update() {
-        if(gameObject.activeSelf){
+        if(gameObject.activeSelf){  
+            gunAnimator = GetComponentInChildren<Animator>();
+
             PlayerShoot.haveAmmo = gunData.currentAmmo > 0;
 
             PlayerShoot.reloading = gunData.reloading;
