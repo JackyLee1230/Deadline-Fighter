@@ -48,6 +48,7 @@ public class Gun : MonoBehaviour {
 
     private void Start() {
         PlayerShoot.isGunActive = true;
+        PlayerShoot.reloading = gunData.reloading;
         m_AudioSource = GetComponent<AudioSource>();
         PlayerShoot.shootInput = Shoot;
         PlayerShoot.reloadInput = StartReload;
@@ -221,6 +222,8 @@ public class Gun : MonoBehaviour {
 
     private void Update() {
         if(gameObject.activeSelf){
+            PlayerShoot.reloading = gunData.reloading;
+
             PlayerShoot.isGunActive = true;
 
             PlayerShoot.isAuto = gunData.isAuto;

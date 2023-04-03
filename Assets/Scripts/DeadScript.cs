@@ -54,7 +54,7 @@ public class DeadScript : MonoBehaviour
         } else {
             if (fpsc.score > highScore){
                 highScoreUI.text = "New High Score: " + fpsc.score;
-                scoreUI.SetActive(false);
+                scoreUI.text = "";
             } else {
                 highScoreUI.text = "High Score: " + highScore;
             }

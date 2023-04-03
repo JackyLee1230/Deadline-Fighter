@@ -19,7 +19,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] public float maxHealth = 120.0f;
         [SerializeField] public float currentHealth;
         [SerializeField] public float iFrames;
-        public GameObject playerCam;
         public GameObject playerDamage;
         public GameObject healthLowWarning;
         public GameObject healthBar;
@@ -76,6 +75,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] private AudioClip m_LandSound;           // the sound played when character touches back on ground.
 
         public Camera m_Camera;
+        public Camera m_WeaponCamera;
         private bool m_Jump;
         private float m_YRotation;
         private Vector2 m_Input;
@@ -88,6 +88,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private float m_NextStep;
         private bool m_Jumping;
         public bool m_Shooting;
+        public bool m_Aiming;
         private AudioSource m_AudioSource;
 
         public GameObject damageEffect;
@@ -101,6 +102,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             Application.targetFrameRate = 144;
             m_CharacterController = GetComponent<CharacterController>();
             m_Camera = Camera.main;
+            m_WeaponCamera = GameObject.Find("Weapon Camera").GetComponent<Camera>();
             m_OriginalCameraPosition = m_Camera.transform.localPosition;
             m_FovKick.Setup(m_Camera);
             m_HeadBob.Setup(m_Camera, m_StepInterval);

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class WeaponSwitching : MonoBehaviour {
 
@@ -15,6 +16,8 @@ public class WeaponSwitching : MonoBehaviour {
     [SerializeField] private float switchTime;
 
     private int selectedWeapon;
+
+    public FirstPersonController fpsc;
     private float timeSinceLastSwitch;
 
     private void Start() {
@@ -34,34 +37,36 @@ public class WeaponSwitching : MonoBehaviour {
     }
 
     private void Update() {
-        int previousSelectedWeapon = selectedWeapon;
+        if(!fpsc.m_Aiming){
+            int previousSelectedWeapon = selectedWeapon;
 
-        /*
-         * Select with keys
-        */
-        for (int i = 0; i < keys.Length; i++)
-            if (Input.GetKeyDown(keys[i]) && timeSinceLastSwitch >= switchTime)
-                selectedWeapon = i;
+            /*
+            * Select with keys
+            */
+            for (int i = 0; i < keys.Length; i++)
+                if (Input.GetKeyDown(keys[i]) && timeSinceLastSwitch >= switchTime)
+                    selectedWeapon = i;
 
-        /*
-         *  Select with scroll wheel
-        */ 
-        if(Input.GetAxis("Mouse ScrollWheel") > 0 && timeSinceLastSwitch >= switchTime){
-            selectedWeapon++;
-			if(selectedWeapon > 2){
-				selectedWeapon = 0;
-			}
-		}
-		if(Input.GetAxis("Mouse ScrollWheel") < 0 && timeSinceLastSwitch >= switchTime){
-            selectedWeapon--;
-			if(selectedWeapon < 0){
-				selectedWeapon = 2;
-			}
-		}
+            /*
+            *  Select with scroll wheel
+            */ 
+            if(Input.GetAxis("Mouse ScrollWheel") > 0 && timeSinceLastSwitch >= switchTime){
+                selectedWeapon++;
+                if(selectedWeapon > 2){
+                    selectedWeapon = 0;
+                }
+            }
+            if(Input.GetAxis("Mouse ScrollWheel") < 0 && timeSinceLastSwitch >= switchTime){
+                selectedWeapon--;
+                if(selectedWeapon < 0){
+                    selectedWeapon = 2;
+                }
+            }
 
-        if (previousSelectedWeapon != selectedWeapon) Select(selectedWeapon);
+            if (previousSelectedWeapon != selectedWeapon) Select(selectedWeapon);
 
-        timeSinceLastSwitch += Time.deltaTime;
+            timeSinceLastSwitch += Time.deltaTime;
+        }
     }
 
     private void Select(int weaponIndex) {
