@@ -118,6 +118,8 @@ public class Gun : MonoBehaviour {
             yield break;
         }
 
+        gunAnimator.SetTrigger("Reloading");
+
         gunData.reloading = true;
         fpsc.setReloadIcon(true);
         m_AudioSource.clip = reloadSound;
