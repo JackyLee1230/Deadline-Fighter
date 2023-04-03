@@ -73,7 +73,9 @@ public class PlayerShoot : MonoBehaviour {
         if(isGunActive && shootInput != null){
            if(isAuto){
                 if (Input.GetMouseButton(0)){
-                    gunAnimator.SetTrigger("Shooting");
+                    if(!reloading){
+                        gunAnimator.SetTrigger("Shooting");
+                    }
                     fpsc.m_Shooting = true;
                     shootInput?.Invoke();
                     StartCoroutine(fpsc.RemoveShootingStatus());
@@ -81,7 +83,9 @@ public class PlayerShoot : MonoBehaviour {
             }
             else{
                 if (Input.GetMouseButtonDown(0)){
-                    gunAnimator.SetTrigger("Shooting");
+                    if(!reloading){
+                        gunAnimator.SetTrigger("Shooting");
+                    }
                     fpsc.m_Shooting = true;
                     shootInput?.Invoke();
                     StartCoroutine(fpsc.RemoveShootingStatus());

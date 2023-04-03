@@ -63,13 +63,17 @@ public class Gun : MonoBehaviour {
     private void OnDisable() {
         PlayerShoot.isGunActive = false;
         gunData.reloading = false;
-        foreach (Transform child in bulletSpawnPoint.transform) {
-            GameObject.Destroy(child.gameObject);
+        if(bulletSpawnPoint != null){
+            foreach (Transform child in bulletSpawnPoint.transform) {
+                GameObject.Destroy(child.gameObject);
+            }
         }
     }
 
     private void OnEnable() {
-        m_AudioSource.Stop();
+        if(m_AudioSource != null){
+            m_AudioSource.Stop();
+        }
         PlayerShoot.isGunActive = true;
         PlayerShoot.shootInput = Shoot;
         PlayerShoot.reloadInput = StartReload;
@@ -110,7 +114,6 @@ public class Gun : MonoBehaviour {
         gunData.reloading = true;
         fpsc.setReloadIcon(true);
         m_AudioSource.clip = reloadSound;
-        Debug.Log("here");
         m_AudioSource.Play();
         yield return new WaitForSeconds(gunData.reloadTime);
 
