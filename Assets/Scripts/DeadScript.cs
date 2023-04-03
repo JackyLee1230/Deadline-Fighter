@@ -16,6 +16,7 @@ public class DeadScript : MonoBehaviour
     [SerializeField] public FirstPersonController fpsc;
 
     [SerializeField] public TextMeshProUGUI scoreUI;
+    [SerializeField] public TextMeshProUGUI highScoreUI;
 
 
     // Start is called before the first frame update
@@ -23,6 +24,8 @@ public class DeadScript : MonoBehaviour
     {
         deadMenuUI.SetActive(false);
         scoreUI = deadMenuUI.transform.Find("DeadMenu").Find("Score").GetComponent<TextMeshProUGUI>();
+        highScoreUI = deadMenuUI.transform.Find("DeadMenu").Find("HighScore").GetComponent<TextMeshProUGUI>();
+        
     }
 
     // Update is called once per frame
@@ -45,6 +48,16 @@ public class DeadScript : MonoBehaviour
         int highScore = SaveGame.Load<int>("highScore");
         if (fpsc.score > highScore){
             SaveGame.Save<int>("highScore", fpsc.score);
+        }
+        if (highScore == 0){
+            highScoreUI.text = "Not Bad! First Attemp\nHigh Score: " + fpsc.score;
+        } else {
+            if (fpsc.score > highScore){
+                highScoreUI.text = "New High Score: " + fpsc.score;
+                scoreUI.SetActive(false);
+            } else {
+                highScoreUI.text = "High Score: " + highScore;
+            }
         }
     }
 
