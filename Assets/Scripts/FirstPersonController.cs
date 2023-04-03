@@ -45,6 +45,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] public int headshots = 0;
         [SerializeField] public int shotsFired = 0;
         [SerializeField] public int shotsHit = 0;
+        [SerializeField] public float damageDealt = 0;
+        [SerializeField] public float damageTaken = 0;
         [SerializeField] public float timeSurvived = 0;
         [SerializeField] public GameObject TimeSurvivedUI;
 
@@ -273,6 +275,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             if (iFrames <= 0f && Vector3.Distance(source, m_Camera.transform.position ) < 3.4f && inFOV){
                 Debug.Log("Player took " + damage + " damage");
                 currentHealth -= damage;
+                damageTaken += damage;
                 setHealthBar(currentHealth);
                 StartCoroutine(Shake(0.4f, 0.2f));
                 playerDamage.SetActive(true);

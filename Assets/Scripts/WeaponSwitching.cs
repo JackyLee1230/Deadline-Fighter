@@ -57,11 +57,11 @@ public class WeaponSwitching : MonoBehaviour {
                         Ammo.GetComponent<TextMeshProUGUI>().text = current + " / " + reserved;
                     }
                     else{
-                        Ammo.GetComponent<TextMeshProUGUI>().text = "";
+                        Ammo.GetComponent<TextMeshProUGUI>().text = "∞";
                     }
                     
                     WeaponIcon.GetComponent<Image>().sprite = icon;
-                    if (current == 0){
+                    if (current == 0 && weapons[selectedWeapon].gameObject.GetComponent<Gun>().gunData.name != "Knife"){
                         Ammo.GetComponent<TextMeshProUGUI>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
                     }
                     else{
@@ -105,12 +105,12 @@ public class WeaponSwitching : MonoBehaviour {
 
     public bool isGun()
     { 
-        if (weapons[selectedWeapon].gameObject.GetComponent<Gun>() != null){
+        if (weapons[selectedWeapon].gameObject.GetComponent<Gun>().gunData.name != "Knife"){
             Debug.Log("Gun Selected");
             return true;
         }
         else{
-            Debug.Log("Melee Selected");
+            Debug.Log("Knife Selected");
             return false;
         }
     }

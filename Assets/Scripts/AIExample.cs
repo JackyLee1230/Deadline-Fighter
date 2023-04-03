@@ -293,6 +293,7 @@ public class AIExample : MonoBehaviour {
             OnAware();
         }
 
+        fpsc.damageDealt += Mathf.Min(damage, health);
         health -= damage;
         if(health <= 0) {
             e_AudioSource.clip = zombieDie;
@@ -305,6 +306,8 @@ public class AIExample : MonoBehaviour {
             Destroy(GetComponent<CapsuleCollider>());
             Destroy(GetComponent<SphereCollider>());
             fpsc.addScore(50);
+            fpsc.kills +=1;
+            fpsc.currency += 10;
             Debug.Log(fpsc.score);
             StartCoroutine(RemoveGameObject());
         }

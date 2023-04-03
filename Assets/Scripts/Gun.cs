@@ -145,6 +145,7 @@ public class Gun : MonoBehaviour {
             if (gunData.currentAmmo > 0) {
                 Debug.Log("In Mag Ammo:" + gunData.currentAmmo + " Remaining Ammo" + gunData.reservedAmmo);
                 if (CanShoot()) {
+                    fpsc.shotsFired++;
                     gunAnimator.SetTrigger("Shooting");
 
                     GameObject bulletShell = Instantiate(bulletCasing, bulletShellSpawnPoint.transform.position, bulletShellSpawnPoint.transform.rotation);
@@ -164,11 +165,14 @@ public class Gun : MonoBehaviour {
                         StartCoroutine(SpawnTrail(trail, hit.point));
                         
                         if (hit.transform.name == "Zombie(Clone)" || hit.transform.name == "Zombie"){
+                            fpsc.shotsHit++;
                             Instantiate (bulletImpactFreshEffect, hit.point, Quaternion.LookRotation(hit.normal));
                             float damage = calcDropOffDamage(hit.distance, gunData.minDamage, gunData.maxDamage, 30, 100);
+                            
                             if(hit.collider.GetType() == typeof(SphereCollider)){
                                 Instantiate (damageHeadEffect, hit.point, Quaternion.identity);
                                 hit.transform.GetComponent<AIExample>().onHit(damage*5);
+                                fpsc.headshots++;
                                 Debug.Log("Hit for " + damage*5 + " damage; Distance" + hit.distance );
                             } else {
                                 Instantiate (damageEffect, hit.point, Quaternion.identity);

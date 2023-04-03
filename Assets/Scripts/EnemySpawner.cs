@@ -4,6 +4,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityStandardAssets.Characters.FirstPerson;
+using BayatGames.SaveGameFree; 
 
 public class EnemySpawner : MonoBehaviour
 
@@ -92,6 +93,56 @@ public class EnemySpawner : MonoBehaviour
         // create a new array of enemies
         AudioSource.PlayClipAtPoint(roundWin, transform.position, 1.5f);
         int spwanCount = UnityEngine.Random.Range(round, round * 3);
+
+        // save the data for load
+        SaveGame.Save<int>("round", round);
+        SaveGame.Save<int>("score", fpsc.GetComponent<FirstPersonController>().score);
+        SaveGame.Save<int>("currency", fpsc.GetComponent<FirstPersonController>().currency);
+        SaveGame.Save<int>("spawnCount", spwanCount);
+
+        enemies = new GameObject[spwanCount];
+        Debug.Log("round " + round + " spwanCount " + spwanCount);
+        for (int i = 0; i < spwanCount; i++) {
+            GameObject spawnPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)];
+            while(Vector3.Distance(fpsc.transform.position, spawnPoint.transform.position) < minDistanceToSpawn) {
+                spawnPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)];
+            }
+
+            GameObject enemySpawned = Instantiate(enemyPrefabs[UnityEngine.Random.Range(0, enemyPrefabs.Length)], spawnPoint.transform.position, Quaternion.identity);
+            // increase enemy health by a linearly based on round number from 1 (round 1) to 5 in round(30)
+            enemySpawned.GetComponentInChildren<AIExample>().health *= UnityEngine.Random.Range(1, 5) * (round / 30.0f);
+            enemySpawned.GetComponentInChildren<AIExample>().fpsc = fpsc;
+            // Lower => Faster attack
+            enemySpawned.GetComponentInChildren<AIExample>().AttackCooldownMultiplier = (float) UnityEngine.Random.Range(0.8f,1.3f);
+            // Lower => Smaller iframes
+            enemySpawned.GetComponentInChildren<AIExample>().DamagedCooldownMultiplier = (float) UnityEngine.Random.Range(0.8f, 1.3f);
+            //add the enemy to the enemies array
+            enemies[i] = enemySpawned;
+            enemiesAlive++;
+        }
+    }
+
+    // used when resuming game  
+    public void setWave() {
+        int round = SaveGame.Load<int>("round");
+        fpsc.GetComponent<FirstPersonController>().currentHealth = fpsc.maxHealth;
+        // remove all enemies from the enemies array and the scene
+        for( int i = 0; i < enemies.Length; i++) {
+            Destroy(enemies[i]);
+        }
+        // reset the enemy count
+        enemiesAlive = 0;
+        // add the time it took to complete the round to the list
+        timeTook.Add(currentRoundTime);
+        currentRoundTime = 0.0f;
+        // create a new array of enemies
+        AudioSource.PlayClipAtPoint(roundWin, transform.position, 1.5f);
+        int spwanCount = SaveGame.Load<int>("spawnCount");
+
+        // save the data for load
+        int score = SaveGame.Load<int>("score");
+        int currency = SaveGame.Load<int>("currency");
+
         enemies = new GameObject[spwanCount];
         Debug.Log("round " + round + " spwanCount " + spwanCount);
         for (int i = 0; i < spwanCount; i++) {
