@@ -53,6 +53,7 @@ public class Gun : MonoBehaviour {
         PlayerShoot.shootInput = Shoot;
         PlayerShoot.reloadInput = StartReload;
         PlayerShoot.isAuto = gunData.isAuto;
+        PlayerShoot.haveAmmo = gunData.currentAmmo > 0;
         gunData.currentAmmo = gunData.magSize;
         gunData.reservedAmmo = gunData.magSize * 3;
         _originalLocalPosition = transform.localPosition;
@@ -225,6 +226,8 @@ public class Gun : MonoBehaviour {
 
     private void Update() {
         if(gameObject.activeSelf){
+            PlayerShoot.haveAmmo = gunData.currentAmmo > 0;
+
             PlayerShoot.reloading = gunData.reloading;
 
             PlayerShoot.isGunActive = true;

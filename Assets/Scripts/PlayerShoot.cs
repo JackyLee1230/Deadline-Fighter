@@ -9,6 +9,7 @@ public class PlayerShoot : MonoBehaviour {
     public static Action shootInput;
     public static Action reloadInput;
     public static bool isAuto;
+    public static bool haveAmmo;
     public static bool reloading;
     public static bool isGunActive;
     public FirstPersonController fpsc;
@@ -73,7 +74,7 @@ public class PlayerShoot : MonoBehaviour {
         if(isGunActive && shootInput != null){
            if(isAuto){
                 if (Input.GetMouseButton(0)){
-                    if(!reloading){
+                    if(haveAmmo){
                         gunAnimator.SetTrigger("Shooting");
                     }
                     fpsc.m_Shooting = true;
@@ -83,7 +84,7 @@ public class PlayerShoot : MonoBehaviour {
             }
             else{
                 if (Input.GetMouseButtonDown(0)){
-                    if(!reloading){
+                    if(haveAmmo){
                         gunAnimator.SetTrigger("Shooting");
                     }
                     fpsc.m_Shooting = true;
