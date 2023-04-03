@@ -57,10 +57,9 @@ public class EnemySpawner : MonoBehaviour
         if (enemiesAlive == 0) {
             // add a random number of score  between (round * 100) to (round * 200 ) to fpsc.score
             fpsc.score += UnityEngine.Random.Range(round * 100, round * 200);
-
             round++;
             nextWave(round);
-        roundNum.text = "Round: " + round.ToString() + " Time:" + currentRoundTime.ToString("F0") + "s; Alive: " + enemiesAlive.ToString();
+            roundNum.text = "Round: " + round.ToString() + " Time:" + currentRoundTime.ToString("F0") + "s; Alive: " + enemiesAlive.ToString();
         }
         
         #if UNITY_EDITOR
@@ -80,6 +79,7 @@ public class EnemySpawner : MonoBehaviour
     }
 
     public void nextWave(int round) {
+        fpsc.GetComponent<FirstPersonController>().currentHealth = fpsc.maxHealth;
         // remove all enemies from the enemies array and the scene
         for( int i = 0; i < enemies.Length; i++) {
             Destroy(enemies[i]);

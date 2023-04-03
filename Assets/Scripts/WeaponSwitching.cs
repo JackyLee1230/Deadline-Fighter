@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.Characters.FirstPerson;
+using TMPro;
 
 public class WeaponSwitching : MonoBehaviour {
 
     [Header("References")]
     [SerializeField] private Transform[] weapons;
+    [SerializeField] public GameObject Ammo;
 
     [Header("Keys")]
     [SerializeField] private KeyCode[] keys;
@@ -15,7 +17,7 @@ public class WeaponSwitching : MonoBehaviour {
     [Header("Settings")]
     [SerializeField] private float switchTime;
 
-    private int selectedWeapon;
+    public int selectedWeapon;
 
     public FirstPersonController fpsc;
     private float timeSinceLastSwitch;
@@ -23,7 +25,7 @@ public class WeaponSwitching : MonoBehaviour {
     private void Start() {
         SetWeapons();
         Select(selectedWeapon);
-
+        Ammo.GetComponent<TextMeshProUGUI>().text = "0/0";
         timeSinceLastSwitch = 0f;
     }
 
@@ -46,6 +48,15 @@ public class WeaponSwitching : MonoBehaviour {
             for (int i = 0; i < keys.Length; i++)
                 if (Input.GetKeyDown(keys[i]) && timeSinceLastSwitch >= switchTime)
                     selectedWeapon = i;
+                    int reserved = weapons[selectedWeapon].gameObject.GetComponent<Gun>().gunData.reservedAmmo;
+                    int current = weapons[selectedWeapon].gameObject.GetComponent<Gun>().gunData.currentAmmo;
+                    Ammo.GetComponent<TextMeshProUGUI>().text = current + " / " + reserved;
+                    if (current == 0){
+                        Ammo.GetComponent<TextMeshProUGUI>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+                    }
+                    else{
+                        Ammo.GetComponent<TextMeshProUGUI>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                    }
 
             /*
             *  Select with scroll wheel
