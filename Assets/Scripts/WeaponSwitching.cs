@@ -6,7 +6,8 @@ using UnityStandardAssets.Characters.FirstPerson;
 using UnityEngine.UI;
 using TMPro;
 
-public class WeaponSwitching : MonoBehaviour {
+public class WeaponSwitching : MonoBehaviour
+{
 
     [Header("References")]
     [SerializeField] private Transform[] weapons;
@@ -24,14 +25,16 @@ public class WeaponSwitching : MonoBehaviour {
     public FirstPersonController fpsc;
     private float timeSinceLastSwitch;
 
-    private void Start() {
+    private void Start()
+    {
         SetWeapons();
         Select(selectedWeapon);
         Ammo.GetComponent<TextMeshProUGUI>().text = "0/0";
         timeSinceLastSwitch = 0f;
     }
 
-    private void SetWeapons() {
+    private void SetWeapons()
+    {
         weapons = new Transform[transform.childCount];
 
         for (int i = 0; i < transform.childCount; i++)
@@ -40,8 +43,10 @@ public class WeaponSwitching : MonoBehaviour {
         if (keys == null) keys = new KeyCode[weapons.Length];
     }
 
-    private void Update() {
-        if(!fpsc.m_Aiming){
+    private void Update()
+    {
+        if (!fpsc.m_Aiming)
+        {
             int previousSelectedWeapon = selectedWeapon;
 
             /*
@@ -50,36 +55,44 @@ public class WeaponSwitching : MonoBehaviour {
             for (int i = 0; i < keys.Length; i++)
                 if (Input.GetKeyDown(keys[i]) && timeSinceLastSwitch >= switchTime)
                     selectedWeapon = i;
-                    int reserved = weapons[selectedWeapon].gameObject.GetComponent<Gun>().gunData.reservedAmmo;
-                    int current = weapons[selectedWeapon].gameObject.GetComponent<Gun>().gunData.currentAmmo;
-                    Sprite icon = weapons[selectedWeapon].gameObject.GetComponent<Gun>().gunData.artworkImage;
-                    if (weapons[selectedWeapon].gameObject.GetComponent<Gun>().gunData.name != "Knife"){
-                        Ammo.GetComponent<TextMeshProUGUI>().text = current + " / " + reserved;
-                    }
-                    else{
-                        Ammo.GetComponent<TextMeshProUGUI>().text = "∞";
-                    }
-                    
-                    WeaponIcon.GetComponent<Image>().sprite = icon;
-                    if (current == 0 && weapons[selectedWeapon].gameObject.GetComponent<Gun>().gunData.name != "Knife"){
-                        Ammo.GetComponent<TextMeshProUGUI>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
-                    }
-                    else{
-                        Ammo.GetComponent<TextMeshProUGUI>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-                    }
+            int reserved = weapons[selectedWeapon].gameObject.GetComponent<Gun>().gunData.reservedAmmo;
+            int current = weapons[selectedWeapon].gameObject.GetComponent<Gun>().gunData.currentAmmo;
+            Sprite icon = weapons[selectedWeapon].gameObject.GetComponent<Gun>().gunData.artworkImage;
+            if (weapons[selectedWeapon].gameObject.GetComponent<Gun>().gunData.name != "Knife")
+            {
+                Ammo.GetComponent<TextMeshProUGUI>().text = current + " / " + reserved;
+            }
+            else
+            {
+                Ammo.GetComponent<TextMeshProUGUI>().text = "∞";
+            }
+
+            WeaponIcon.GetComponent<Image>().sprite = icon;
+            if (current == 0 && weapons[selectedWeapon].gameObject.GetComponent<Gun>().gunData.name != "Knife")
+            {
+                Ammo.GetComponent<TextMeshProUGUI>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+            }
+            else
+            {
+                Ammo.GetComponent<TextMeshProUGUI>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            }
 
             /*
             *  Select with scroll wheel
-            */ 
-            if(Input.GetAxis("Mouse ScrollWheel") > 0 && timeSinceLastSwitch >= switchTime){
+            */
+            if (Input.GetAxis("Mouse ScrollWheel") > 0 && timeSinceLastSwitch >= switchTime)
+            {
                 selectedWeapon++;
-                if(selectedWeapon > 2){
+                if (selectedWeapon > 2)
+                {
                     selectedWeapon = 0;
                 }
             }
-            if(Input.GetAxis("Mouse ScrollWheel") < 0 && timeSinceLastSwitch >= switchTime){
+            if (Input.GetAxis("Mouse ScrollWheel") < 0 && timeSinceLastSwitch >= switchTime)
+            {
                 selectedWeapon--;
-                if(selectedWeapon < 0){
+                if (selectedWeapon < 0)
+                {
                     selectedWeapon = 2;
                 }
             }
@@ -88,12 +101,38 @@ public class WeaponSwitching : MonoBehaviour {
 
             timeSinceLastSwitch += Time.deltaTime;
         }
+        else
+        {
+            int reserved = weapons[selectedWeapon].gameObject.GetComponent<Gun>().gunData.reservedAmmo;
+            int current = weapons[selectedWeapon].gameObject.GetComponent<Gun>().gunData.currentAmmo;
+            Sprite icon = weapons[selectedWeapon].gameObject.GetComponent<Gun>().gunData.artworkImage;
+            if (weapons[selectedWeapon].gameObject.GetComponent<Gun>().gunData.name != "Knife")
+            {
+                Ammo.GetComponent<TextMeshProUGUI>().text = current + " / " + reserved;
+            }
+            else
+            {
+                Ammo.GetComponent<TextMeshProUGUI>().text = "∞";
+            }
+            WeaponIcon.GetComponent<Image>().sprite = icon;
+            if (current == 0 && weapons[selectedWeapon].gameObject.GetComponent<Gun>().gunData.name != "Knife")
+            {
+                Ammo.GetComponent<TextMeshProUGUI>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+            }
+            else
+            {
+                Ammo.GetComponent<TextMeshProUGUI>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            }
+        }
     }
 
-    private void Select(int weaponIndex) {
-        for (int i = 0; i < weapons.Length; i++){
+    private void Select(int weaponIndex)
+    {
+        for (int i = 0; i < weapons.Length; i++)
+        {
             weapons[i].gameObject.SetActive(i == weaponIndex);
-            if( i == weaponIndex){
+            if (i == weaponIndex)
+            {
                 isGun();
             }
         }
@@ -104,16 +143,18 @@ public class WeaponSwitching : MonoBehaviour {
     }
 
     public bool isGun()
-    { 
-        if (weapons[selectedWeapon].gameObject.GetComponent<Gun>().gunData.name != "Knife"){
+    {
+        if (weapons[selectedWeapon].gameObject.GetComponent<Gun>().gunData.name != "Knife")
+        {
             Debug.Log("Gun Selected");
             return true;
         }
-        else{
+        else
+        {
             Debug.Log("Knife Selected");
             return false;
         }
     }
 
-    private void OnWeaponSelected() {  }
+    private void OnWeaponSelected() { }
 }
