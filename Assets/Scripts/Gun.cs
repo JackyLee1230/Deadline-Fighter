@@ -50,7 +50,6 @@ public class Gun : MonoBehaviour {
 
     private Animator gunAnimator;
 
-
     private void Start() {
         gunAnimator = GetComponentInChildren<Animator>();
         PlayerShoot.isGunActive = false;
@@ -146,7 +145,7 @@ public class Gun : MonoBehaviour {
     private void Shoot() {
         if(gameObject.activeSelf){
             if (gunData.currentAmmo > 0) {
-                Debug.Log("In Mag Ammo:" + gunData.currentAmmo + " Remaining Ammo" + gunData.reservedAmmo);
+                // Debug.Log("In Mag Ammo:" + gunData.currentAmmo + " Remaining Ammo" + gunData.reservedAmmo);
                 if (CanShoot()) {
                     fpsc.shotsFired++;
                     gunAnimator.SetTrigger("Shooting");
@@ -162,6 +161,8 @@ public class Gun : MonoBehaviour {
                     m_AudioSource.PlayOneShot(shootSound);
                     RaycastHit  hit;
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);  
+                    
+                    fpsc.RecoilFire();
                     // add a layer mask to the raycast to only hit the zombies, ignore layer 3
                     if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~layerMask)) {    
                         TrailRenderer trail = Instantiate(bulletTrail, bulletSpawnPoint.transform.position, Quaternion.identity);
@@ -172,7 +173,7 @@ public class Gun : MonoBehaviour {
                             Instantiate (bulletImpactFreshEffect, hit.point, Quaternion.LookRotation(hit.normal));
                             float damage = calcDropOffDamage(hit.distance, gunData.minDamage, gunData.maxDamage, 30, 100);
 
-                            Debug.Log("Type: "+ hit.collider.GetType());
+                            // Debug.Log("Type: "+ hit.collider.GetType());
 
                             if(hit.collider.GetType() == typeof(SphereCollider)){
                                 Instantiate (damageHeadEffect, hit.point, Quaternion.identity);
@@ -255,7 +256,7 @@ public class Gun : MonoBehaviour {
     }
 
     private void Update() {
-        if(gameObject.activeSelf){  
+        if(gameObject.activeSelf){ 
             gunAnimator = GetComponentInChildren<Animator>();
 
             PlayerShoot.haveAmmo = gunData.currentAmmo > 0;

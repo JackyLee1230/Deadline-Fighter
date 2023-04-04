@@ -11,8 +11,8 @@ using TMPro;
 
 namespace UnityStandardAssets.Characters.FirstPerson
 {
-    [RequireComponent(typeof (CharacterController))]
-    [RequireComponent(typeof (AudioSource))]
+    [RequireComponent(typeof(CharacterController))]
+    [RequireComponent(typeof(AudioSource))]
     public class FirstPersonController : MonoBehaviour
     {
         [Header("Player Health")]
@@ -61,7 +61,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] private bool m_IsWalking;
         [SerializeField] private float m_WalkSpeed;
         [SerializeField] private float m_RunSpeed;
-        [SerializeField] [Range(0f, 1f)] private float m_RunstepLenghten;
+        [SerializeField][Range(0f, 1f)] private float m_RunstepLenghten;
         [SerializeField] private float m_JumpSpeed;
         [SerializeField] private float m_StickToGroundForce;
         [SerializeField] private float m_GravityMultiplier;
@@ -75,6 +75,17 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] private AudioClip[] m_FootstepSounds;    // an array of footstep sounds that will be randomly selected from.
         [SerializeField] private AudioClip m_JumpSound;           // the sound played when character leaves the ground.
         [SerializeField] private AudioClip m_LandSound;           // the sound played when character touches back on ground.
+
+
+        [SerializeField] public Vector3 currentRotation;
+        [SerializeField] public Vector3 targetRotation;
+
+        [SerializeField] public float recoilX;
+        [SerializeField] public float recoilY;
+        [SerializeField] public float recoilZ;
+
+        [SerializeField] public float snappiness;
+        [SerializeField] public float returnSpeed;
 
         public Camera m_Camera;
         public Camera m_WeaponCamera;
@@ -109,11 +120,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_FovKick.Setup(m_Camera);
             m_HeadBob.Setup(m_Camera, m_StepInterval);
             m_StepCycle = 0f;
-            m_NextStep = m_StepCycle/2f;
+            m_NextStep = m_StepCycle / 2f;
             m_Jumping = false;
             m_Shooting = false;
             m_AudioSource = GetComponent<AudioSource>();
-			m_MouseLook.Init(transform , m_Camera.transform);
+            m_MouseLook.Init(transform, m_Camera.transform);
             currentHealth = maxHealth;
             iFrames = 0f;
             playerDamage.SetActive(false); // disable the damage taking effect
@@ -122,32 +133,51 @@ namespace UnityStandardAssets.Characters.FirstPerson
             resetHealthBar();
         }
 
-        private float applyLowHealthSpeedPenalty(){
-            if (currentHealth < maxHealth*0.2f){
+        private float applyLowHealthSpeedPenalty()
+        {
+            if (currentHealth < maxHealth * 0.2f)
+            {
                 return 0.3f;
             }
-            else if (currentHealth < maxHealth*0.5f){
+            else if (currentHealth < maxHealth * 0.5f)
+            {
                 return 0.8f;
             }
-            else{
+            else
+            {
                 return 1f;
             }
         }
 
+        public void RecoilFire()
+        {
+            targetRotation += new Vector3(recoilX, Random.Range(-recoilY, recoilY), Random.Range(-recoilZ, recoilZ));
+        }
 
         // Update is called once per frame
         private void Update()
         {
-            if (currentHealth > 0){
-                if (currentHealth < maxHealth*0.2f){
+            if (currentHealth > 0)
+            {
+                targetRotation = Vector3.Lerp(targetRotation, Vector3.zero, Time.deltaTime * returnSpeed);
+                currentRotation = Vector3.Slerp(currentRotation, targetRotation, Time.fixedDeltaTime * snappiness);
+                // Camera.main.transform.localRotation = Quaternion.Euler(currentRotation);
+
+                Debug.Log(m_Camera.transform.localRotation + " | " + Quaternion.Euler(currentRotation));
+
+                if (currentHealth < maxHealth * 0.2f)
+                {
                     healthLowWarning.SetActive(true);
-                }else{
+                }
+                else
+                {
                     healthLowWarning.SetActive(false);
                 }
 
                 timeSurvived += Time.deltaTime;
             }
             RotateView();
+            m_Camera.transform.localRotation = Quaternion.Euler(currentRotation);
             // the jump state needs to read here to make sure it is not missed
             if (!m_Jump)
             {
@@ -173,48 +203,61 @@ namespace UnityStandardAssets.Characters.FirstPerson
             CurrencyUI.GetComponent<TextMeshProUGUI>().text = "$: " + currency + " HKD";
 
             //update player score every frame
-            if(score > 0){
+            if (score > 0)
+            {
                 ScoreUI.GetComponent<TextMeshProUGUI>().text = "Score: " + score;
-            } else {
+            }
+            else
+            {
                 ScoreUI.GetComponent<TextMeshProUGUI>().text = "Scores: " + score;
             }
 
             // update player time survived every frame
-            if(timeSurvived < 60){
+            if (timeSurvived < 60)
+            {
                 TimeSurvivedUI.GetComponent<TextMeshProUGUI>().text = "Survived: " + timeSurvived.ToString("F0") + "s";
-            } else {
-                TimeSurvivedUI.GetComponent<TextMeshProUGUI>().text = "Survived: " + (timeSurvived/60).ToString("F0") + "m" + (timeSurvived%60).ToString("F0") + "s";
+            }
+            else
+            {
+                TimeSurvivedUI.GetComponent<TextMeshProUGUI>().text = "Survived: " + (timeSurvived / 60).ToString("F0") + "m" + (timeSurvived % 60).ToString("F0") + "s";
             }
 
 
             // on each frame, if player has iFrames, reduce them by 1*Time.deltaTime
-            if (iFrames > 0){
-                iFrames -= 1.0f*Time.deltaTime;
+            if (iFrames > 0)
+            {
+                iFrames -= 1.0f * Time.deltaTime;
             }
 
-            if(m_IsWalking == false){
+            if (m_IsWalking == false)
+            {
                 // set opacity of sprint icon to 1
                 // else set opacity to 0.1
                 sprintIcon.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            } else {
+            }
+            else
+            {
                 sprintIcon.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.1f);
             }
 
-            if(iFrames > 0f){
+            if (iFrames > 0f)
+            {
                 // set opacity of iFrame icon to 1
                 // else set opacity to 0.1
                 iFrameIcon.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            } else {
+            }
+            else
+            {
                 iFrameIcon.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.1f);
             }
 
-    
+
 
             // if (Input.GetMouseButtonDown(0)) {
             //     m_Shooting = true;
             //     RaycastHit  hit;
             //     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                
+
             //     if (Physics.Raycast(ray, out hit)) {
             //         if (hit.transform.name == "Zombie(Clone)" || hit.transform.name == "Zombie"){
             //             Debug.Log(hit.collider.GetType());
@@ -235,25 +278,36 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             //     StartCoroutine(RemoveShootingStatus());
             //   }
-        
+
 
             setHealthBar(currentHealth);
             // less than 30% red, less than 50% orange, 70% yellow and 100% green
-            if (currentHealth/maxHealth <= 0.3f){
+            if (currentHealth / maxHealth <= 0.3f)
+            {
                 healthBarFill.GetComponent<Image>().color = Color.red;
-            } else if (currentHealth/maxHealth <= 0.5f){
+            }
+            else if (currentHealth / maxHealth <= 0.5f)
+            {
                 healthBarFill.GetComponent<Image>().color = new Color(1.0f, 0.64f, 0.0f);
-            } else if (currentHealth/maxHealth <= 0.7f){
+            }
+            else if (currentHealth / maxHealth <= 0.7f)
+            {
                 healthBarFill.GetComponent<Image>().color = Color.yellow;
-            } else {
+            }
+            else
+            {
                 healthBarFill.GetComponent<Image>().color = Color.green;
             }
         }
 
-        public void setReloadIcon(bool isReloading){
-            if(isReloading){
+        public void setReloadIcon(bool isReloading)
+        {
+            if (isReloading)
+            {
                 reloadingIcon.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            } else {
+            }
+            else
+            {
                 reloadingIcon.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.1f);
             }
         }
@@ -265,25 +319,28 @@ namespace UnityStandardAssets.Characters.FirstPerson
             while (elapsed < duration)
             {
                 m_Camera.transform.localPosition = m_OriginalCameraPosition + (Random.insideUnitSphere * magnitude);
-                elapsed += Time.deltaTime*2;
+                elapsed += Time.deltaTime * 2;
                 yield return 0;
             }
             m_Camera.transform.localPosition = m_OriginalCameraPosition;
         }
 
-        public float takeDamage(float damage, Vector3 source, bool inFOV){
-            if (iFrames <= 0f && Vector3.Distance(source, m_Camera.transform.position ) < 3.4f && inFOV){
+        public float takeDamage(float damage, Vector3 source, bool inFOV)
+        {
+            if (iFrames <= 0f && Vector3.Distance(source, m_Camera.transform.position) < 3.4f && inFOV)
+            {
                 Debug.Log("Player took " + damage + " damage");
                 currentHealth -= damage;
                 damageTaken += damage;
                 setHealthBar(currentHealth);
                 StartCoroutine(Shake(0.4f, 0.2f));
                 playerDamage.SetActive(true);
-                iFrames = 1.0f;  
+                iFrames = 1.0f;
             }
 
             // check if player health is below 0
-            if (currentHealth <= 0f){
+            if (currentHealth <= 0f)
+            {
                 // kill player
                 currentHealth = 0;
                 playerDie();
@@ -302,34 +359,41 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         // }
 
-        public void playerDie(){
+        public void playerDie()
+        {
             // kill player
             Debug.Log("Player is dead");
             // Destroy(gameObject, 1.0f);
         }
 
-        public void resetHealthBar(){
+        public void resetHealthBar()
+        {
             currentHealth = maxHealth;
             healthBarSlider.value = 1;
         }
 
-        public void setHealthBar(float health){
-            healthBarSlider.value = health/maxHealth;
+        public void setHealthBar(float health)
+        {
+            healthBarSlider.value = health / maxHealth;
         }
 
-        public void addCurrency(int amount){
+        public void addCurrency(int amount)
+        {
             currency += amount;
         }
 
-        public void addScore(int amount){
+        public void addScore(int amount)
+        {
             score += amount;
         }
 
-        public void removeCurrency(int amount){
+        public void removeCurrency(int amount)
+        {
             currency -= amount;
         }
 
-        public void removeScore(int amount){
+        public void removeScore(int amount)
+        {
             score -= amount;
         }
 
@@ -346,16 +410,16 @@ namespace UnityStandardAssets.Characters.FirstPerson
             float speed;
             GetInput(out speed);
             // always move along the camera forward as it is the direction that it being aimed at
-            Vector3 desiredMove = transform.forward*m_Input.y + transform.right*m_Input.x;
+            Vector3 desiredMove = transform.forward * m_Input.y + transform.right * m_Input.x;
 
             // get a normal for the surface that is being touched to move along it
             RaycastHit hitInfo;
             Physics.SphereCast(transform.position, m_CharacterController.radius, Vector3.down, out hitInfo,
-                               m_CharacterController.height/2f, Physics.AllLayers, QueryTriggerInteraction.Ignore);
+                               m_CharacterController.height / 2f, Physics.AllLayers, QueryTriggerInteraction.Ignore);
             desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal).normalized;
 
-            m_MoveDir.x = desiredMove.x*speed * applyLowHealthSpeedPenalty();
-            m_MoveDir.z = desiredMove.z*speed * applyLowHealthSpeedPenalty();
+            m_MoveDir.x = desiredMove.x * speed * applyLowHealthSpeedPenalty();
+            m_MoveDir.z = desiredMove.z * speed * applyLowHealthSpeedPenalty();
 
 
             if (m_CharacterController.isGrounded)
@@ -373,14 +437,15 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
             else
             {
-                m_MoveDir += Physics.gravity*m_GravityMultiplier*Time.fixedDeltaTime;
+                m_MoveDir += Physics.gravity * m_GravityMultiplier * Time.fixedDeltaTime;
             }
-            m_CollisionFlags = m_CharacterController.Move(m_MoveDir*Time.fixedDeltaTime);
+            m_CollisionFlags = m_CharacterController.Move(m_MoveDir * Time.fixedDeltaTime);
 
             ProgressStepCycle(speed);
             UpdateCameraPosition(speed);
             // check if pauseMenu is active
-            if (pauseMenu.activeSelf == false){
+            if (pauseMenu.activeSelf == false)
+            {
                 m_MouseLook.UpdateCursorLock();
             }
             // m_MouseLook.UpdateCursorLock();
@@ -398,7 +463,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         {
             if (m_CharacterController.velocity.sqrMagnitude > 0 && (m_Input.x != 0 || m_Input.y != 0))
             {
-                m_StepCycle += (m_CharacterController.velocity.magnitude + (speed*(m_IsWalking ? 1f : m_RunstepLenghten)))*
+                m_StepCycle += (m_CharacterController.velocity.magnitude + (speed * (m_IsWalking ? 1f : m_RunstepLenghten))) *
                              Time.fixedDeltaTime;
             }
 
@@ -441,7 +506,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             {
                 m_Camera.transform.localPosition =
                     m_HeadBob.DoHeadBob(m_CharacterController.velocity.magnitude * 0.3f +
-                                      (speed*(m_IsWalking ? 1f : m_RunstepLenghten)));
+                                      (speed * (m_IsWalking ? 1f : m_RunstepLenghten)));
                 newCameraPosition = m_Camera.transform.localPosition;
                 newCameraPosition.y = m_Camera.transform.localPosition.y - m_JumpBob.Offset();
             }
@@ -489,7 +554,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void RotateView()
         {
-            m_MouseLook.LookRotation (transform, m_Camera.transform);
+            m_MouseLook.LookRotation(transform, m_Camera.transform);
         }
 
         public int GetPlayerStealthProfile()
@@ -497,10 +562,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
             if (m_Shooting)
             {
                 return 2;
-            } else if (m_IsWalking)
+            }
+            else if (m_IsWalking)
             {
                 return 0;
-            } else
+            }
+            else
             {
                 return 1;
             }
@@ -519,7 +586,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             {
                 return;
             }
-            body.AddForceAtPosition(m_CharacterController.velocity*0.1f, hit.point, ForceMode.Impulse);
+            body.AddForceAtPosition(m_CharacterController.velocity * 0.1f, hit.point, ForceMode.Impulse);
         }
 
         public IEnumerator RemoveShootingStatus()
