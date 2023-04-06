@@ -108,6 +108,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
         public GameObject damageHeadEffect;
         public GameObject bulletHole;
 
+        public float xRecoil;
+        public float yRecoil;
+
 
         // Use this for initialization
         private void Start()
@@ -177,7 +180,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 timeSurvived += Time.deltaTime;
             }
             RotateView();
-            m_Camera.transform.localRotation = Quaternion.Euler(currentRotation);
+//            m_Camera.transform.localRotation = Quaternion.Euler(currentRotation);
             // the jump state needs to read here to make sure it is not missed
             if (!m_Jump)
             {
@@ -554,7 +557,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void RotateView()
         {
-            m_MouseLook.LookRotation(transform, m_Camera.transform);
+            m_MouseLook.LookRotation(transform, m_Camera.transform, xRecoil*0.0001f, yRecoil*0.0001f);
         }
 
         public int GetPlayerStealthProfile()

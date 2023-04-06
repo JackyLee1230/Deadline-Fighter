@@ -10,6 +10,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
         public float XSensitivity = 2f;
         public float YSensitivity = 2f;
         public bool clampVerticalRotation = true;
+        [HideInInspector]
+        public float yRot;
+        [HideInInspector]
+        public float xRot;
         public float MinimumX = -90F;
         public float MaximumX = 90F;
         public bool smooth;
@@ -28,10 +32,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
         }
 
 
-        public void LookRotation(Transform character, Transform camera)
+        public void LookRotation(Transform character, Transform camera, float xRecoil = 0, float yRecoil = 0)
         {
-            float yRot = CrossPlatformInputManager.GetAxis("Mouse X") * XSensitivity;
-            float xRot = CrossPlatformInputManager.GetAxis("Mouse Y") * YSensitivity;
+            yRot = CrossPlatformInputManager.GetAxis("Mouse X") * XSensitivity - xRecoil;
+            xRot = CrossPlatformInputManager.GetAxis("Mouse Y") * YSensitivity - yRecoil;
 
             m_CharacterTargetRot *= Quaternion.Euler (0f, yRot, 0f);
             m_CameraTargetRot *= Quaternion.Euler (-xRot, 0f, 0f);
@@ -94,6 +98,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 Cursor.visible = true;
             }
         }
+
 
         Quaternion ClampRotationAroundXAxis(Quaternion q)
         {

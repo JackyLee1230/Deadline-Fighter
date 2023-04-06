@@ -50,6 +50,7 @@ public class Gun : MonoBehaviour {
 
     private Animator gunAnimator;
 
+
     private void Start() {
         gunAnimator = GetComponentInChildren<Animator>();
         PlayerShoot.isGunActive = false;
@@ -162,7 +163,7 @@ public class Gun : MonoBehaviour {
                     RaycastHit  hit;
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);  
                     
-                    fpsc.RecoilFire();
+//                    fpsc.RecoilFire();
                     // add a layer mask to the raycast to only hit the zombies, ignore layer 3
                     if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~layerMask)) {    
                         TrailRenderer trail = Instantiate(bulletTrail, bulletSpawnPoint.transform.position, Quaternion.identity);
