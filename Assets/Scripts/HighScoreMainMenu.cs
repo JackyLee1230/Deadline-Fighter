@@ -22,10 +22,15 @@ public class HighScoreMainMenu : MonoBehaviour
         if (highScore > 0 ){
             highScoreUI.text = "High Score: " + highScore;
             highScoreTimeUI.text = "On: " + highScoreTime;
+            // GUIUtility.systemCopyBuffer = "HighScore:" + highScore + " on " +  highScoreTime;
         }
         else{
             highScoreUI.text = "High Score: 0";
         }
+    }
+
+    public void copyToClipboard(){
+        GUIUtility.systemCopyBuffer = "HighScore:" + highScoreUI.text + " on " +  highScoreTimeUI.text;
     }
 
     // Update is called once per frame
