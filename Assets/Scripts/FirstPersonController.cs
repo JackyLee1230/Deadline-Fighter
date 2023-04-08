@@ -163,7 +163,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 currentRotation = Vector3.Slerp(currentRotation, targetRotation, Time.fixedDeltaTime * snappiness);
                 // Camera.main.transform.localRotation = Quaternion.Euler(currentRotation);
 
-                Debug.Log(m_Camera.transform.localRotation + " | " + Quaternion.Euler(currentRotation));
+                // Debug.Log(m_Camera.transform.localRotation + " | " + Quaternion.Euler(currentRotation));
 
                 if (currentHealth < maxHealth * 0.2f)
                 {
@@ -176,8 +176,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
                 timeSurvived += Time.deltaTime;
             }
-            RotateView();
-            m_Camera.transform.localRotation = Quaternion.Euler(currentRotation);
+            RotateView(currentRotation[0], currentRotation[1]);
+            Debug.Log("current rotation " + currentRotation[0]);
+            // m_Camera.transform.localRotation = Quaternion.Euler(currentRotation);
             // the jump state needs to read here to make sure it is not missed
             if (!m_Jump)
             {
@@ -552,9 +553,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
         }
 
 
-        private void RotateView()
+        private void RotateView(float xRotation, float yRotation)
         {
-            m_MouseLook.LookRotation(transform, m_Camera.transform);
+            m_MouseLook.LookRotation(transform, m_Camera.transform, xRotation, yRotation);
         }
 
         public int GetPlayerStealthProfile()
