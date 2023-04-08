@@ -16,11 +16,12 @@ public class HighScoreMainMenu : MonoBehaviour
     {
         highScoreUI = gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         highScoreTimeUI = gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+        int highScoreRound =  SaveGame.Load<int>("round");
         int highScore = SaveGame.Load<int>("highScore");
         String highScoreTime = SaveGame.Load<String>("highScoreTime");
         Debug.Log("high score in main menu: " + highScore);
         if (highScore > 0 ){
-            highScoreUI.text = "High Score: " + highScore;
+            highScoreUI.text = "High Score: " + highScore + " In " + highScoreRound + " Rounds";
             highScoreTimeUI.text = "On: " + highScoreTime;
             // GUIUtility.systemCopyBuffer = "HighScore:" + highScore + " on " +  highScoreTime;
         }

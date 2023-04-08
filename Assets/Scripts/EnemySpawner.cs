@@ -12,6 +12,10 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     public int enemiesAlive = 0;
 
+    [SerializeField] public float timeBetweenWaves = 5.0f;
+
+    [SerializeField] public bool isTransitioning;
+
     [SerializeField] List<float> timeTook;
 
     [SerializeField] public float currentRoundTime;
@@ -41,6 +45,7 @@ public class EnemySpawner : MonoBehaviour
     void Start()
     {
         timeTook = new List<float>();
+        isTransitioning = false;
     }
 
     // Update is called once per frame
@@ -55,12 +60,17 @@ public class EnemySpawner : MonoBehaviour
             }
         }
         roundNum.text = "Round: " + round.ToString() + " Time:" + currentRoundTime.ToString("F0") + "s; Alive: " + enemiesAlive.ToString();
-        if (enemiesAlive == 0) {
+        if (enemiesAlive == 0 && isTransitioning == false) {
             // add a random number of score  between (round * 100) to (round * 200 ) to fpsc.score
             fpsc.score += UnityEngine.Random.Range(round * 100, round * 200);
             round++;
-            nextWave(round);
-            roundNum.text = "Round: " + round.ToString() + " Time:" + currentRoundTime.ToString("F0") + "s; Alive: " + enemiesAlive.ToString();
+            // nextWave(round);
+            if (round != 1){
+                StartCoroutine(waitAndSpawnNextWave());
+            }else {
+                nextWave(round);
+            }
+
         }
         
         #if UNITY_EDITOR
@@ -76,7 +86,14 @@ public class EnemySpawner : MonoBehaviour
         #else
             Debug.Log("Skipping round only availble in editor mode");
         #endif
-        
+    }
+
+    IEnumerator waitAndSpawnNextWave() {
+        isTransitioning = true;
+        yield return new WaitForSeconds(timeBetweenWaves);
+        roundNum.text = "Round: " + round.ToString() + " Time:" + currentRoundTime.ToString("F0") + "s; Alive: " + enemiesAlive.ToString();
+        nextWave(round);
+        isTransitioning = false;
     }
 
     public void nextWave(int round) {
