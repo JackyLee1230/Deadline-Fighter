@@ -10,12 +10,12 @@ public class WeaponSwitching : MonoBehaviour
 {
 
     [Header("References")]
-    [SerializeField] private Transform[] weapons;
+    [SerializeField] public Transform[] weapons;
     [SerializeField] public GameObject Ammo;
     [SerializeField] public GameObject WeaponIcon;
 
     [Header("Keys")]
-    [SerializeField] private KeyCode[] keys;
+    [SerializeField] public KeyCode[] keys;
 
     [Header("Settings")]
     [SerializeField] private float switchTime;

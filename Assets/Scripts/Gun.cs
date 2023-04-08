@@ -268,7 +268,6 @@ public class Gun : MonoBehaviour {
             timeSinceLastShot += Time.deltaTime;
             if (Physics.SphereCast(Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f)), noClipRadius, out var hit, noClipDistance, clippingLayerMask))
             {
-                Debug.Log(hit.distance);
                 transform.localPosition = _originalLocalPosition - new Vector3(0.0f, 0.0f, offsetCurve.Evaluate(hit.distance / noClipDistance));
             }
             else
