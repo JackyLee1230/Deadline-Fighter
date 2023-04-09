@@ -21,9 +21,9 @@ public class WeaponPurchase : MonoBehaviour
             {
                 // Player can afford the weapon, so deduct the cost from their currency and give them the weapon
                 fpsc.currency -= weaponCost;
-                editor.weapons[0].gameObject.SetActive(false);
+                editor.weapons[editor.selectedWeapon].gameObject.SetActive(false);
                 editor.weapons[3].gameObject.SetActive(true);
-                editor.weapons[0] = editor.weapons[3];
+                (editor.weapons[editor.selectedWeapon] , editor.weapons[3]) = (editor.weapons[3],editor.weapons[editor.selectedWeapon]);
             }
             else
             {
