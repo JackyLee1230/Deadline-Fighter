@@ -1,28 +1,36 @@
 ﻿using UnityEngine;
 
-namespace SlimUI.ModernMenu{
-    public class ExtraLinks : MonoBehaviour{
-        public void CCP(){
-            Application.OpenURL("http://itzjacky.info");
+namespace SlimUI.ModernMenu
+{
+    public class ExtraLinks : MonoBehaviour
+    {
+        public void Jacky()
+        {
+            Application.OpenURL("http://www.itzjacky.info");
         }
 
-        public void SciFi(){
+        public void SciFi()
+        {
             Application.OpenURL("http://u3d.as/1AaR");
         }
 
-        public void Clean1(){
+        public void Clean1()
+        {
             Application.OpenURL("http://u3d.as/1hTi");
         }
 
-        public void Clean2(){
+        public void Clean2()
+        {
             Application.OpenURL("http://u3d.as/1AQ0");
         }
 
-        public void Essence(){
+        public void Essence()
+        {
             Application.OpenURL("http://u3d.as/1t11");
         }
 
-        public void Tech(){
+        public void Tech()
+        {
             Application.OpenURL("http://u3d.as/1nki");
         }
     }
