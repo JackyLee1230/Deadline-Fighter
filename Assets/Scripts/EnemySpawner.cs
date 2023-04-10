@@ -4,7 +4,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityStandardAssets.Characters.FirstPerson;
-using BayatGames.SaveGameFree; 
+using BayatGames.SaveGameFree;
 
 public class EnemySpawner : MonoBehaviour
 
@@ -15,6 +15,8 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] public float timeBetweenWaves = 5.0f;
 
     [SerializeField] public bool isTransitioning;
+
+    [SerializeField] public float transitionTime;
 
     [SerializeField] List<float> timeTook;
 
@@ -51,55 +53,72 @@ public class EnemySpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         currentRoundTime += Time.deltaTime;
-        for (int i =0; i < enemies.Length; i++) {
-            if (enemies[i] == null || enemies[i].GetComponentInChildren<AIExample>().isDead == true) {
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            if (enemies[i] == null || enemies[i].GetComponentInChildren<AIExample>().isDead == true)
+            {
                 enemiesAlive = enemies.Length - 1;
                 enemies[i] = enemies[enemies.Length - 1];
                 Array.Resize(ref enemies, enemies.Length - 1);
             }
         }
-        roundNum.text = "Round: " + round.ToString() + " Time:" + currentRoundTime.ToString("F0") + "s; Alive: " + enemiesAlive.ToString();
-        if (enemiesAlive == 0 && isTransitioning == false) {
+        if (!isTransitioning)
+        {
+            transitionTime = 0.0f;
+            roundNum.text = "Round: " + round.ToString() + " Time:" + currentRoundTime.ToString("F0") + "s; Alive: " + enemiesAlive.ToString();
+        }
+        else
+        {
+            transitionTime += Time.deltaTime;
+            roundNum.text = "Round: " + round.ToString() + " Incoming in" + (5.0f - transitionTime).ToString("F1") + "s !";
+        }
+
+        if (enemiesAlive == 0 && isTransitioning == false)
+        {
             // add a random number of score  between (round * 100) to (round * 200 ) to fpsc.score
             fpsc.score += UnityEngine.Random.Range(round * 100, round * 200);
             round++;
             // nextWave(round);
-            if (round != 1){
+            if (round != 1)
+            {
                 StartCoroutine(waitAndSpawnNextWave());
-            }else {
+            }
+            else
+            {
                 nextWave(round);
             }
 
         }
-        
-        #if UNITY_EDITOR
-            if (Input.GetKeyDown(KeyCode.Return)) {
-                // destroy all enemies in enemies
-                for (int i = 0; i < enemies.Length; i++) {
-                    Destroy(enemies[i]);
-                }
-                round++;
-                nextWave(round);
-            roundNum.text = "Round: " + round.ToString() + " Time:" + currentRoundTime.ToString("F0") + "s; Alive: " + enemiesAlive.ToString();
+
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            // destroy all enemies in enemies
+            for (int i = 0; i < enemies.Length; i++)
+            {
+                Destroy(enemies[i]);
             }
-        #else
+            round++;
+            nextWave(round);
+            roundNum.text = "Round: " + round.ToString() + " Time:" + currentRoundTime.ToString("F0") + "s; Alive: " + enemiesAlive.ToString();
+        }
+#else
             Debug.Log("Skipping round only availble in editor mode");
-        #endif
+#endif
     }
 
-    IEnumerator waitAndSpawnNextWave() {
+    IEnumerator waitAndSpawnNextWave()
+    {
         isTransitioning = true;
         yield return new WaitForSeconds(timeBetweenWaves);
         roundNum.text = "Round: " + round.ToString() + " Time:" + currentRoundTime.ToString("F0") + "s; Alive: " + enemiesAlive.ToString();
-        nextWave(round);
-        isTransitioning = false;
-    }
-
-    public void nextWave(int round) {
+        // nextWave(round);
         fpsc.GetComponent<FirstPersonController>().currentHealth = fpsc.maxHealth;
         // remove all enemies from the enemies array and the scene
-        for( int i = 0; i < enemies.Length; i++) {
+        for (int i = 0; i < enemies.Length; i++)
+        {
             Destroy(enemies[i]);
         }
         // reset the enemy count
@@ -119,9 +138,12 @@ public class EnemySpawner : MonoBehaviour
 
         enemies = new GameObject[spwanCount];
         Debug.Log("round " + round + " spwanCount " + spwanCount);
-        for (int i = 0; i < spwanCount; i++) {
+        for (int i = 0; i < spwanCount; i++)
+        {
+            // yield return new WaitForSeconds(1.0f);
             GameObject spawnPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)];
-            while(Vector3.Distance(fpsc.transform.position, spawnPoint.transform.position) < minDistanceToSpawn) {
+            while (Vector3.Distance(fpsc.transform.position, spawnPoint.transform.position) < minDistanceToSpawn)
+            {
                 spawnPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)];
             }
 
@@ -130,9 +152,57 @@ public class EnemySpawner : MonoBehaviour
             enemySpawned.GetComponentInChildren<AIExample>().health *= UnityEngine.Random.Range(1, 5) * (round / 30.0f);
             enemySpawned.GetComponentInChildren<AIExample>().fpsc = fpsc;
             // Lower => Faster attack
-            enemySpawned.GetComponentInChildren<AIExample>().AttackCooldownMultiplier = (float) UnityEngine.Random.Range(0.8f,1.3f);
+            enemySpawned.GetComponentInChildren<AIExample>().AttackCooldownMultiplier = (float)UnityEngine.Random.Range(0.8f, 1.3f);
             // Lower => Smaller iframes
-            enemySpawned.GetComponentInChildren<AIExample>().DamagedCooldownMultiplier = (float) UnityEngine.Random.Range(0.8f, 1.3f);
+            enemySpawned.GetComponentInChildren<AIExample>().DamagedCooldownMultiplier = (float)UnityEngine.Random.Range(0.8f, 1.3f);
+            //add the enemy to the enemies array
+            enemies[i] = enemySpawned;
+            enemiesAlive++;
+        }
+        isTransitioning = false;
+    }
+
+    public void nextWave(int round)
+    {
+        fpsc.GetComponent<FirstPersonController>().currentHealth = fpsc.maxHealth;
+        // remove all enemies from the enemies array and the scene
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            Destroy(enemies[i]);
+        }
+        // reset the enemy count
+        enemiesAlive = 0;
+        // add the time it took to complete the round to the list
+        timeTook.Add(currentRoundTime);
+        currentRoundTime = 0.0f;
+        // create a new array of enemies
+        AudioSource.PlayClipAtPoint(roundWin, transform.position, 1.5f);
+        int spwanCount = UnityEngine.Random.Range(round, round * 3);
+
+        // save the data for load
+        SaveGame.Save<int>("round", round);
+        SaveGame.Save<int>("score", fpsc.GetComponent<FirstPersonController>().score);
+        SaveGame.Save<int>("currency", fpsc.GetComponent<FirstPersonController>().currency);
+        SaveGame.Save<int>("spawnCount", spwanCount);
+
+        enemies = new GameObject[spwanCount];
+        Debug.Log("round " + round + " spwanCount " + spwanCount);
+        for (int i = 0; i < spwanCount; i++)
+        {
+            GameObject spawnPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)];
+            while (Vector3.Distance(fpsc.transform.position, spawnPoint.transform.position) < minDistanceToSpawn)
+            {
+                spawnPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)];
+            }
+
+            GameObject enemySpawned = Instantiate(enemyPrefabs[UnityEngine.Random.Range(0, enemyPrefabs.Length)], spawnPoint.transform.position, Quaternion.identity);
+            // increase enemy health by a linearly based on round number from 1 (round 1) to 5 in round(30)
+            enemySpawned.GetComponentInChildren<AIExample>().health *= UnityEngine.Random.Range(1, 5) * (round / 30.0f);
+            enemySpawned.GetComponentInChildren<AIExample>().fpsc = fpsc;
+            // Lower => Faster attack
+            enemySpawned.GetComponentInChildren<AIExample>().AttackCooldownMultiplier = (float)UnityEngine.Random.Range(0.8f, 1.3f);
+            // Lower => Smaller iframes
+            enemySpawned.GetComponentInChildren<AIExample>().DamagedCooldownMultiplier = (float)UnityEngine.Random.Range(0.8f, 1.3f);
             //add the enemy to the enemies array
             enemies[i] = enemySpawned;
             enemiesAlive++;
@@ -140,11 +210,13 @@ public class EnemySpawner : MonoBehaviour
     }
 
     // used when resuming game  
-    public void setWave() {
+    public void setWave()
+    {
         int round = SaveGame.Load<int>("round");
         fpsc.GetComponent<FirstPersonController>().currentHealth = fpsc.maxHealth;
         // remove all enemies from the enemies array and the scene
-        for( int i = 0; i < enemies.Length; i++) {
+        for (int i = 0; i < enemies.Length; i++)
+        {
             Destroy(enemies[i]);
         }
         // reset the enemy count
@@ -162,9 +234,11 @@ public class EnemySpawner : MonoBehaviour
 
         enemies = new GameObject[spwanCount];
         Debug.Log("round " + round + " spwanCount " + spwanCount);
-        for (int i = 0; i < spwanCount; i++) {
+        for (int i = 0; i < spwanCount; i++)
+        {
             GameObject spawnPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)];
-            while(Vector3.Distance(fpsc.transform.position, spawnPoint.transform.position) < minDistanceToSpawn) {
+            while (Vector3.Distance(fpsc.transform.position, spawnPoint.transform.position) < minDistanceToSpawn)
+            {
                 spawnPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)];
             }
 
@@ -173,9 +247,9 @@ public class EnemySpawner : MonoBehaviour
             enemySpawned.GetComponentInChildren<AIExample>().health *= UnityEngine.Random.Range(1, 5) * (round / 30.0f);
             enemySpawned.GetComponentInChildren<AIExample>().fpsc = fpsc;
             // Lower => Faster attack
-            enemySpawned.GetComponentInChildren<AIExample>().AttackCooldownMultiplier = (float) UnityEngine.Random.Range(0.8f,1.3f);
+            enemySpawned.GetComponentInChildren<AIExample>().AttackCooldownMultiplier = (float)UnityEngine.Random.Range(0.8f, 1.3f);
             // Lower => Smaller iframes
-            enemySpawned.GetComponentInChildren<AIExample>().DamagedCooldownMultiplier = (float) UnityEngine.Random.Range(0.8f, 1.3f);
+            enemySpawned.GetComponentInChildren<AIExample>().DamagedCooldownMultiplier = (float)UnityEngine.Random.Range(0.8f, 1.3f);
             //add the enemy to the enemies array
             enemies[i] = enemySpawned;
             enemiesAlive++;
