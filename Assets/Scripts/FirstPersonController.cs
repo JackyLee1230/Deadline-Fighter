@@ -335,7 +335,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 setHealthBar(currentHealth);
                 StartCoroutine(Shake(0.4f, 0.2f));
                 playerDamage.SetActive(true);
-                iFrames = 1.0f;
+                iFrames = 0.2f;
             }
 
             // check if player health is below 0

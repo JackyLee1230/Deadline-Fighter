@@ -31,6 +31,9 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     public float minDistanceToSpawn = 10;
 
+    [SerializeField]
+    public float maxDistanceToSpawn = 50;
+
     [SerializeField] public FirstPersonController fpsc;
 
     [SerializeField]
@@ -116,6 +119,7 @@ public class EnemySpawner : MonoBehaviour
         roundNum.text = "Round: " + round.ToString() + " Time:" + currentRoundTime.ToString("F0") + "s; Alive: " + enemiesAlive.ToString();
         // nextWave(round);
         fpsc.GetComponent<FirstPersonController>().currentHealth = fpsc.maxHealth;
+        fpsc.GetComponent<FirstPersonController>().currency += UnityEngine.Random.Range(round * 10, round * 70);
         // remove all enemies from the enemies array and the scene
         for (int i = 0; i < enemies.Length; i++)
         {
@@ -140,9 +144,8 @@ public class EnemySpawner : MonoBehaviour
         Debug.Log("round " + round + " spwanCount " + spwanCount);
         for (int i = 0; i < spwanCount; i++)
         {
-            // yield return new WaitForSeconds(1.0f);
             GameObject spawnPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)];
-            while (Vector3.Distance(fpsc.transform.position, spawnPoint.transform.position) < minDistanceToSpawn)
+            while (Vector3.Distance(fpsc.transform.position, spawnPoint.transform.position) < minDistanceToSpawn || Vector3.Distance(fpsc.transform.position, spawnPoint.transform.position) > maxDistanceToSpawn)
             {
                 spawnPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)];
             }
@@ -152,9 +155,9 @@ public class EnemySpawner : MonoBehaviour
             enemySpawned.GetComponentInChildren<AIExample>().health *= UnityEngine.Random.Range(1, 5) * (round / 30.0f);
             enemySpawned.GetComponentInChildren<AIExample>().fpsc = fpsc;
             // Lower => Faster attack
-            enemySpawned.GetComponentInChildren<AIExample>().AttackCooldownMultiplier = (float)UnityEngine.Random.Range(0.8f, 1.3f);
+            enemySpawned.GetComponentInChildren<AIExample>().AttackCooldownMultiplier = (float)UnityEngine.Random.Range(1f, 1.3f);
             // Lower => Smaller iframes
-            enemySpawned.GetComponentInChildren<AIExample>().DamagedCooldownMultiplier = (float)UnityEngine.Random.Range(0.8f, 1.3f);
+            enemySpawned.GetComponentInChildren<AIExample>().DamagedCooldownMultiplier = (float)UnityEngine.Random.Range(0.8f, 1.5f);
             //add the enemy to the enemies array
             enemies[i] = enemySpawned;
             enemiesAlive++;
