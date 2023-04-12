@@ -70,12 +70,12 @@ public class EnemySpawner : MonoBehaviour
         if (!isTransitioning)
         {
             transitionTime = 0.0f;
-            roundNum.text = "Round: " + round.ToString() + " Time:" + currentRoundTime.ToString("F0") + "s; Alive: " + enemiesAlive.ToString();
+            roundNum.text = "Round: " + round.ToString() + " Time: " + currentRoundTime.ToString("F0") + "s; Alive: " + enemiesAlive.ToString();
         }
         else
         {
             transitionTime += Time.deltaTime;
-            roundNum.text = "Round: " + round.ToString() + " Incoming in" + (5.0f - transitionTime).ToString("F1") + "s !";
+            roundNum.text = "Round: " + round.ToString() + " Incoming in " + (5.0f - transitionTime).ToString("F1") + "s!";
         }
 
         if (enemiesAlive == 0 && isTransitioning == false)
@@ -116,7 +116,7 @@ public class EnemySpawner : MonoBehaviour
     {
         isTransitioning = true;
         yield return new WaitForSeconds(timeBetweenWaves);
-        roundNum.text = "Round: " + round.ToString() + " Time:" + currentRoundTime.ToString("F0") + "s; Alive: " + enemiesAlive.ToString();
+        roundNum.text = "Round: " + round.ToString() + " Time:  " + currentRoundTime.ToString("F0") + "s; Alive: " + enemiesAlive.ToString();
         // nextWave(round);
         fpsc.GetComponent<FirstPersonController>().currentHealth = fpsc.maxHealth;
         fpsc.GetComponent<FirstPersonController>().currency += UnityEngine.Random.Range(round * 10, round * 70);
