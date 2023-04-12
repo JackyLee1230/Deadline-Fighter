@@ -147,6 +147,15 @@ public class EnemySpawner : MonoBehaviour
         // nextWave(round);
         fpsc.GetComponent<FirstPersonController>().currentHealth = fpsc.maxHealth;
         fpsc.GetComponent<FirstPersonController>().currency += UnityEngine.Random.Range(round * 10, round * 70);
+
+        for (int i = 0; i < fpsc.transform.GetChild(0).GetChild(1).childCount; i++)
+        {
+            fpsc.transform.GetChild(0).GetChild(1).GetChild(i).GetComponent<Gun>().gunData.reservedAmmo =
+            fpsc.transform.GetChild(0).GetChild(1).GetChild(i).GetComponent<Gun>().gunData.maxAmmo +
+            (fpsc.transform.GetChild(0).GetChild(1).GetChild(i).GetComponent<Gun>().gunData.magSize - fpsc.transform.GetChild(0).GetChild(1).GetChild(i).GetComponent<Gun>().gunData.currentAmmo);
+        }
+
+        // weaponHolder.transform.GetChild(0).GetComponent<Gun>().gunData.reservedAmmo += ammoGiven;
         // remove all enemies from the enemies array and the scene
         for (int i = 0; i < enemies.Length; i++)
         {
