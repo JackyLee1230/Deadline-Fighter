@@ -176,6 +176,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
                 timeSurvived += Time.deltaTime;
             }
+
             RotateView(currentRotation[0], currentRotation[1]);
             // m_Camera.transform.localRotation = Quaternion.Euler(currentRotation);
             // the jump state needs to read here to make sure it is not missed

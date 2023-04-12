@@ -57,6 +57,16 @@ public class EnemySpawner : MonoBehaviour
     void Update()
     {
 
+        if (fpsc.GetComponent<FirstPersonController>().currentHealth <= 0)
+        {
+            // kill all enemies
+            for (int i = 0; i < enemies.Length; i++)
+            {
+                Destroy(enemies[i]);
+                enemiesAlive--;
+            }
+        }
+
         int unawareEnemies = 0;
 
         currentRoundTime += Time.deltaTime;
