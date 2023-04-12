@@ -84,6 +84,13 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] public float recoilY;
         [SerializeField] public float recoilZ;
 
+        [SerializeField] public float ADSrecoilX;
+        [SerializeField] public float ADSrecoilY;
+        [SerializeField] public float ADSrecoilZ;
+
+        [SerializeField] public GameObject m_CameraRecoil;
+        [SerializeField] public GameObject m_CameraRotation;
+
         [SerializeField] public float snappiness;
         [SerializeField] public float returnSpeed;
 
@@ -124,7 +131,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_Jumping = false;
             m_Shooting = false;
             m_AudioSource = GetComponent<AudioSource>();
-            m_MouseLook.Init(transform, m_Camera.transform);
+            m_MouseLook.Init(transform, m_CameraRotation.transform);
             currentHealth = maxHealth;
             iFrames = 0f;
             playerDamage.SetActive(false); // disable the damage taking effect
@@ -151,7 +158,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         public void RecoilFire()
         {
-            targetRotation += new Vector3(recoilX, Random.Range(-recoilY, recoilY), Random.Range(-recoilZ, recoilZ));
+            if(!m_Aiming){
+                targetRotation += new Vector3(recoilX, Random.Range(-recoilY, recoilY), Random.Range(-recoilZ, recoilZ));
+            }
+            else{
+                targetRotation += new Vector3(ADSrecoilX, Random.Range(-ADSrecoilY, ADSrecoilY), Random.Range(-ADSrecoilZ, ADSrecoilZ));
+            }
         }
 
         // Update is called once per frame
@@ -161,7 +173,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             {
                 targetRotation = Vector3.Lerp(targetRotation, Vector3.zero, Time.deltaTime * returnSpeed);
                 currentRotation = Vector3.Slerp(currentRotation, targetRotation, Time.fixedDeltaTime * snappiness);
-                // Camera.main.transform.localRotation = Quaternion.Euler(currentRotation);
+                m_CameraRecoil.transform.localRotation = Quaternion.Euler(currentRotation);
 
                 // Debug.Log(m_Camera.transform.localRotation + " | " + Quaternion.Euler(currentRotation));
 
@@ -177,7 +189,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 timeSurvived += Time.deltaTime;
             }
 
-            RotateView(currentRotation[0], currentRotation[1]);
+            RotateView();
             // m_Camera.transform.localRotation = Quaternion.Euler(currentRotation);
             // the jump state needs to read here to make sure it is not missed
             if (!m_Jump)
@@ -542,7 +554,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
 #endif
             // set the desired speed to be walking or running
-            speed = (m_IsWalking) ? m_WalkSpeed : (m_Shooting) ? m_RunSpeed*0.65f : m_RunSpeed;
+            speed = (m_IsWalking) ? m_WalkSpeed : (m_Shooting) ? m_RunSpeed*0.8f : m_RunSpeed;
             m_Input = new Vector2(horizontal, vertical);
 
             // normalize input if it exceeds 1 in combined length:
@@ -561,9 +573,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
         }
 
 
-        private void RotateView(float xRotation, float yRotation)
+        private void RotateView()
         {
-            m_MouseLook.LookRotation(transform, m_Camera.transform, xRotation, yRotation);
+            m_MouseLook.LookRotation(transform, m_CameraRotation.transform);
         }
 
         public int GetPlayerStealthProfile()
