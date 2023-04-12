@@ -57,6 +57,8 @@ public class EnemySpawner : MonoBehaviour
     void Update()
     {
 
+        int unawareEnemies = 0;
+
         currentRoundTime += Time.deltaTime;
         for (int i = 0; i < enemies.Length; i++)
         {
@@ -65,6 +67,27 @@ public class EnemySpawner : MonoBehaviour
                 enemiesAlive = enemies.Length - 1;
                 enemies[i] = enemies[enemies.Length - 1];
                 Array.Resize(ref enemies, enemies.Length - 1);
+                if (enemies[i].GetComponentInChildren<AIExample>().isAware == true)
+                {
+                    unawareEnemies++;
+                }
+            }
+        }
+
+
+        if (enemies.Length == 1)
+        {
+            enemies[0].GetComponentInChildren<AIExample>().isAware = true;
+        }
+        else if (enemies.Length > 1)
+        {
+            for (int i = 0; i < enemies.Length / 2; i++)
+            {
+                if (enemies[i].GetComponentInChildren<AIExample>().isAware == false)
+                {
+                    enemies[i].GetComponentInChildren<AIExample>().isAware = true;
+                    break;
+                }
             }
         }
         if (!isTransitioning)
