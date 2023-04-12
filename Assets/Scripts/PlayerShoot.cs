@@ -78,6 +78,8 @@ public class PlayerShoot : MonoBehaviour {
                 if (Input.GetMouseButton(0)){
                     fpsc.m_Shooting = true;
                     shootInput?.Invoke();
+                }
+                else if(fpsc.m_Shooting){
                     StartCoroutine(fpsc.RemoveShootingStatus());
                 }
             }
@@ -85,6 +87,8 @@ public class PlayerShoot : MonoBehaviour {
                 if (Input.GetMouseButtonDown(0)){
                     fpsc.m_Shooting = true;
                     shootInput?.Invoke();
+                }
+                else if(fpsc.m_Shooting){
                     StartCoroutine(fpsc.RemoveShootingStatus());
                 }
             }
