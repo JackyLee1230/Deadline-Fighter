@@ -67,10 +67,14 @@ public class EnemySpawner : MonoBehaviour
                 enemiesAlive = enemies.Length - 1;
                 enemies[i] = enemies[enemies.Length - 1];
                 Array.Resize(ref enemies, enemies.Length - 1);
-                if (enemies[i].GetComponentInChildren<AIExample>().isAware == true)
-                {
-                    unawareEnemies++;
-                }
+            }
+        }
+
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            if (enemies[i].GetComponentInChildren<AIExample>().isAware == false)
+            {
+                unawareEnemies++;
             }
         }
 
