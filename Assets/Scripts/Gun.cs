@@ -218,6 +218,10 @@ public class Gun : MonoBehaviour
                                 Debug.Log("Hit for " + damage * limbShotMultiplier + " damage; Distance" + hit.distance);
                             }
                         }
+                        else if (hit.transform.tag == "Barrier")
+                        {
+                            Debug.Log("Barrier Hit");
+                        }
                         else
                         {
                             int randomNumberForBulletHole = UnityEngine.Random.Range(0, 3);
