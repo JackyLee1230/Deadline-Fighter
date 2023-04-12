@@ -65,6 +65,8 @@ public class Gun : MonoBehaviour
         gunData.currentAmmo = gunData.magSize;
         gunData.reservedAmmo = gunData.magSize * 3;
         _originalLocalPosition = transform.localPosition;
+
+        RecoilInit();
     }
 
     // private void OnDisable() => gunData.reloading = false;
@@ -85,6 +87,7 @@ public class Gun : MonoBehaviour
 
     private void OnEnable()
     {
+        RecoilInit();
         if (m_AudioSource != null)
         {
             m_AudioSource.Stop();
@@ -106,6 +109,18 @@ public class Gun : MonoBehaviour
     //         if child name contain bsp
     //     }
     // }
+
+    private void RecoilInit()
+    {
+        fpsc.recoilX = gunData.recoilX;
+        fpsc.recoilY = gunData.recoilY;
+        fpsc.recoilZ = gunData.recoilZ;
+        fpsc.ADSrecoilX = gunData.ADSrecoilX;
+        fpsc.ADSrecoilY = gunData.ADSrecoilY;
+        fpsc.ADSrecoilZ = gunData.ADSrecoilZ;
+        fpsc.snappiness = gunData.snappiness;
+        fpsc.returnSpeed = gunData.returnSpeed;
+    }
 
 
 

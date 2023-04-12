@@ -26,4 +26,16 @@ public class GunData : ScriptableObject {
     [Header("Fire Mode")]
     public bool isAuto;
 
+    [Header("Recoil")]
+    [SerializeField] public float recoilX;
+    [SerializeField] public float recoilY;
+    [SerializeField] public float recoilZ;
+
+    [SerializeField] public float ADSrecoilX;
+    [SerializeField] public float ADSrecoilY;
+    [SerializeField] public float ADSrecoilZ;
+
+    [SerializeField] public float snappiness;
+    [SerializeField] public float returnSpeed;
+
 }
