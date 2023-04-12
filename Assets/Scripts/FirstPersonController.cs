@@ -99,7 +99,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private Vector3 m_OriginalCameraPosition;
         private float m_StepCycle;
         private float m_NextStep;
-        private bool m_Jumping;
+        public bool m_Jumping;
         public bool m_Shooting;
         public bool m_Aiming;
         private AudioSource m_AudioSource;
@@ -498,6 +498,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void UpdateCameraPosition(float speed)
         {
+            if(m_Aiming){
+                return;
+            }
+
             Vector3 newCameraPosition;
             if (!m_UseHeadBob)
             {
@@ -532,9 +536,13 @@ namespace UnityStandardAssets.Characters.FirstPerson
             // On standalone builds, walk/run speed is modified by a key press.
             // keep track of whether or not the character is walking or running
             m_IsWalking = !Input.GetKey(KeyCode.LeftShift);
+
+            if(m_Aiming){
+                m_IsWalking = true;
+            }
 #endif
             // set the desired speed to be walking or running
-            speed = m_IsWalking ? m_WalkSpeed : m_RunSpeed;
+            speed = (m_IsWalking) ? m_WalkSpeed : (m_Shooting) ? m_RunSpeed*0.65f : m_RunSpeed;
             m_Input = new Vector2(horizontal, vertical);
 
             // normalize input if it exceeds 1 in combined length:

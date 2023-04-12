@@ -177,9 +177,16 @@ public class Gun : MonoBehaviour
                     m_AudioSource.PlayOneShot(shootSound);
                     RaycastHit hit;
                     float shotSpread = 1.0f;
-                    if (fpsc.m_IsWalking == false)
+                    if (fpsc.m_Jumping)
                     {
-                        shotSpread = 3.0f;
+                        shotSpread = 50.0f;
+                    }
+                    else if (fpsc.m_Aiming){
+                        shotSpread = 1.0f;
+                    }
+                    else if (fpsc.m_IsWalking == false)
+                    {
+                        shotSpread = 20.0f;
                     }
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition + new Vector3((1 - 2 * UnityEngine.Random.value) * shotSpread, (1 - 2 * UnityEngine.Random.value) * shotSpread, 0));
 

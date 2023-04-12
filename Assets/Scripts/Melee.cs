@@ -29,6 +29,9 @@ public class Melee : MonoBehaviour
 
     void Update()
     {
+        PlayerShoot.isGunActive = false;
+        PlayerShoot.shootInput = null;
+        PlayerShoot.reloadInput = null;
         if(Input.GetMouseButtonDown(0) && CanAttack)
         {
             MeleeAttack();

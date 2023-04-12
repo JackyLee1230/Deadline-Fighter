@@ -44,12 +44,14 @@ public class PlayerShoot : MonoBehaviour {
 
     public void Start(){
         fpsc.m_Aiming = false;
-        gunAnimator = GetComponentInChildren<Animator>();
+        if(isGunActive && shootInput != null){
+            gunAnimator = GetComponentInChildren<Animator>();
+        }
     }
 
     public void FixedUpdate(){
-        gunAnimator = GetComponentInChildren<Animator>();
         if(isGunActive && shootInput != null){
+            gunAnimator = GetComponentInChildren<Animator>();
             // ADS
             if(Input.GetMouseButton(1) && !reloading){
                 fpsc.m_Aiming = true;
