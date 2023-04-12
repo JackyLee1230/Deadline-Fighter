@@ -60,7 +60,7 @@ public class TabScript : MonoBehaviour
         hitEffect.SetActive(false);
         fpsc.enabled = false;
         Debug.Log(((float)fpsc.shotsHit * 100 / fpsc.shotsFired).ToString());
-        tabMenuUI.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = "Score: " + fpsc.score + "\nSurvived: " + fpsc.timeSurvived + "s\nKills: " + fpsc.kills + "\nHeadshots: " + fpsc.headshots + "\nAccuracy: " + ((float)fpsc.shotsHit * 100 / fpsc.shotsFired).ToString() + "%\nDmg Dealt: " + fpsc.damageDealt + "HP";
+        tabMenuUI.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = "Score: " + fpsc.score + "\nSurvived: " + fpsc.timeSurvived.ToString("F1") + "s\nKills: " + fpsc.kills + "\nHeadshots: " + fpsc.headshots + "\nAccuracy: " + ((float)fpsc.shotsHit * 100 / fpsc.shotsFired).ToString("F1") + "%\nDamage Dealt: " + fpsc.damageDealt.ToString("F1") + "HP";
     }
 
     public void Quit()
