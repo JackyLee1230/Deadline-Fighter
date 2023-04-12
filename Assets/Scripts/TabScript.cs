@@ -5,14 +5,14 @@ using UnityEngine.SceneManagement;
 using UnityStandardAssets.Characters.FirstPerson;
 using TMPro;
 
-public class PauseScript : MonoBehaviour
+public class TabScript : MonoBehaviour
 {
 
-    [SerializeField] public bool isPaused = false;
-
-    [SerializeField] public GameObject pauseMenuUI;
+    [SerializeField] public bool isTabbed = false;
 
     [SerializeField] public GameObject tabMenuUI;
+
+    [SerializeField] public GameObject pauseMenuUI;
 
     [SerializeField] public GameObject hitEffect;
 
@@ -22,51 +22,45 @@ public class PauseScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        pauseMenuUI.SetActive(false);
+        tabMenuUI.SetActive(false);
     }
 
     // Update is called once per frame
     public void Update()
     {
         // prevent pausing when dead
-        if (Input.GetKeyDown(KeyCode.Escape) && fpsc.currentHealth > 0)
+        if (Input.GetKeyDown(KeyCode.Tab) && fpsc.currentHealth > 0)
         {
-            if (isPaused)
+            if (isTabbed)
             {
                 Resume();
             }
-            else if (!tabMenuUI.activeInHierarchy)
+            else if (!pauseMenuUI.activeInHierarchy)
             {
                 Pause();
             }
         }
     }
 
-    public void MainMenu()
-    {
-        Time.timeScale = 1f;
-        Cursor.visible = true;
-        SceneManager.LoadScene("MenuScene");
-
-    }
 
     public void Resume()
     {
-        pauseMenuUI.SetActive(false);
+        tabMenuUI.SetActive(false);
         Cursor.visible = false;
-        isPaused = false;
+        isTabbed = false;
         Time.timeScale = 1f;
         fpsc.enabled = true;
     }
 
     public void Pause()
     {
-        pauseMenuUI.SetActive(true);
-        Cursor.visible = true;
-        isPaused = true;
+        tabMenuUI.SetActive(true);
+        isTabbed = true;
         Time.timeScale = 0f;
         hitEffect.SetActive(false);
         fpsc.enabled = false;
+        Debug.Log(((float)fpsc.shotsHit * 100 / fpsc.shotsFired).ToString());
+        tabMenuUI.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = "Score: " + fpsc.score + "\nSurvived: " + fpsc.timeSurvived + "s\nKills: " + fpsc.kills + "\nHeadshots: " + fpsc.headshots + "\nAccuracy: " + ((float)fpsc.shotsHit * 100 / fpsc.shotsFired).ToString() + "%\nDmg Dealt: " + fpsc.damageDealt + "HP";
     }
 
     public void Quit()
@@ -74,7 +68,7 @@ public class PauseScript : MonoBehaviour
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
-            Application.Quit();
+        Application.Quit();
 #endif
     }
 }
