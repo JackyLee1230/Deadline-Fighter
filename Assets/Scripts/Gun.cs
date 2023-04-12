@@ -63,7 +63,7 @@ public class Gun : MonoBehaviour
         PlayerShoot.isAuto = gunData.isAuto;
         PlayerShoot.haveAmmo = gunData.currentAmmo > 0;
         gunData.currentAmmo = gunData.magSize;
-        gunData.reservedAmmo = gunData.magSize * 3;
+        gunData.reservedAmmo = gunData.magSize*2;
         _originalLocalPosition = transform.localPosition;
 
         RecoilInit();
@@ -191,7 +191,7 @@ public class Gun : MonoBehaviour
 
                     m_AudioSource.PlayOneShot(shootSound);
                     RaycastHit hit;
-                    float shotSpread = 1.0f;
+                    float shotSpread = 12.0f;
                     if (fpsc.m_Jumping)
                     {
                         shotSpread = 50.0f;
@@ -201,7 +201,7 @@ public class Gun : MonoBehaviour
                     }
                     else if (fpsc.m_IsWalking == false)
                     {
-                        shotSpread = 20.0f;
+                        shotSpread = 30.0f;
                     }
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition + new Vector3((1 - 2 * UnityEngine.Random.value) * shotSpread, (1 - 2 * UnityEngine.Random.value) * shotSpread, 0));
 
@@ -327,6 +327,10 @@ public class Gun : MonoBehaviour
             PlayerShoot.reloading = gunData.reloading;
 
             PlayerShoot.isAuto = gunData.isAuto;
+
+            if (gunData.reservedAmmo > gunData.maxAmmo){
+                gunData.reservedAmmo = gunData.maxAmmo;
+            }
 
             timeSinceLastShot += Time.deltaTime;
             if (Physics.SphereCast(Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f)), noClipRadius, out var hit, noClipDistance, clippingLayerMask))

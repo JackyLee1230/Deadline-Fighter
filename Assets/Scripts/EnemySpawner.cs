@@ -77,6 +77,14 @@ public class EnemySpawner : MonoBehaviour
                 enemiesAlive = enemies.Length - 1;
                 enemies[i] = enemies[enemies.Length - 1];
                 Array.Resize(ref enemies, enemies.Length - 1);
+
+                for (int j = 0; j < fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).childCount; j++)
+                    {
+                        fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(j).GetComponent<Gun>().gunData.reservedAmmo += 4;
+            //            fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(j).GetComponent<Gun>().gunData.reservedAmmo =
+            //            fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(j).GetComponent<Gun>().gunData.maxAmmo +
+            //            (fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(j).GetComponent<Gun>().gunData.magSize - fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(j).GetComponent<Gun>().gunData.currentAmmo);
+                    }
             }
         }
 
@@ -157,13 +165,6 @@ public class EnemySpawner : MonoBehaviour
         // nextWave(round);
         fpsc.GetComponent<FirstPersonController>().currentHealth = fpsc.maxHealth;
         fpsc.GetComponent<FirstPersonController>().currency += UnityEngine.Random.Range(round * 10, round * 70);
-
-        for (int i = 0; i < fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).childCount; i++)
-        {
-            fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(i).GetComponent<Gun>().gunData.reservedAmmo =
-            fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(i).GetComponent<Gun>().gunData.maxAmmo +
-            (fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(i).GetComponent<Gun>().gunData.magSize - fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(i).GetComponent<Gun>().gunData.currentAmmo);
-        }
 
         // weaponHolder.transform.GetChild(0).GetComponent<Gun>().gunData.reservedAmmo += ammoGiven;
         // remove all enemies from the enemies array and the scene
