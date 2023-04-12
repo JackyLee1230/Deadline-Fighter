@@ -179,7 +179,7 @@ public class EnemySpawner : MonoBehaviour
 
             GameObject enemySpawned = Instantiate(enemyPrefabs[UnityEngine.Random.Range(0, enemyPrefabs.Length)], spawnPoint.transform.position, Quaternion.identity);
             // increase enemy health by a linearly based on round number from 1 (round 1) to 5 in round(30)
-            enemySpawned.GetComponentInChildren<AIExample>().health *= UnityEngine.Random.Range(1, 5) * (round / 30.0f);
+            enemySpawned.GetComponentInChildren<AIExample>().health *= 5 * (round / 30.0f);
             enemySpawned.GetComponentInChildren<AIExample>().fpsc = fpsc;
             // Lower => Faster attack
             enemySpawned.GetComponentInChildren<AIExample>().AttackCooldownMultiplier = (float)UnityEngine.Random.Range(1f, 1.3f);
