@@ -24,6 +24,8 @@ public class Gun : MonoBehaviour
     public AudioClip reloadSound;
     public AudioClip emptyFire;
 
+    public static float shotSpread;
+
     public GameObject muzzleFlash;
     private GameObject holdFlash;
     public GameObject muzzleSpawnPoint;
@@ -33,6 +35,8 @@ public class Gun : MonoBehaviour
 
     public GameObject bulletCasing;
     public GameObject bulletShellSpawnPoint;
+
+    public GameObject onHitX;
 
     public float headShotMultiplier;
     public float limbShotMultiplier;
@@ -191,18 +195,6 @@ public class Gun : MonoBehaviour
 
                     m_AudioSource.PlayOneShot(shootSound);
                     RaycastHit hit;
-                    float shotSpread = 12.0f;
-                    if (fpsc.m_Jumping)
-                    {
-                        shotSpread = 50.0f;
-                    }
-                    else if (fpsc.m_Aiming){
-                        shotSpread = 1.0f;
-                    }
-                    else if (fpsc.m_IsWalking == false)
-                    {
-                        shotSpread = 30.0f;
-                    }
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition + new Vector3((1 - 2 * UnityEngine.Random.value) * shotSpread, (1 - 2 * UnityEngine.Random.value) * shotSpread, 0));
 
                     fpsc.RecoilFire();
@@ -214,6 +206,10 @@ public class Gun : MonoBehaviour
 
                         if (hit.transform.CompareTag("Zombie"))
                         {
+                            if(!onHitX.activeSelf){
+                                StartCoroutine(DisableX());
+                            }
+
                             fpsc.shotsHit++;
                             Instantiate(bulletImpactFreshEffect, hit.point, Quaternion.LookRotation(hit.normal));
                             float damage = calcDropOffDamage(hit.distance, gunData.minDamage, gunData.maxDamage, 30, 100);
@@ -316,10 +312,33 @@ public class Gun : MonoBehaviour
         Destroy(trail.gameObject, trail.time);
     }
 
+    IEnumerator DisableX()
+    {
+        if(!onHitX.activeSelf){
+            onHitX.SetActive(true);
+            yield return new WaitForSeconds(0.25f);
+            onHitX.SetActive(false);
+        }
+    }
+
     private void Update()
     {
         if (gameObject.activeSelf)
         {
+            if (fpsc.m_Jumping)
+            {
+                shotSpread = 50.0f;
+            }
+            else if (fpsc.m_Aiming){
+                shotSpread = 1.0f;
+            }
+            else if (fpsc.m_IsWalking == false)
+            {
+                shotSpread = 30.0f;
+            }else{
+                shotSpread = 12.0f;
+            }
+
             gunAnimator = GetComponentInChildren<Animator>();
 
             PlayerShoot.haveAmmo = gunData.currentAmmo > 0;
