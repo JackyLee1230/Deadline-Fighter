@@ -25,6 +25,9 @@ public class Gun : MonoBehaviour
     public AudioClip emptyFire;
 
     public static float shotSpread;
+    public static float shootingSpread;
+    public float maxShootingSpread;
+    public float eachShotSpread;
 
     public GameObject muzzleFlash;
     private GameObject holdFlash;
@@ -182,6 +185,13 @@ public class Gun : MonoBehaviour
                 // Debug.Log("In Mag Ammo:" + gunData.currentAmmo + " Remaining Ammo" + gunData.reservedAmmo);
                 if (CanShoot())
                 {
+                    if(shootingSpread < maxShootingSpread){
+                        shootingSpread += eachShotSpread;
+                    }
+                    else{
+                        shootingSpread = maxShootingSpread;
+                    }
+
                     fpsc.shotsFired++;
                     gunAnimator.SetTrigger("Shooting");
 
@@ -264,6 +274,7 @@ public class Gun : MonoBehaviour
             }
             else
             {
+                shootingSpread = 0f;
                 if (CanShoot())
                 {
                     m_AudioSource.PlayOneShot(emptyFire);
@@ -327,16 +338,16 @@ public class Gun : MonoBehaviour
         {
             if (fpsc.m_Jumping)
             {
-                shotSpread = 50.0f;
+                shotSpread = 50.0f + shootingSpread;
             }
             else if (fpsc.m_Aiming){
-                shotSpread = 1.0f;
+                shotSpread = 1.0f + shootingSpread/2f;
             }
             else if (fpsc.m_IsWalking == false)
             {
-                shotSpread = 30.0f;
+                shotSpread = 30.0f + shootingSpread;
             }else{
-                shotSpread = 12.0f;
+                shotSpread = 12.0f + shootingSpread;
             }
 
             gunAnimator = GetComponentInChildren<Animator>();

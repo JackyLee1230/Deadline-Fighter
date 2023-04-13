@@ -80,7 +80,11 @@ public class PlayerShoot : MonoBehaviour {
                     shootInput?.Invoke();
                 }
                 else if(fpsc.m_Shooting){
+                    Gun.shootingSpread = 0f;
                     StartCoroutine(fpsc.RemoveShootingStatus());
+                }
+                else{
+                    Gun.shootingSpread = 0f;
                 }
             }
             else{
@@ -88,13 +92,25 @@ public class PlayerShoot : MonoBehaviour {
                     fpsc.m_Shooting = true;
                     shootInput?.Invoke();
                 }
-                else if(fpsc.m_Shooting){
+                else if(fpsc.m_Shooting){            ;
                     StartCoroutine(fpsc.RemoveShootingStatus());
+                } 
+                if (Gun.shootingSpread > 0f){
+                    StartCoroutine(RemoveShootingSpread());
                 }
             }
 
             if (Input.GetKeyDown(reloadKey))
                 reloadInput?.Invoke();
         }
+    }
+
+
+    public IEnumerator RemoveShootingSpread()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+
+        Gun.shootingSpread = 0f;
     }
 }
