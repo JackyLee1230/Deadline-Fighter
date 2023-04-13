@@ -189,14 +189,30 @@ public class EnemySpawner : MonoBehaviour
 
         enemies = new GameObject[spwanCount];
         Debug.Log("round " + round + " spwanCount " + spwanCount);
+
+        int tooFarCount = 0;
+
+        for (int x=0; x < spawnPoints.Length; x++ ){
+            if (Vector3.Distance(fpsc.transform.position, spawnPoints[x].transform.position) > maxDistanceToSpawn){
+                tooFarCount++;
+            }
+        }
+
+        bool isTooFar = tooFarCount == spawnPoints.Length;
+
         for (int i = 0; i < spwanCount; i++)
         {
             GameObject spawnPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)];
-            while (Vector3.Distance(fpsc.transform.position, spawnPoint.transform.position) < minDistanceToSpawn || Vector3.Distance(fpsc.transform.position, spawnPoint.transform.position) > maxDistanceToSpawn)
-            {
+            if(!isTooFar){
+                while (Vector3.Distance(fpsc.transform.position, spawnPoint.transform.position) < minDistanceToSpawn || Vector3.Distance(fpsc.transform.position, spawnPoint.transform.position) > maxDistanceToSpawn)
+                {
+                    spawnPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)];
+                }
+            }else {
+                // spawn at a random point
                 spawnPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)];
             }
-
+            
             GameObject enemySpawned = Instantiate(enemyPrefabs[UnityEngine.Random.Range(0, enemyPrefabs.Length)], spawnPoint.transform.position, Quaternion.identity);
             // increase enemy health by a linearly based on round number from 1 (round 1) to 5 in round(30)
             enemySpawned.GetComponentInChildren<AIExample>().health *= 5 * (round / 30.0f);
