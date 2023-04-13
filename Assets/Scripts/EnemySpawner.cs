@@ -51,6 +51,13 @@ public class EnemySpawner : MonoBehaviour
     {
         timeTook = new List<float>();
         isTransitioning = false;
+        if (SaveGame.Load<int>("continue") == 1)
+        {
+            // load game
+            setWave();
+            SaveGame.Save<int>("continue", 0);
+            Debug.Log("GAME STARTED WITH CONTINUE GAME");
+        }
     }
 
     // Update is called once per frame
@@ -79,12 +86,12 @@ public class EnemySpawner : MonoBehaviour
                 Array.Resize(ref enemies, enemies.Length - 1);
 
                 for (int j = 0; j < fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).childCount; j++)
-                    {
-                        fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(j).GetComponent<Gun>().gunData.reservedAmmo += 4;
-            //            fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(j).GetComponent<Gun>().gunData.reservedAmmo =
-            //            fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(j).GetComponent<Gun>().gunData.maxAmmo +
-            //            (fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(j).GetComponent<Gun>().gunData.magSize - fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(j).GetComponent<Gun>().gunData.currentAmmo);
-                    }
+                {
+                    fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(j).GetComponent<Gun>().gunData.reservedAmmo += 4;
+                    //            fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(j).GetComponent<Gun>().gunData.reservedAmmo =
+                    //            fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(j).GetComponent<Gun>().gunData.maxAmmo +
+                    //            (fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(j).GetComponent<Gun>().gunData.magSize - fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(j).GetComponent<Gun>().gunData.currentAmmo);
+                }
             }
         }
 
@@ -186,14 +193,18 @@ public class EnemySpawner : MonoBehaviour
         SaveGame.Save<int>("score", fpsc.GetComponent<FirstPersonController>().score);
         SaveGame.Save<int>("currency", fpsc.GetComponent<FirstPersonController>().currency);
         SaveGame.Save<int>("spawnCount", spwanCount);
+        SaveGame.Save<float>("survivedTime", fpsc.timeSurvived);
+        SaveGame.Save<int[]>("playerPosition", new int[] { (int)fpsc.transform.position.x, (int)fpsc.transform.position.y, (int)fpsc.transform.position.z });
 
         enemies = new GameObject[spwanCount];
         Debug.Log("round " + round + " spwanCount " + spwanCount);
 
         int tooFarCount = 0;
 
-        for (int x=0; x < spawnPoints.Length; x++ ){
-            if (Vector3.Distance(fpsc.transform.position, spawnPoints[x].transform.position) > maxDistanceToSpawn){
+        for (int x = 0; x < spawnPoints.Length; x++)
+        {
+            if (Vector3.Distance(fpsc.transform.position, spawnPoints[x].transform.position) > maxDistanceToSpawn)
+            {
                 tooFarCount++;
             }
         }
@@ -203,16 +214,19 @@ public class EnemySpawner : MonoBehaviour
         for (int i = 0; i < spwanCount; i++)
         {
             GameObject spawnPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)];
-            if(!isTooFar){
+            if (!isTooFar)
+            {
                 while (Vector3.Distance(fpsc.transform.position, spawnPoint.transform.position) < minDistanceToSpawn || Vector3.Distance(fpsc.transform.position, spawnPoint.transform.position) > maxDistanceToSpawn)
                 {
                     spawnPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)];
                 }
-            }else {
+            }
+            else
+            {
                 // spawn at a random point
                 spawnPoint = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)];
             }
-            
+
             GameObject enemySpawned = Instantiate(enemyPrefabs[UnityEngine.Random.Range(0, enemyPrefabs.Length)], spawnPoint.transform.position, Quaternion.identity);
             // increase enemy health by a linearly based on round number from 1 (round 1) to 5 in round(30)
             enemySpawned.GetComponentInChildren<AIExample>().health *= 5 * (round / 30.0f);
@@ -278,7 +292,8 @@ public class EnemySpawner : MonoBehaviour
     // used when resuming game  
     public void setWave()
     {
-        int round = SaveGame.Load<int>("round");
+        int roundNumber = SaveGame.Load<int>("round");
+        round = roundNumber;
         fpsc.GetComponent<FirstPersonController>().currentHealth = fpsc.maxHealth;
         // remove all enemies from the enemies array and the scene
         for (int i = 0; i < enemies.Length; i++)
@@ -296,7 +311,14 @@ public class EnemySpawner : MonoBehaviour
 
         // save the data for load
         int score = SaveGame.Load<int>("score");
+        fpsc.score = score;
         int currency = SaveGame.Load<int>("currency");
+        fpsc.currency = currency;
+        int[] player = SaveGame.Load<int[]>("playerPosition");
+        float survivedTime = SaveGame.Load<float>("survivedTime");
+        fpsc.timeSurvived = survivedTime;
+
+        fpsc.transform.position = new Vector3(player[0], player[1], player[2]);
 
         enemies = new GameObject[spwanCount];
         Debug.Log("round " + round + " spwanCount " + spwanCount);
