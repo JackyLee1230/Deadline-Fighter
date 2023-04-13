@@ -12,6 +12,8 @@ public class HighScoreMainMenu : MonoBehaviour
     [SerializeField] public TextMeshProUGUI highScoreTimeUI;
     [SerializeField] public TextMeshProUGUI resumeUI;
 
+    [SerializeField] public GameObject continueButton;
+
 
     // Start is called before the first frame update
     void Start()
@@ -41,6 +43,7 @@ public class HighScoreMainMenu : MonoBehaviour
         else
         {
             resumeUI.text = "";
+            continueButton.SetActive(false);
         }
     }
 
