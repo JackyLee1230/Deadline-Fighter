@@ -246,13 +246,13 @@ public class AIExample : MonoBehaviour {
         if(AttackCooldown <= 0f){
             RaycastHit hitInfo;
             if (Physics.Raycast(AttackRaycastArea.transform.position, AttackRaycastArea.transform.forward, out hitInfo, attackRadius, ~layerMask)){
-                isAttacking = true;
                 if (hitInfo.transform.CompareTag("Player")){
+                    isAttacking = true;
                     FirstPersonController fpsc = hitInfo.transform.GetComponent<FirstPersonController>();
                     StartCoroutine(DelayAttackPlayer(hitInfo, fpsc));
                     Debug.Log("Zombie Hitting Player"); 
+                    AttackCooldown = 1.4f * AttackCooldownMultiplier;
                 }
-                AttackCooldown = 1.4f * AttackCooldownMultiplier;
             }
 
             // transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
