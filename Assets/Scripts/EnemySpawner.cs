@@ -196,6 +196,16 @@ public class EnemySpawner : MonoBehaviour
         SaveGame.Save<float>("survivedTime", fpsc.timeSurvived);
         SaveGame.Save<int[]>("playerPosition", new int[] { (int)fpsc.transform.position.x, (int)fpsc.transform.position.y, (int)fpsc.transform.position.z });
 
+        int[][] ammos = new int[fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).childCount][];
+        for (int i = 0; i < fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).childCount; i++)
+        {
+            int[] tmp = new int[2];
+            tmp[0] = fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(i).gameObject.GetComponent<Gun>().gunData.currentAmmo;
+            tmp[1] = fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(i).gameObject.GetComponent<Gun>().gunData.reservedAmmo;
+            ammos[i] = tmp;
+        }
+        SaveGame.Save<int[][]>("ammos", ammos);
+
         enemies = new GameObject[spwanCount];
         Debug.Log("round " + round + " spwanCount " + spwanCount);
 
@@ -317,6 +327,14 @@ public class EnemySpawner : MonoBehaviour
         int[] player = SaveGame.Load<int[]>("playerPosition");
         float survivedTime = SaveGame.Load<float>("survivedTime");
         fpsc.timeSurvived = survivedTime;
+
+        int[][] ammos = SaveGame.Load<int[][]>("ammos");
+        for (int i = 0; i < ammos.Length; i++)
+        {
+            int[] tmp = ammos[i];
+            fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(i).gameObject.GetComponent<Gun>().gunData.currentAmmo = tmp[0];
+            fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(i).gameObject.GetComponent<Gun>().gunData.reservedAmmo = tmp[1];
+        }
 
         fpsc.transform.position = new Vector3(player[0], player[1], player[2]);
 
