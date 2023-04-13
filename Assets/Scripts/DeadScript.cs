@@ -51,6 +51,7 @@ public class DeadScript : MonoBehaviour
 
     public void End()
     {
+        SaveGame.Save<int>("round", 0);
         deadMenuUI.SetActive(true);
         Cursor.visible = true;
         Time.timeScale = 0f;
