@@ -80,6 +80,7 @@ public class Gun : MonoBehaviour
 
     private void OnDisable()
     {
+        onHitX.SetActive(false);
         fpsc.setReloadIcon(false);
         PlayerShoot.isGunActive = false;
         gunData.reloading = false;

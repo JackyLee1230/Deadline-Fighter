@@ -19,7 +19,6 @@ public class Barricade : MonoBehaviour
     }
 void Update()
     {
-        Debug.Log(isLookingAtBarricade);
         if (isLookingAtBarricade && Input.GetKeyDown(KeyCode.E))
         {
             if (fpsc.currency >= barricadeCost)
