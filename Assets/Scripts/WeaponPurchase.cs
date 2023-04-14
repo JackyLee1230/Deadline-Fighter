@@ -30,8 +30,10 @@ public class WeaponPurchase : MonoBehaviour
                 fpsc.currency -= weaponCost;
                 editor.weapons[editor.selectedWeapon].gameObject.SetActive(false);
                 editor.weapons[3].gameObject.SetActive(true);
-                (editor.weapons[editor.selectedWeapon] , editor.weapons[3]) = (editor.weapons[3],editor.weapons[editor.selectedWeapon]);
-            }
+                (editor.weapons[editor.selectedWeapon] , editor.weapons[3]) = (editor.weapons[3],editor.weapons[3]);
+                editor.weapons[editor.selectedWeapon].gameObject.GetComponent<Gun>().gunData.reservedAmmo = editor.weapons[editor.selectedWeapon].gameObject.GetComponent<Gun>().gunData.maxAmmo;
+                editor.weapons[editor.selectedWeapon].gameObject.GetComponent<Gun>().gunData.currentAmmo = editor.weapons[editor.selectedWeapon].gameObject.GetComponent<Gun>().gunData.magSize;
+            }   
             else
             {
                 // Player can't afford the weapon, so display a message
