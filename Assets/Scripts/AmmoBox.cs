@@ -8,9 +8,8 @@ public class AmmoBox : MonoBehaviour
 {
     [Header("Ammo Box")]
     public FirstPersonController fpsc;
-    public GameObject weaponHolder;
     private int ammoGiven; // amount of ammo to give
-    private float radius = 20.0f; // radius player can reach the box, leave some room since camera isnt in floor level
+    private float radius = 1.38f; // radius player can reach the box, leave some room since camera isnt in floor level
     public bool used = false;
     public bool seen = false;
 
@@ -28,7 +27,8 @@ public class AmmoBox : MonoBehaviour
 
     void Start(){
         audioSource = fpsc.GetComponent<AudioSource>();
-        ammoGiven = UnityEngine.Random.Range(50,100);
+        animator = GetComponent<Animator>();
+        ammoGiven = UnityEngine.Random.Range(5,24);
         cam = Camera.main;
     }
 
@@ -67,10 +67,18 @@ public class AmmoBox : MonoBehaviour
                 used = true;
                 Debug.Log("Player got the Ammo Box from " + Vector3.Distance(transform.position, fpsc.transform.position) +  " units away");
                 animator.SetBool("Open", true);
-                weaponHolder.transform.GetChild(0).GetComponent<Gun>().gunData.reservedAmmo += ammoGiven;
                 fpsc.addScore(50);
                 InfoPopupUtil.ShowInformation ( "+" + ammoGiven + " Ammo" );
                 audioSource.PlayOneShot(HealthBoxSound);
+
+                for (int j = 0; j < fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).childCount; j++)
+                {
+                    fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(j).GetComponent<Gun>().gunData.reservedAmmo += ammoGiven;
+                    //            fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(j).GetComponent<Gun>().gunData.reservedAmmo =
+                    //            fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(j).GetComponent<Gun>().gunData.maxAmmo +
+                    //            (fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(j).GetComponent<Gun>().gunData.magSize - fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(j).GetComponent<Gun>().gunData.currentAmmo);
+                }
+
                 Destroy(gameObject, 1.5f);
             }
         }

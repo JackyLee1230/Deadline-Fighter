@@ -55,8 +55,10 @@ public class AIExample : MonoBehaviour {
     private AudioSource e_AudioSource;
 
     [Header("drops")]
-    [SerializeField] public GameObject HealthBox;
-    [SerializeField] public GameObject AmmoBox;
+    [SerializeField] public GameObject healthBox;
+//    [SerializeField] public Animator healthBoxAnimator;
+    [SerializeField] public GameObject ammoBox;
+//    [SerializeField] public Animator ammoBoxAnimator;
 
 
     public void Start()
@@ -317,9 +319,8 @@ public class AIExample : MonoBehaviour {
             fpsc.addScore(50);
             fpsc.kills +=1;
             fpsc.currency += 10;
-            Debug.Log(fpsc.score);
-            StartCoroutine(RemoveGameObject());
             DropBox();
+            StartCoroutine(RemoveGameObject());
         }
         else
         {
@@ -329,21 +330,21 @@ public class AIExample : MonoBehaviour {
         }
     }
 
-    void DropBox()
+    private void DropBox()
     {
         int randomVar = Random.Range(0, 2);
         Debug.Log(randomVar);
         if (randomVar == 0)
         {
-            if (Random.Range(0, 10) < 4) // 40%?
+            if (Random.Range(0, 10) < 2) // 20%?
             {
                 Debug.Log("Zombie dropped health box");
-                GameObject box = Instantiate(HealthBox, transform.position + new Vector3(0.0f, 1.0f, 0.0f), Quaternion.identity);
+                GameObject box = Instantiate(healthBox, transform.position + new Vector3(0.0f, 1.0f, 0.0f), Quaternion.identity);
                 HealthBox hb = box.GetComponent<HealthBox>();
                 hb.cam = Camera.main;
                 hb.fpsc = fpsc;
                 box.SetActive(true);
-                Destroy(box, 3f);
+                Destroy(box, 10f);
             }
         }
         else
@@ -351,12 +352,12 @@ public class AIExample : MonoBehaviour {
             if (Random.Range(0, 10) < 4) // 40%?
             {
                 Debug.Log("Zombie dropped ammo box");
-                GameObject box = Instantiate(AmmoBox, transform.position + new Vector3(0.0f, 1.0f, 0.0f), Quaternion.identity);
+                GameObject box = Instantiate(ammoBox, transform.position + new Vector3(0.0f, 1.0f, 0.0f), Quaternion.identity);
                 AmmoBox ab = box.GetComponent<AmmoBox>();
                 ab.fpsc = fpsc;
                 ab.cam = Camera.main;
                 box.SetActive(true);
-                Destroy(box, 3f);
+                Destroy(box, 10f);
             }
         }
         

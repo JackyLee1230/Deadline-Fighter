@@ -84,14 +84,6 @@ public class EnemySpawner : MonoBehaviour
                 enemiesAlive = enemies.Length - 1;
                 enemies[i] = enemies[enemies.Length - 1];
                 Array.Resize(ref enemies, enemies.Length - 1);
-
-                for (int j = 0; j < fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).childCount; j++)
-                {
-                    fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(j).GetComponent<Gun>().gunData.reservedAmmo += 4;
-                    //            fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(j).GetComponent<Gun>().gunData.reservedAmmo =
-                    //            fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(j).GetComponent<Gun>().gunData.maxAmmo +
-                    //            (fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(j).GetComponent<Gun>().gunData.magSize - fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).GetChild(j).GetComponent<Gun>().gunData.currentAmmo);
-                }
             }
         }
 
@@ -170,7 +162,7 @@ public class EnemySpawner : MonoBehaviour
         yield return new WaitForSeconds(timeBetweenWaves);
         roundNum.text = "Round: " + round.ToString() + " Time:  " + currentRoundTime.ToString("F0") + "s; Alive: " + enemiesAlive.ToString();
         // nextWave(round);
-        fpsc.GetComponent<FirstPersonController>().currentHealth = fpsc.maxHealth;
+        // fpsc.GetComponent<FirstPersonController>().currentHealth = fpsc.maxHealth;
         fpsc.GetComponent<FirstPersonController>().currency += UnityEngine.Random.Range(round * 10, round * 70);
 
         // weaponHolder.transform.GetChild(0).GetComponent<Gun>().gunData.reservedAmmo += ammoGiven;
@@ -254,7 +246,7 @@ public class EnemySpawner : MonoBehaviour
 
     public void nextWave(int round)
     {
-        fpsc.GetComponent<FirstPersonController>().currentHealth = fpsc.maxHealth;
+        // fpsc.GetComponent<FirstPersonController>().currentHealth = fpsc.maxHealth;
         // remove all enemies from the enemies array and the scene
         for (int i = 0; i < enemies.Length; i++)
         {
@@ -304,7 +296,7 @@ public class EnemySpawner : MonoBehaviour
     {
         int roundNumber = SaveGame.Load<int>("round");
         round = roundNumber;
-        fpsc.GetComponent<FirstPersonController>().currentHealth = fpsc.maxHealth;
+        // fpsc.GetComponent<FirstPersonController>().currentHealth = fpsc.maxHealth;
         // remove all enemies from the enemies array and the scene
         for (int i = 0; i < enemies.Length; i++)
         {

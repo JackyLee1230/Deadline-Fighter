@@ -8,8 +8,8 @@ public class HealthBox : MonoBehaviour
 {
     [Header("Health Boost")]
     public FirstPersonController fpsc;
-    private float healthBoost = 50.0f; // amount of health to give
-    private float radius = 20.0f; // radius player can reach the box, leave some room since camera isnt in floor level
+    private float healthBoost = 25.0f; // amount of health to give
+    private float radius = 1.38f; // radius player can reach the box, leave some room since camera isnt in floor level
     public bool used = false;
     public bool seen = false;
 
@@ -21,12 +21,13 @@ public class HealthBox : MonoBehaviour
 
     [Header("Health Box Animator")]
     public Animator animator;
-    public GameObject cross;
+//    public GameObject cross;
 
     public GameObject popup;
 
     void Start(){
         audioSource = fpsc.GetComponent<AudioSource>();
+        animator = GetComponent<Animator>();
  //       cross = gameObject.transform.Find("Cross").Find("box_med").gameObject;
     }
 
@@ -58,7 +59,7 @@ public class HealthBox : MonoBehaviour
         }
      if(Vector3.Distance(transform.position, fpsc.transform.position) < radius && seen)
         {
-            cross.SetActive(true);
+//            cross.SetActive(true);
             if (Input.GetKeyDown(KeyCode.E) && !used)
             {
                 used = true;
@@ -71,8 +72,8 @@ public class HealthBox : MonoBehaviour
                 Destroy(gameObject, 1.5f);
             }
         }
-        else{
-            cross.SetActive(false);
-        }
+//        else{
+//            cross.SetActive(false);
+//        }
     }
 }
