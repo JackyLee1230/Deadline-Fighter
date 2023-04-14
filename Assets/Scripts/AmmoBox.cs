@@ -15,6 +15,7 @@ public class AmmoBox : MonoBehaviour
     public bool seen = false;
 
     public Camera cam;
+    // public BoxData boxData;
 
     [Header("Sound")]
     public AudioClip HealthBoxSound;
@@ -28,6 +29,7 @@ public class AmmoBox : MonoBehaviour
     void Start(){
         audioSource = fpsc.GetComponent<AudioSource>();
         ammoGiven = UnityEngine.Random.Range(50,100);
+        cam = Camera.main;
     }
 
     private bool IsVisible(Camera c, GameObject target)
@@ -47,6 +49,7 @@ public class AmmoBox : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        cam = Camera.main;
         var targetRender = gameObject.GetComponent<Renderer>();
         if (IsVisible(cam,gameObject))
         {

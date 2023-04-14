@@ -43,8 +43,8 @@ public class AIExample : MonoBehaviour {
     [SerializeField] public LayerMask layerMask = 1 << 8;
 
     private int isPlayerStealth;
-    
-    // audio
+
+    [Header("audio")]
     [SerializeField] public AudioClip zombieIdle;
     [SerializeField] public AudioClip zombieChase;
     [SerializeField] public AudioClip zombieDamage;
@@ -53,6 +53,10 @@ public class AIExample : MonoBehaviour {
     [SerializeField] public AudioClip zombieNotice;
 
     private AudioSource e_AudioSource;
+
+    [Header("drops")]
+    [SerializeField] public GameObject HealthBox;
+    [SerializeField] public GameObject AmmoBox;
 
 
     public void Start()
@@ -315,6 +319,7 @@ public class AIExample : MonoBehaviour {
             fpsc.currency += 10;
             Debug.Log(fpsc.score);
             StartCoroutine(RemoveGameObject());
+            DropBox();
         }
         else
         {
@@ -322,5 +327,38 @@ public class AIExample : MonoBehaviour {
             e_AudioSource.Play();
             isDamage = true;
         }
+    }
+
+    void DropBox()
+    {
+        int randomVar = Random.Range(0, 2);
+        Debug.Log(randomVar);
+        if (randomVar == 0)
+        {
+            if (Random.Range(0, 10) < 4) // 40%?
+            {
+                Debug.Log("Zombie dropped health box");
+                GameObject box = Instantiate(HealthBox, transform.position + new Vector3(0.0f, 1.0f, 0.0f), Quaternion.identity);
+                HealthBox hb = box.GetComponent<HealthBox>();
+                hb.cam = Camera.main;
+                hb.fpsc = fpsc;
+                box.SetActive(true);
+                Destroy(box, 3f);
+            }
+        }
+        else
+        {
+            if (Random.Range(0, 10) < 4) // 40%?
+            {
+                Debug.Log("Zombie dropped ammo box");
+                GameObject box = Instantiate(AmmoBox, transform.position + new Vector3(0.0f, 1.0f, 0.0f), Quaternion.identity);
+                AmmoBox ab = box.GetComponent<AmmoBox>();
+                ab.fpsc = fpsc;
+                ab.cam = Camera.main;
+                box.SetActive(true);
+                Destroy(box, 3f);
+            }
+        }
+        
     }
 }

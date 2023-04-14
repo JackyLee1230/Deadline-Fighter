@@ -1,10 +1,19 @@
 fileFormatVersion: 2
 guid: 73d9dccbced935343a7c8d02da4fa00b
-timeCreated: 1520301842
-licenseType: Free
 MonoImporter:
+  externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - AttackRaycastArea: {instanceID: 0}
+  - fpsc: {instanceID: 0}
+  - zombieIdle: {instanceID: 0}
+  - zombieChase: {instanceID: 0}
+  - zombieDamage: {instanceID: 0}
+  - zombieAttack: {instanceID: 0}
+  - zombieDie: {instanceID: 0}
+  - zombieNotice: {instanceID: 0}
+  - HealthBox: {instanceID: 0}
+  - AmmoBox: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
