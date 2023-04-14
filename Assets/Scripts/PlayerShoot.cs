@@ -79,24 +79,29 @@ public class PlayerShoot : MonoBehaviour {
                     fpsc.m_Shooting = true;
                     shootInput?.Invoke();
                 }
-                else if(fpsc.m_Shooting){
-                    Gun.shootingSpread = 0f;
-                    StartCoroutine(fpsc.RemoveShootingStatus());
-                }
                 else{
-                    Gun.shootingSpread = 0f;
-                }
+                    if(fpsc.m_Shooting){
+                        StartCoroutine(fpsc.RemoveShootingStatus());
+                    }
+
+                    if(Gun.shootingSpread > 0f){
+                        Gun.shootingSpread -= Time.deltaTime*40;
+                    } 
+                }   
             }
             else{
                 if (Input.GetMouseButtonDown(0)){
                     fpsc.m_Shooting = true;
                     shootInput?.Invoke();
                 }
-                else if(fpsc.m_Shooting){            ;
-                    StartCoroutine(fpsc.RemoveShootingStatus());
-                } 
-                if (Gun.shootingSpread > 0f){
-                    StartCoroutine(RemoveShootingSpread());
+                else{
+                    if(fpsc.m_Shooting){
+                        StartCoroutine(fpsc.RemoveShootingStatus());
+                    } 
+
+                    if (Gun.shootingSpread > 0f){
+                        Gun.shootingSpread -= Time.deltaTime*23;
+                    }
                 }
             }
 
