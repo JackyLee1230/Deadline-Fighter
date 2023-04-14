@@ -13,7 +13,7 @@ public class Barricade : MonoBehaviour
     private bool isLookingAtBarricade = false;
 
 
-private void Start()
+    void Start()
     {
         textMesh.GetComponent<TextMeshProUGUI>().text = "";
     }
@@ -47,7 +47,6 @@ void Update()
                 textMesh.GetComponent<TextMeshProUGUI>().text = "Press <E> to purchase for $"+barricadeCost;
             }
             else{
-                Debug.Log("wtf?");
                 isLookingAtBarricade = false;
                 textMesh.GetComponent<TextMeshProUGUI>().text = "";
             }
