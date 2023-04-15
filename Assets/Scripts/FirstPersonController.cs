@@ -215,15 +215,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
             // update player currnecy every frame
             CurrencyUI.GetComponent<TextMeshProUGUI>().text = "$: " + currency + " HKD";
 
-            //update player score every frame
-            if (score > 0)
-            {
-                ScoreUI.GetComponent<TextMeshProUGUI>().text = "Score: " + score;
-            }
-            else
-            {
-                ScoreUI.GetComponent<TextMeshProUGUI>().text = "Scores: " + score;
-            }
+            //update player score every frame (no need to be different for 0)
+            ScoreUI.GetComponent<TextMeshProUGUI>().text = "Score: " + score;
 
             // update player time survived every frame
             if (timeSurvived < 60)
@@ -232,7 +225,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
             else
             {
-                TimeSurvivedUI.GetComponent<TextMeshProUGUI>().text = "Survived: " + (timeSurvived / 60).ToString("F0") + "m" + (timeSurvived % 60).ToString("F0") + "s";
+                TimeSurvivedUI.GetComponent<TextMeshProUGUI>().text = "Survived: " + (timeSurvived / 60).ToString("F0") + "m " + (timeSurvived % 60).ToString("F0") + "s";
             }
 
 

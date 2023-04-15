@@ -114,7 +114,14 @@ public class EnemySpawner : MonoBehaviour
         if (!isTransitioning)
         {
             transitionTime = 0.0f;
-            roundNum.text = "Round: " + round.ToString() + " Time: " + currentRoundTime.ToString("F0") + "s; Alive: " + enemiesAlive.ToString();
+            if (currentRoundTime < 60)
+            {
+                roundNum.text = "Round: " + round.ToString() + "\nTime: " + currentRoundTime.ToString("F0") + "s\nAlive: " + enemiesAlive.ToString();
+            }
+            else if (currentRoundTime < 3600)
+            {
+                roundNum.text = "Round: " + round.ToString() + "\nTime: " + (currentRoundTime/60).ToString("F0") + "m " + (currentRoundTime % 60).ToString("F0") + "s\nAlive: " + enemiesAlive.ToString();
+            }
         }
         else
         {

@@ -55,6 +55,7 @@ public class WeaponSwitching : MonoBehaviour
             for (int i = 0; i < keys.Length; i++)
                 if (Input.GetKeyDown(keys[i]) && timeSinceLastSwitch >= switchTime)
                     selectedWeapon = i;
+                    Debug.Log("current selected weapon is " + selectedWeapon);
             int reserved = weapons[selectedWeapon].gameObject.GetComponent<Gun>().gunData.reservedAmmo;
             int current = weapons[selectedWeapon].gameObject.GetComponent<Gun>().gunData.currentAmmo;
             Sprite icon = weapons[selectedWeapon].gameObject.GetComponent<Gun>().gunData.artworkImage;
@@ -83,7 +84,7 @@ public class WeaponSwitching : MonoBehaviour
             if (Input.GetAxis("Mouse ScrollWheel") > 0 && timeSinceLastSwitch >= switchTime)
             {
                 selectedWeapon++;
-                if (selectedWeapon > 2)
+                if (selectedWeapon > 3)
                 {
                     selectedWeapon = 0;
                 }
@@ -93,7 +94,7 @@ public class WeaponSwitching : MonoBehaviour
                 selectedWeapon--;
                 if (selectedWeapon < 0)
                 {
-                    selectedWeapon = 2;
+                    selectedWeapon = 3;
                 }
             }
 
