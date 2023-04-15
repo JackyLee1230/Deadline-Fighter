@@ -98,7 +98,7 @@ public class EnemySpawner : MonoBehaviour
 
         if (enemies.Length == 1)
         {
-            enemies[0].GetComponentInChildren<AIExample>().isAware = true;
+            StartCoroutine(DelayAware(enemies[0].GetComponentInChildren<AIExample>()));
         }
         else if (enemies.Length > 1)
         {
@@ -106,7 +106,7 @@ public class EnemySpawner : MonoBehaviour
             {
                 if (enemies[i].GetComponentInChildren<AIExample>().isAware == false)
                 {
-                    enemies[i].GetComponentInChildren<AIExample>().isAware = true;
+                    StartCoroutine(DelayAware(enemies[i].GetComponentInChildren<AIExample>()));
                     break;
                 }
             }
@@ -358,6 +358,15 @@ public class EnemySpawner : MonoBehaviour
             //add the enemy to the enemies array
             enemies[i] = enemySpawned;
             enemiesAlive++;
+        }
+    }
+
+    IEnumerator DelayAware(AIExample enemy)
+    {
+        yield return new WaitForSeconds(3f);
+        if(!enemy.isAware)
+        {
+            enemy.OnAware();
         }
     }
 }
