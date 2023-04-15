@@ -21,6 +21,7 @@ void Update()
     {
         if (isLookingAtBarricade && Input.GetKeyDown(KeyCode.E))
         {
+            
             if (fpsc.currency >= barricadeCost)
             {
                 fpsc.currency -= barricadeCost;
@@ -40,10 +41,9 @@ void Update()
         if(Physics.Raycast(ray, out var hit, Mathf.Infinity, mask))
         {
             var obj = hit.collider.gameObject;
-            Debug.Log(obj.name);
             if(obj.name == "B_PurchaseProximity" || obj.name == "Barricades"){
-                isLookingAtBarricade = true;
                 textMesh.GetComponent<TextMeshProUGUI>().text = "Press <E> to purchase for $"+barricadeCost;
+                isLookingAtBarricade = true;
             }
             else{
                 isLookingAtBarricade = false;
@@ -57,7 +57,7 @@ void Update()
     }
     void OnTriggerExit(Collider other)
     {
-        textMesh.GetComponent<TextMeshProUGUI>().text = "";
+        textMesh.GetComponent<TextMeshProUGUI>().text = "---";
         if (other.tag == "Player")
         {
             isLookingAtBarricade = false;
