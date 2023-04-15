@@ -80,8 +80,11 @@ public class Gun : MonoBehaviour
 
     private void OnDisable()
     {
-        onHitX.SetActive(false);
+        if(onHitX != null){
+            onHitX.SetActive(false);
+        }
         fpsc.setReloadIcon(false);
+        fpsc.m_Shooting = false;
         PlayerShoot.isGunActive = false;
         gunData.reloading = false;
         if (bulletSpawnPoint != null)
