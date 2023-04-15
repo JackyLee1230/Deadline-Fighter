@@ -9,7 +9,7 @@ public class CollisionDetection : MonoBehaviour
     public GameObject damageEffect;
     public GameObject effectPoint;
     public int damage;
-    public float stealthMultipler;
+    public float stealthMultiplier;
     public static float AttackCooldown;
 
     private bool damageCooldown;
@@ -20,8 +20,12 @@ public class CollisionDetection : MonoBehaviour
         if(!damageCooldown && other.tag == "Zombie" && Melee.isAttacking){
                 damageCooldown = true;
                 StartCoroutine(ResetDamageCooldown());
+                if (Melee.isCrit)
+                {
+                damage *= 2;
+                }
                 if(!other.transform.root.GetComponent<AIExample>().isAware){
-                    other.transform.root.GetComponent<AIExample>().onHit(damage*stealthMultipler);
+                    other.transform.root.GetComponent<AIExample>().onHit(damage*stealthMultiplier);
                 }else{
                     other.transform.root.GetComponent<AIExample>().onHit(damage);
                 }

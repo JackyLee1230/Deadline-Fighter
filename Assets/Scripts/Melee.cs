@@ -8,7 +8,9 @@ public class Melee : MonoBehaviour
     public bool CanAttack = true;
     public float AttackCooldown = 0.5f;
     public AudioClip AttackSound;
+    public AudioClip CriticalHit;
     public bool isAttacking = false;
+    public bool isCrit = false;
     private AudioSource ml_audioSource;
     private Animator anim;
 
@@ -47,7 +49,17 @@ public class Melee : MonoBehaviour
     {
         CanAttack = false;
         isAttacking = true;
-        ml_audioSource.PlayOneShot(AttackSound);
+        if (Random.Range(0, 10) < 1) // crit
+        {
+            ml_audioSource.PlayOneShot(CriticalHit);
+            isCrit = true;
+            Debug.Log("crit for double damage");
+        }
+        else
+        {
+            ml_audioSource.PlayOneShot(AttackSound);
+            isCrit = false;
+        }
         anim.SetTrigger("Attack");
         StartCoroutine(ResetAttackCooldown());
     }
