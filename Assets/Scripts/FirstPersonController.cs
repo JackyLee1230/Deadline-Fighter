@@ -223,9 +223,13 @@ namespace UnityStandardAssets.Characters.FirstPerson
             {
                 TimeSurvivedUI.GetComponent<TextMeshProUGUI>().text = "Survived: " + timeSurvived.ToString("F0") + "s";
             }
-            else
+            else if (timeSurvived < 3600)
             {
                 TimeSurvivedUI.GetComponent<TextMeshProUGUI>().text = "Survived: " + (timeSurvived / 60).ToString("F0") + "m " + (timeSurvived % 60).ToString("F0") + "s";
+            }
+            else
+            {
+                TimeSurvivedUI.GetComponent<TextMeshProUGUI>().text = "Survived: " + (timeSurvived / 3600).ToString("F0") + "h " + ((timeSurvived % 3600)/60).ToString("F0") + "m " + (timeSurvived % 60).ToString("F0") + "s";
             }
 
 
