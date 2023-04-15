@@ -95,6 +95,7 @@ public class Gun : MonoBehaviour
 
     private void OnEnable()
     {
+        shootingSpread = 0;
         RecoilInit();
         if (m_AudioSource != null)
         {
