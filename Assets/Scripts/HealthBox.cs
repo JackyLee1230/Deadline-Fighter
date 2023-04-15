@@ -21,14 +21,15 @@ public class HealthBox : MonoBehaviour
 
     [Header("Health Box Animator")]
     public Animator animator;
-//    public GameObject cross;
+    //    public GameObject cross;
 
     public GameObject popup;
 
-    void Start(){
+    void Start()
+    {
         audioSource = fpsc.GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
- //       cross = gameObject.transform.Find("Cross").Find("box_med").gameObject;
+        //       cross = gameObject.transform.Find("Cross").Find("box_med").gameObject;
     }
 
     private bool IsVisible(Camera c, GameObject target)
@@ -38,7 +39,7 @@ public class HealthBox : MonoBehaviour
 
         foreach (var plane in planes)
         {
-            if (plane.GetDistanceToPoint(point)< 0)
+            if (plane.GetDistanceToPoint(point) < 0)
             {
                 return false;
             }
@@ -49,31 +50,31 @@ public class HealthBox : MonoBehaviour
     void Update()
     {
         var targetRender = gameObject.GetComponent<Renderer>();
-        if (IsVisible(cam,gameObject))
+        if (IsVisible(cam, gameObject))
         {
-           seen=true;
+            seen = true;
         }
         else
         {
-           seen = false;
+            seen = false;
         }
-     if(Vector3.Distance(transform.position, fpsc.transform.position) < radius && seen)
+        if (Vector3.Distance(transform.position, fpsc.transform.position) < radius && seen)
         {
-//            cross.SetActive(true);
+            //            cross.SetActive(true);
             if (Input.GetKeyDown(KeyCode.E) && !used)
             {
                 used = true;
-                Debug.Log("Player got the Health Box from " + Vector3.Distance(transform.position, fpsc.transform.position) +  " units away");
+                Debug.Log("Player got the Health Box from " + Vector3.Distance(transform.position, fpsc.transform.position) + " units away");
                 animator.SetBool("Open", true);
-                fpsc.currentHealth += healthBoost;
+                fpsc.currentHealth = Mathf.Min(fpsc.currentHealth + healthBoost, fpsc.maxHealth);
                 fpsc.addScore(50);
-                InfoPopupUtil.ShowInformation ( "+" + healthBoost + " Health" );
+                InfoPopupUtil.ShowInformation("+" + healthBoost + " Health");
                 audioSource.PlayOneShot(HealthBoxSound);
                 Destroy(gameObject, 1.5f);
             }
         }
-//        else{
-//            cross.SetActive(false);
-//        }
+        //        else{
+        //            cross.SetActive(false);
+        //        }
     }
 }

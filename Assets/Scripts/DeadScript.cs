@@ -59,10 +59,10 @@ public class DeadScript : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         isEnded = true;
 
-        fpsc.transform.GetChild(2).gameObject.SetActive(false);
+        fpsc.transform.GetChild(3).gameObject.SetActive(false);
         fpsc.transform.GetChild(4).gameObject.SetActive(false);
 
-        fpsc.transform.GetChild(0).GetChild(1).gameObject.SetActive(false);
+        fpsc.transform.GetChild(1).gameObject.SetActive(false);
 
         fpsc.enabled = false;
         scoreUI.text = "Score: " + fpsc.score;

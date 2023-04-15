@@ -25,10 +25,11 @@ public class AmmoBox : MonoBehaviour
 
     public GameObject popup;
 
-    void Start(){
+    void Start()
+    {
         audioSource = fpsc.GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
-        ammoGiven = UnityEngine.Random.Range(5,24);
+        ammoGiven = UnityEngine.Random.Range(5, 24);
         cam = Camera.main;
     }
 
@@ -39,7 +40,7 @@ public class AmmoBox : MonoBehaviour
 
         foreach (var plane in planes)
         {
-            if (plane.GetDistanceToPoint(point)< 0)
+            if (plane.GetDistanceToPoint(point) < 0)
             {
                 return false;
             }
@@ -51,24 +52,24 @@ public class AmmoBox : MonoBehaviour
     {
         cam = Camera.main;
         var targetRender = gameObject.GetComponent<Renderer>();
-        if (IsVisible(cam,gameObject))
+        if (IsVisible(cam, gameObject))
         {
-           seen=true;
+            seen = true;
         }
         else
         {
-           seen = false;
+            seen = false;
         }
-     if(Vector3.Distance(transform.position, fpsc.transform.position) < radius && seen)
+        if (Vector3.Distance(transform.position, fpsc.transform.position) < radius && seen)
         {
             if (Input.GetKeyDown(KeyCode.E) && !used)
             {
                 Debug.Log("Pressed E");
                 used = true;
-                Debug.Log("Player got the Ammo Box from " + Vector3.Distance(transform.position, fpsc.transform.position) +  " units away");
+                Debug.Log("Player got the Ammo Box from " + Vector3.Distance(transform.position, fpsc.transform.position) + " units away");
                 animator.SetBool("Open", true);
                 fpsc.addScore(50);
-                InfoPopupUtil.ShowInformation ( "+" + ammoGiven + " Ammo" );
+                InfoPopupUtil.ShowInformation("+" + ammoGiven + " Ammo");
                 audioSource.PlayOneShot(HealthBoxSound);
 
                 for (int j = 0; j < fpsc.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(1).childCount; j++)
