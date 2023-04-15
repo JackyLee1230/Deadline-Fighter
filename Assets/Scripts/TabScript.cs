@@ -50,6 +50,7 @@ public class TabScript : MonoBehaviour
         isTabbed = false;
         Time.timeScale = 1f;
         fpsc.enabled = true;
+        AudioListener.volume = 1;
     }
 
     public void Pause()
@@ -57,6 +58,7 @@ public class TabScript : MonoBehaviour
         tabMenuUI.SetActive(true);
         isTabbed = true;
         Time.timeScale = 0f;
+        AudioListener.volume = 0;
         hitEffect.SetActive(false);
         fpsc.enabled = false;
         Debug.Log(((float)fpsc.shotsHit * 100 / fpsc.shotsFired).ToString());

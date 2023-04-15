@@ -47,7 +47,7 @@ public class PauseScript : MonoBehaviour
         Time.timeScale = 1f;
         Cursor.visible = true;
         SceneManager.LoadScene("MenuScene");
-
+        AudioListener.volume = 1;
     }
 
     public void Resume()
@@ -56,6 +56,7 @@ public class PauseScript : MonoBehaviour
         Cursor.visible = false;
         isPaused = false;
         Time.timeScale = 1f;
+        AudioListener.volume = 1;
         fpsc.enabled = true;
     }
 
@@ -67,6 +68,7 @@ public class PauseScript : MonoBehaviour
         Time.timeScale = 0f;
         hitEffect.SetActive(false);
         fpsc.enabled = false;
+        AudioListener.volume = 0;
     }
 
     public void Quit()
