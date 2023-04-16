@@ -42,6 +42,7 @@ TBA
 - [War FX](https://assetstore.unity.com/packages/vfx/particles/war-fx-5669)
 - [World Skies Skybox](https://assetstore.unity.com/packages/2d/textures-materials/sky/worldskies-free-skybox-pack-86517)
 - [Zombie Animation Pack Free](https://assetstore.unity.com/packages/3d/animations/zombie-animation-pack-free-150219)
+- [Polygon Trees](https://assetstore.unity.com/packages/3d/vegetation/trees/polygon-trees-224068)
 
 
 ## License
