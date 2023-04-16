@@ -105,7 +105,7 @@ public class DeadScript : MonoBehaviour
     {
         Time.timeScale = 1f;
         Cursor.visible = true;
-        SceneManager.LoadScene("Scene");
+        SceneManager.LoadScene("Map_v1");
     }
 
     public void Quit()
