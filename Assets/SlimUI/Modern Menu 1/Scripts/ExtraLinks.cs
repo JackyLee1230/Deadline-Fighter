@@ -19,9 +19,9 @@ namespace SlimUI.ModernMenu
             Application.OpenURL("https://github.com/Samsys1622");
         }
 
-        public void Clean2()
+        public void James()
         {
-            Application.OpenURL("http://u3d.as/1AQ0");
+            Application.OpenURL("https://link.chapterx.app/v1/card/95baf27f-6cb4-4603-a109-7df59a51434b");
         }
 
         public void Jun()
