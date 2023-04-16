@@ -66,9 +66,17 @@ public class HealthBox : MonoBehaviour
                 used = true;
                 Debug.Log("Player got the Health Box from " + Vector3.Distance(transform.position, fpsc.transform.position) + " units away");
                 animator.SetBool("Open", true);
+                if (fpsc.currentHealth >= fpsc.maxHealth)
+                {
+                    InfoPopupUtil.ShowInformation("FULL HEALTH");
+                }
+                else
+                {
+                    InfoPopupUtil.ShowInformation("+" + healthBoost + " Health");
+                }
                 fpsc.currentHealth = Mathf.Min(fpsc.currentHealth + healthBoost, fpsc.maxHealth);
                 fpsc.addScore(50);
-                InfoPopupUtil.ShowInformation("+" + healthBoost + " Health");
+
                 audioSource.PlayOneShot(HealthBoxSound);
                 Destroy(gameObject, 1.5f);
             }
