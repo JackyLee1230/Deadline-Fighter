@@ -33,5 +33,10 @@ namespace SlimUI.ModernMenu
         {
             Application.OpenURL("http://u3d.as/1nki");
         }
+
+        public void Asad()
+        {
+            Application.OpenURL("https://github.com/AsadNaveed1");
+        }
     }
 }
