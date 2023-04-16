@@ -24,6 +24,8 @@ public class WeaponSwitching : MonoBehaviour
 
     public FirstPersonController fpsc;
     private float timeSinceLastSwitch;
+    private WeaponPurchase purchasewall;
+    public int weaponNumber = 3;
 
     private void Start()
     {
@@ -31,6 +33,7 @@ public class WeaponSwitching : MonoBehaviour
         Select(selectedWeapon);
         Ammo.GetComponent<TextMeshProUGUI>().text = "0/0";
         timeSinceLastSwitch = 0f;
+        purchasewall = GameObject.Find("WallPurchaseSciFi (1)").GetComponent<WeaponPurchase>();
     }
 
     private void SetWeapons()
@@ -52,7 +55,11 @@ public class WeaponSwitching : MonoBehaviour
             /*
             * Select with keys
             */
-            for (int i = 0; i < keys.Length; i++)
+            if (purchasewall.hasBoughtWeapon)
+            {
+                weaponNumber = 4;
+            }
+            for (int i = 0; i < weaponNumber; i++)
                 if (Input.GetKeyDown(keys[i]) && timeSinceLastSwitch >= switchTime)
                     selectedWeapon = i;
                     Debug.Log("current selected weapon is " + selectedWeapon);
@@ -84,7 +91,7 @@ public class WeaponSwitching : MonoBehaviour
             if (Input.GetAxis("Mouse ScrollWheel") > 0 && timeSinceLastSwitch >= switchTime)
             {
                 selectedWeapon++;
-                if (selectedWeapon > 3)
+                if (selectedWeapon > weaponNumber-1)
                 {
                     selectedWeapon = 0;
                 }
@@ -94,7 +101,7 @@ public class WeaponSwitching : MonoBehaviour
                 selectedWeapon--;
                 if (selectedWeapon < 0)
                 {
-                    selectedWeapon = 3;
+                    selectedWeapon = weaponNumber-1;
                 }
             }
 

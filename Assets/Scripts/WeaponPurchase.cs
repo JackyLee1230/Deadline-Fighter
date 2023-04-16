@@ -15,6 +15,7 @@ public class WeaponPurchase : MonoBehaviour
     [SerializeField] public GameObject textMesh;
     public LayerMask mask; 
     private bool isLookingAtWeapon = false;
+    public bool hasBoughtWeapon = false;
 
     void Start()
     {
@@ -38,9 +39,11 @@ public class WeaponPurchase : MonoBehaviour
                     fpsc.currency -= weaponCost;
                     editor.weapons[editor.selectedWeapon].gameObject.SetActive(false);
                     editor.weapons[3].gameObject.SetActive(true);
+                    editor.selectedWeapon = 3;
                     (editor.weapons[editor.selectedWeapon] , editor.weapons[3]) = (editor.weapons[3],editor.weapons[3]);
                     editor.weapons[editor.selectedWeapon].gameObject.GetComponent<Gun>().gunData.reservedAmmo = editor.weapons[editor.selectedWeapon].gameObject.GetComponent<Gun>().gunData.maxAmmo;
                     editor.weapons[editor.selectedWeapon].gameObject.GetComponent<Gun>().gunData.currentAmmo = editor.weapons[editor.selectedWeapon].gameObject.GetComponent<Gun>().gunData.magSize;
+                    hasBoughtWeapon = true;
                 }
                 else
                 {
