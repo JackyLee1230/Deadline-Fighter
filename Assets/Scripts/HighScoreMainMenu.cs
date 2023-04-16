@@ -12,6 +12,8 @@ public class HighScoreMainMenu : MonoBehaviour
     [SerializeField] public TextMeshProUGUI highScoreTimeUI;
     [SerializeField] public TextMeshProUGUI resumeUI;
 
+    [SerializeField] public GameObject extras;
+
     [SerializeField] public GameObject continueButton;
 
 
@@ -55,6 +57,19 @@ public class HighScoreMainMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (extras.activeSelf)
+        {
+            // hide the resume text
+            resumeUI.text = "";
+            highScoreUI.text = "";
+            highScoreTimeUI.text = "";
+        }
+        else
+        {
+            // show the resume text
+            resumeUI.text = "Continue: You left on Round " + SaveGame.Load<int>("round");
+            highScoreUI.text = "High Score: " + SaveGame.Load<int>("highScore") + " In " + SaveGame.Load<int>("round") + " Rounds";
+            highScoreTimeUI.text = "On: " + SaveGame.Load<String>("highScoreTime");
+        }
     }
 }
