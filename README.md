@@ -43,6 +43,7 @@ TBA
 - [World Skies Skybox](https://assetstore.unity.com/packages/2d/textures-materials/sky/worldskies-free-skybox-pack-86517)
 - [Zombie Animation Pack Free](https://assetstore.unity.com/packages/3d/animations/zombie-animation-pack-free-150219)
 - [Polygon Trees](https://assetstore.unity.com/packages/3d/vegetation/trees/polygon-trees-224068)
+- [Russian buildings pack](https://assetstore.unity.com/packages/3d/environments/urban/russian-buildings-pack-113375)
 
 
 ## License
