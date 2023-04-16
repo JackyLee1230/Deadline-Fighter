@@ -14,9 +14,9 @@ namespace SlimUI.ModernMenu
             Application.OpenURL("http://u3d.as/1AaR");
         }
 
-        public void Clean1()
+        public void Samsys()
         {
-            Application.OpenURL("http://u3d.as/1hTi");
+            Application.OpenURL("https://github.com/Samsys1622");
         }
 
         public void Clean2()
