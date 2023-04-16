@@ -23,6 +23,7 @@ TBA
 - [@Samsys1622](https://github.com/Samsys1622)
 - [@u3577797](https://github.com/u3577797)
 - [@h3578661](https://github.com/h3578661)
+- [@AsadNaveed1](https://github.com/AsadNaveed1)
 
 
 ## Package/Assets used
@@ -41,6 +42,8 @@ TBA
 - [War FX](https://assetstore.unity.com/packages/vfx/particles/war-fx-5669)
 - [World Skies Skybox](https://assetstore.unity.com/packages/2d/textures-materials/sky/worldskies-free-skybox-pack-86517)
 - [Zombie Animation Pack Free](https://assetstore.unity.com/packages/3d/animations/zombie-animation-pack-free-150219)
+- [Polygon Trees](https://assetstore.unity.com/packages/3d/vegetation/trees/polygon-trees-224068)
+- [Russian buildings pack](https://assetstore.unity.com/packages/3d/environments/urban/russian-buildings-pack-113375)
 
 
 ## License
