@@ -83,6 +83,8 @@ namespace SlimUI.ModernMenu
         public TMP_Text finishedLoadingText;
         public bool requireInputForNextScene = false;
 
+        public GameObject highScoreCanvas;
+
         void Start()
         {
             CameraObject = transform.GetComponent<Animator>();
@@ -97,6 +99,8 @@ namespace SlimUI.ModernMenu
             mainMenu.SetActive(true);
 
             SetThemeColors();
+            highScoreCanvas = GameObject.Find("HighScoreCanvas");
+            highScoreCanvas.SetActive(false);
         }
 
         void SetThemeColors()
@@ -150,6 +154,17 @@ namespace SlimUI.ModernMenu
                     }
                 }
         */
+
+        public void ShowScoreStats()
+        {
+            highScoreCanvas.SetActive(true);
+        }
+
+        public void HideScoreStats()
+        {
+            highScoreCanvas.SetActive(false);
+        }
+
         public void LoadScene(string scene)
         {
             if (scene != "")

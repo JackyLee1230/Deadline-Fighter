@@ -40,7 +40,7 @@ public class HighScoreMainMenu : MonoBehaviour
 
         if (SaveGame.Load<int>("round") > 0)
         {
-            resumeUI.text = "Continue: You left on Round " + SaveGame.Load<int>("round");
+            resumeUI.text = "Current Saved Round: " + SaveGame.Load<int>("round");
         }
         else
         {
@@ -67,7 +67,7 @@ public class HighScoreMainMenu : MonoBehaviour
         else
         {
             // show the resume text
-            resumeUI.text = "Continue: You left on Round " + SaveGame.Load<int>("round");
+            resumeUI.text = "Current Saved Round: " + SaveGame.Load<int>("round");
             highScoreUI.text = "High Score: " + SaveGame.Load<int>("highScore") + " In " + SaveGame.Load<int>("round") + " Rounds";
             highScoreTimeUI.text = "On: " + SaveGame.Load<String>("highScoreTime");
         }
