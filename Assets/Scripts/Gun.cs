@@ -179,7 +179,7 @@ public class Gun : MonoBehaviour
         AutoReloading = false;
     }
 
-    private bool CanShoot() => !gunData.reloading && timeSinceLastShot > 1f / (gunData.fireRate / 60f);
+    public bool CanShoot() => !gunData.reloading && timeSinceLastShot > 1f / (gunData.fireRate / 60f);
 
     private void Shoot()
     {
