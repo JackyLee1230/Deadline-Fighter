@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityStandardAssets.Characters.FirstPerson;
 using BayatGames.SaveGameFree;
 
@@ -45,7 +46,11 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     public AudioClip roundWin; //test
 
+    int spwanCount;
+    public Slider aliveBarSlider;
+    public GameObject aliveBar;
     public TextMeshProUGUI roundNum;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -58,6 +63,7 @@ public class EnemySpawner : MonoBehaviour
             SaveGame.Save<int>("continue", 0);
             Debug.Log("GAME STARTED WITH CONTINUE GAME");
         }
+        aliveBarSlider.value = 1;
     }
 
     // Update is called once per frame
@@ -116,16 +122,23 @@ public class EnemySpawner : MonoBehaviour
             transitionTime = 0.0f;
             if (currentRoundTime < 60)
             {
-                roundNum.text = "Round: " + round.ToString() + "\nTime: " + currentRoundTime.ToString("F0") + "s\nAlive: " + enemiesAlive.ToString();
+                roundNum.text = "Round: " + round.ToString() + "\nTime: " + currentRoundTime.ToString("F0") + "s";
             }
             else if (currentRoundTime < 3600)
             {
-                roundNum.text = "Round: " + round.ToString() + "\nTime: " + (currentRoundTime/60).ToString("F0") + "m " + (currentRoundTime % 60).ToString("F0") + "s\nAlive: " + enemiesAlive.ToString();
+                roundNum.text = "Round: " + round.ToString() + "\nTime: " + (currentRoundTime/60).ToString("F0") + "m " + (currentRoundTime % 60).ToString("F0") + "s";
             }
             else
             {
-                roundNum.text = "Round: " + round.ToString() + "\nTime: " + (currentRoundTime / 3600).ToString("F0") + "h " + ((currentRoundTime % 3600)/60).ToString("F0") + "m " + (currentRoundTime % 60).ToString("F0") + "s\nAlive: " + enemiesAlive.ToString();
+                roundNum.text = "Round: " + round.ToString() + "\nTime: " + (currentRoundTime / 3600).ToString("F0") + "h " + ((currentRoundTime % 3600)/60).ToString("F0") + "m " + (currentRoundTime % 60).ToString("F0") + "s";
             }
+            if (spwanCount != 0)
+            {
+                Debug.Log("spwancount is " + spwanCount.ToString());
+                Debug.Log("enemiesAlive is " + enemiesAlive.ToString());
+                aliveBarSlider.value = (float)enemiesAlive / (float)spwanCount;
+            }
+            
         }
         else
         {
@@ -171,7 +184,7 @@ public class EnemySpawner : MonoBehaviour
     {
         isTransitioning = true;
         yield return new WaitForSeconds(timeBetweenWaves);
-        roundNum.text = "Round: " + round.ToString() + " Time:  " + currentRoundTime.ToString("F0") + "s; Alive: " + enemiesAlive.ToString();
+        roundNum.text = "Round: " + round.ToString() + " Time:  " + currentRoundTime.ToString("F0") + "s";
         // nextWave(round);
         // fpsc.GetComponent<FirstPersonController>().currentHealth = fpsc.maxHealth;
         fpsc.GetComponent<FirstPersonController>().currency += UnityEngine.Random.Range(round * 10, round * 70);
@@ -189,7 +202,7 @@ public class EnemySpawner : MonoBehaviour
         currentRoundTime = 0.0f;
         // create a new array of enemies
         AudioSource.PlayClipAtPoint(roundWin, transform.position, 1.5f);
-        int spwanCount = UnityEngine.Random.Range(round, round * 3);
+        spwanCount = UnityEngine.Random.Range(round, round * 3);
 
         // save the data for load
         SaveGame.Save<int>("round", round);
@@ -270,7 +283,7 @@ public class EnemySpawner : MonoBehaviour
         currentRoundTime = 0.0f;
         // create a new array of enemies
         AudioSource.PlayClipAtPoint(roundWin, transform.position, 1.5f);
-        int spwanCount = UnityEngine.Random.Range(round, round * 3);
+        spwanCount = UnityEngine.Random.Range(round, round * 3);
 
         // save the data for load
         SaveGame.Save<int>("round", round);
