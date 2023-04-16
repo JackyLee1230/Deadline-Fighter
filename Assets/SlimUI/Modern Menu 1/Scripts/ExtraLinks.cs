@@ -24,9 +24,9 @@ namespace SlimUI.ModernMenu
             Application.OpenURL("http://u3d.as/1AQ0");
         }
 
-        public void Essence()
+        public void Jun()
         {
-            Application.OpenURL("http://u3d.as/1t11");
+            Application.OpenURL("https://github.com/h3578661");
         }
 
         public void Tech()
