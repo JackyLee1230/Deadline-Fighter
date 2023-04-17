@@ -13,7 +13,17 @@ To get started, simply click Play and New Game.<br>
 You will spawn in with three weapons: a knife, a pistol and an AKM47.<br>
 Explore the map while defending hordes of attacking zombies.<br>
 Purchase new weapons, unlock new area of the map to allow for more flexible and dynamic gameplay.<br>
-Survive for as long as you can and try to get the highest score possible.
+Survive for as long as you can and try to get the highest score possible.<br>
+
+Controls:<br>
+Movement: WASD<br>
+Jump: Spacebar<br>
+Shoot: Left click<br>
+Aim: Right click<br>
+Purchase: E<br>
+Stats: Tab<br>
+Pause: Esc<br>
+
 
 ## Demo
 
