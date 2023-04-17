@@ -1,13 +1,23 @@
-
 # Deadline Fighter
 
 A Unity 3D Game developed for COMP3329 Computer Game Design and Programming.
 
+## Installation Step:
+
+Simply download the zip file and extract it. Then run the executable file **Deadline Fighter**.
+
+## How to Play
+
+**Its easy!**<br>
+To get started, simply click Play and New Game.<br>
+You will spawn in with three weapons: a knife, a pistol and an AKM47.<br>
+Explore the map while defending hordes of attacking zombies.<br>
+Purchase new weapons, unlock new area of the map to allow for more flexible and dynamic gameplay.<br>
+Survive for as long as you can and try to get the highest score possible.
 
 ## Demo
 
 TBA
-
 
 ## Features
 
@@ -16,7 +26,6 @@ TBA
 - Fullscreen mode
 - Cross platform
 
-
 ## Authors
 
 - [@JackyLee1230](https://github.com/JackyLee1230)
@@ -24,7 +33,6 @@ TBA
 - [@u3577797](https://github.com/u3577797)
 - [@h3578661](https://github.com/h3578661)
 - [@AsadNaveed1](https://github.com/AsadNaveed1)
-
 
 ## Package/Assets used
 
@@ -45,7 +53,7 @@ TBA
 - [Polygon Trees](https://assetstore.unity.com/packages/3d/vegetation/trees/polygon-trees-224068)
 - [Russian buildings pack](https://assetstore.unity.com/packages/3d/environments/urban/russian-buildings-pack-113375)
 
-
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
+
