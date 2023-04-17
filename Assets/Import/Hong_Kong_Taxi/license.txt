@@ -1,0 +1,11 @@
+Model Information:
+* title:	Hong Kong Taxi
+* source:	https://sketchfab.com/3d-models/hong-kong-taxi-b4e5ecc01a6e41e9a383302e728c8535
+* author:	Goedude (https://sketchfab.com/Goedude)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Hong Kong Taxi" (https://sketchfab.com/3d-models/hong-kong-taxi-b4e5ecc01a6e41e9a383302e728c8535) by Goedude (https://sketchfab.com/Goedude) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
