@@ -40,6 +40,7 @@ public class Gun : MonoBehaviour
     public GameObject bulletShellSpawnPoint;
 
     public GameObject onHitX;
+    public GameObject onBodyHitX;
 
     public float headShotMultiplier;
     public float limbShotMultiplier;
@@ -80,8 +81,9 @@ public class Gun : MonoBehaviour
 
     private void OnDisable()
     {
-        if(onHitX != null){
+        if(onHitX != null || onBodyHitX != null){
             onHitX.SetActive(false);
+            onBodyHitX.SetActive(false);
         }
         fpsc.setReloadIcon(false);
         fpsc.m_Shooting = false;
@@ -221,10 +223,6 @@ public class Gun : MonoBehaviour
 
                         if (hit.transform.CompareTag("Zombie"))
                         {
-                            if(!onHitX.activeSelf){
-                                StartCoroutine(DisableX());
-                            }
-
                             fpsc.shotsHit++;
                             Instantiate(bulletImpactFreshEffect, hit.point, Quaternion.LookRotation(hit.normal));
                             float damage = calcDropOffDamage(hit.distance, gunData.minDamage, gunData.maxDamage, 30, 100);
@@ -237,18 +235,27 @@ public class Gun : MonoBehaviour
                                 hit.transform.root.GetComponent<AIExample>().onHit(damage * headShotMultiplier);
                                 fpsc.headshots++;
                                 Debug.Log("Hit for " + damage * headShotMultiplier + " damage; Distance" + hit.distance);
+                                if(!onHitX.activeSelf){
+                                    StartCoroutine(DisableX(true));
+                                }
                             }
                             else if (hit.collider.GetType() == typeof(BoxCollider))
                             {
                                 Instantiate(damageEffect, hit.point, Quaternion.identity);
                                 hit.transform.root.GetComponent<AIExample>().onHit(damage);
                                 Debug.Log("Hit for " + damage + " damage; Distance" + hit.distance);
+                                if(!onBodyHitX.activeSelf){
+                                    StartCoroutine(DisableX(false));
+                                }
                             }
                             else
                             {
                                 Instantiate(damageEffect, hit.point, Quaternion.identity);
                                 hit.transform.root.GetComponent<AIExample>().onHit(damage * limbShotMultiplier);
                                 Debug.Log("Hit for " + damage * limbShotMultiplier + " damage; Distance" + hit.distance);
+                                if(!onBodyHitX.activeSelf){
+                                    StartCoroutine(DisableX(false));
+                                }
                             }
                         }
                         else if (hit.transform.tag == "Barrier")
@@ -258,10 +265,11 @@ public class Gun : MonoBehaviour
                         else
                         {
                             int randomNumberForBulletHole = UnityEngine.Random.Range(0, 3);
-
-                            Instantiate(bulletImpactEffect, hit.point, Quaternion.LookRotation(hit.normal));
-                            Instantiate(bulletHole[randomNumberForBulletHole], hit.point + hit.normal * 0.0001f, Quaternion.LookRotation(hit.normal));
-                            bulletHole[randomNumberForBulletHole].transform.up = hit.normal;
+                            if((hit.transform.tag != "Boxes")){
+                                Instantiate(bulletImpactEffect, hit.point, Quaternion.LookRotation(hit.normal));
+                                Instantiate(bulletHole[randomNumberForBulletHole], hit.point + hit.normal * 0.0001f, Quaternion.LookRotation(hit.normal));
+                                bulletHole[randomNumberForBulletHole].transform.up = hit.normal;
+                            }
                         }
                     }
                     else
@@ -328,12 +336,20 @@ public class Gun : MonoBehaviour
         Destroy(trail.gameObject, trail.time);
     }
 
-    IEnumerator DisableX()
+    IEnumerator DisableX(bool headshot)
     {
-        if(!onHitX.activeSelf){
+        if(!onHitX.activeSelf && headshot){
+            if(onBodyHitX.activeSelf)
+                onBodyHitX.SetActive(false);
             onHitX.SetActive(true);
             yield return new WaitForSeconds(0.25f);
             onHitX.SetActive(false);
+        }else if(!onBodyHitX.activeSelf && !headshot){
+            if(onHitX.activeSelf)
+                onHitX.SetActive(false);
+            onBodyHitX.SetActive(true);
+            yield return new WaitForSeconds(0.25f);
+            onBodyHitX.SetActive(false);
         }
     }
 
