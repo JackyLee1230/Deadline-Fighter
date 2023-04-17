@@ -24,6 +24,8 @@ public class AIExample : MonoBehaviour {
 
     [SerializeField] private float detectDistance;
     [SerializeField] public bool isAware = false;
+
+    [SerializeField] public bool forcedAware = false;
     [SerializeField] private bool isAttacking = false;
     [SerializeField] private bool isDamage = false;
     [SerializeField] public bool isDead = false;
@@ -108,7 +110,7 @@ public class AIExample : MonoBehaviour {
             animator.SetTrigger("Attack");
             isAttacking = false;
         }
-        else if (isAware)
+        else if (isAware || forcedAware)
         {
             if (!e_AudioSource.isPlaying) {
                 e_AudioSource.clip = zombieChase;

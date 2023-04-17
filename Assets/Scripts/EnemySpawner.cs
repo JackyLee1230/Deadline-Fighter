@@ -381,9 +381,10 @@ public class EnemySpawner : MonoBehaviour
     IEnumerator DelayAware(AIExample enemy)
     {
         yield return new WaitForSeconds(3f);
-        if(!enemy.isAware)
+        if(!enemy.isAware || !enemy.forcedAware)
         {
             enemy.OnAware();
+            enemy.forcedAware = true;
         }
     }
 }
