@@ -29,7 +29,7 @@ public class AmmoBox : MonoBehaviour
     {
         audioSource = fpsc.GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
-        ammoGiven = UnityEngine.Random.Range(5, 24);
+        ammoGiven = UnityEngine.Random.Range(20, 40);
         cam = Camera.main;
     }
 

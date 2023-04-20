@@ -8,8 +8,8 @@ public class CurrencyBox : MonoBehaviour
 {
     [Header("Currnecy Gain")]
     public FirstPersonController fpsc;
-    private int currencyBoost = 50; // amount of health to give
-    private float radius = 20.0f; // radius player can reach the box, leave some room since camera isnt in floor level
+    private int currencyBoost = 250; // amount of money to give
+    private float radius = 1.48f; // radius player can reach the box, leave some room since camera isnt in floor level
     public bool used = false;
     public bool seen = false;
 
@@ -20,12 +20,15 @@ public class CurrencyBox : MonoBehaviour
     private AudioSource audioSource;
 
     [Header("Currency Box Animator")]
-    public Animator animator;
+    private Animator animator;
 
     public GameObject popup;
 
     void Start(){
+        currencyBoost = UnityEngine.Random.Range(225, 550);
         audioSource = fpsc.GetComponent<AudioSource>();
+        animator = GetComponent<Animator>();
+        cam = Camera.main;
     }
 
     private bool IsVisible(Camera c, GameObject target)
@@ -46,20 +49,19 @@ public class CurrencyBox : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        cam = Camera.main;
         var targetRender = gameObject.GetComponent<Renderer>();
         if (IsVisible(cam,gameObject))
         {
-           seen=true;
+            seen=true;
         }
         else
         {
-           seen = false;
+            seen = false;
         }
 
-     if(Vector3.Distance(transform.position, fpsc.transform.position) < radius && seen)
-    //  make it so it only works when player is facing the box
-
+        if (Vector3.Distance(transform.position, fpsc.transform.position) < radius && seen)
+        //  make it so it only works when player is facing the box
         {
             if (Input.GetKeyDown(KeyCode.E) && !used)
             {
@@ -73,6 +75,6 @@ public class CurrencyBox : MonoBehaviour
                 Destroy(gameObject, 1.5f);
             }
         }
-       
+    
     }
 }

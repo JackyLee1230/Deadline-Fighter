@@ -61,6 +61,7 @@ public class AIExample : MonoBehaviour {
 //    [SerializeField] public Animator healthBoxAnimator;
     [SerializeField] public GameObject ammoBox;
 //    [SerializeField] public Animator ammoBoxAnimator;
+     [SerializeField] public GameObject currencyBox;
 
 
     public void Start()
@@ -334,7 +335,7 @@ public class AIExample : MonoBehaviour {
 
     private void DropBox()
     {
-        int randomVar = Random.Range(0, 2);
+        int randomVar = Random.Range(0, 3);
         Debug.Log(randomVar);
         if (randomVar == 0)
         {
@@ -349,7 +350,7 @@ public class AIExample : MonoBehaviour {
                 Destroy(box, 10f);
             }
         }
-        else
+        else if (randomVar == 1)
         {
             if (Random.Range(0, 10) < 4) // 40%?
             {
@@ -358,6 +359,18 @@ public class AIExample : MonoBehaviour {
                 AmmoBox ab = box.GetComponent<AmmoBox>();
                 ab.fpsc = fpsc;
                 ab.cam = Camera.main;
+                box.SetActive(true);
+                Destroy(box, 10f);
+            }
+        }
+        else {
+            if (Random.Range(0, 10) < 1) // 10%
+            {
+                Debug.Log("Zombie dropped currency box");
+                GameObject box = Instantiate(currencyBox, transform.position + new Vector3(0.0f, 1.0f, 0.0f), Quaternion.identity);
+                CurrencyBox cb = box.GetComponent<CurrencyBox>();
+                cb.fpsc = fpsc;
+                cb.cam = Camera.main;
                 box.SetActive(true);
                 Destroy(box, 10f);
             }
