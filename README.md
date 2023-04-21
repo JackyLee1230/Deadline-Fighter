@@ -62,7 +62,7 @@ TBA
 - [Zombie Animation Pack Free](https://assetstore.unity.com/packages/3d/animations/zombie-animation-pack-free-150219)
 - [Polygon Trees](https://assetstore.unity.com/packages/3d/vegetation/trees/polygon-trees-224068)
 - [Russian buildings pack](https://assetstore.unity.com/packages/3d/environments/urban/russian-buildings-pack-113375)
-- [RPG/FPS Game Assets for PC/Mobile (Industrial Set v2.0)](https://assetstore.unity.com/packages/3d/environments/industrial/rpg-fps-game-assets-for-pc-mobile-industrial-set-v2-0-86679)
+- [RPG/FPS Game Assets](https://assetstore.unity.com/packages/3d/environments/industrial/rpg-fps-game-assets-for-pc-mobile-industrial-set-v2-0-86679)
 
 ## License
 
