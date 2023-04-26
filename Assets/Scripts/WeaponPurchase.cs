@@ -7,7 +7,7 @@ using TMPro;
 
 public class WeaponPurchase : MonoBehaviour
 {
-    public int weaponCost = 10;
+    public int weaponCost = 650;
     public FirstPersonController fpsc;
     public WeaponSwitching editor;
     public float radius;

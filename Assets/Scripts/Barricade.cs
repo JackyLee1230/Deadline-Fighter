@@ -6,7 +6,7 @@ using TMPro;
 
 public class Barricade : MonoBehaviour
 {
-    public int barricadeCost = 10;
+    public int barricadeCost = 200;
     public FirstPersonController fpsc;
     public LayerMask mask; 
     public float radius;
